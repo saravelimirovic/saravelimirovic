@@ -1,0 +1,105 @@
+html,body {
+  margin: 0;
+  height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  background: #20262e;
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.p-element{
+  .p-tag.p-tag-danger{
+    background-color: rgb(245, 16, 16) !important;
+  }
+  .p-tag.p-tag-success{
+    background-color: rgb(28, 194, 28) !important;
+  }
+}
+
+*{
+  color:rgb(255, 255, 255);
+}
+
+.card{
+  background-color: rgb(53, 9, 9);
+}
+
+.my-custom-class {
+  color: white;
+}
+
+.child1 {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.child2{
+  display: inline-block;
+  padding-left: 1rem;
+  vertical-align: middle;
+  font-weight: 100;
+}
+
+.text{
+  font-weight: 300;
+}
+
+.data-field{
+  margin-top: 10px;
+}
+
+.backbutton{
+  background-color: #3b5577;
+  border-color: #3b5577;
+  }
+
+.backbutton:hover{
+  background-color: #49678f;
+}
+
+.chart-container{
+  height: 93%;
+  width: 100%;
+}
+
+.button5{
+  float: right;
+  margin-top: 5px;
+}
+
+@media screen and (max-width: 767px){
+  .text.title6{
+    font-size: 22px;
+    text-align: center;
+    margin-top: 7vh;
+  }
+
+  .text.title2{
+    font-size: 20px;
+    text-align: center;
+  }
+
+  #info2{
+    padding-bottom: 20px;
+    padding-left: 7px;
+  }
+
+  .button5{
+    margin-right: 40%;
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+
+  .button5{
+    position: static;
+    top: 10px;
+  }
+
+  .list{
+    margin-top: 10px;
+  }
+
+}

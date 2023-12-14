@@ -1,0 +1,11 @@
+<div class="cardowner row row-cols-1 row-cols-md-3 mt-4">
+  <div *ngFor="let i of listaPoDanima" class="col" style="max-width: 340px;">
+    <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3 weather">
+      <div class="card-header changed">{{i.dan}}</div>
+      <div class="card-body changed">
+      <img class="weatherlogo" src="../../../../assets/weather/{{i.vreme}}.png">
+      </div>
+      <div class="card-footer changed changedtext">{{i.vreme}}: {{i.temp_max}} °C / {{i.temp_min}}°C</div>
+    </div>
+  </div>
+</div>

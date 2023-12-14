@@ -1,0 +1,8 @@
+<div class="confirm-container">
+    <h1 mat-dialog-title>Da li želite da obrišete korisnika {{data}}?</h1>
+    <div mat-dialog-actions style="float:right;margin:20px;">
+      <button mat-button [mat-dialog-close]="{ clicked: 'Ok' }" (click)="Da()" style="background-color: #588157; border-color: #588157;">Obriši korisnika</button>
+      <button mat-button [mat-dialog-close]="{ clicked: 'Cancel' }" style="background-color: #B04759; border-color: #B04759;">Odustani</button>
+    </div>
+</div>
+  

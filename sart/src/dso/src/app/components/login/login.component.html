@@ -1,0 +1,91 @@
+  <div class="outer">
+        <p-toast></p-toast>
+    <div class="container">
+        <div class="row">
+            <div class="text">
+                <div class="panel border">
+                    <div class="panel-heading">
+                        <h3 class="pt-3 font-weight-bold" id="h3">
+                            Prijavite se
+                        </h3>
+                    </div>
+                    <div class="panel-body p-3">
+                        <form [formGroup]="loginForm">
+                            <div class="form-group pt-3">
+                                <div class="input-field">
+                                    <span class="fa-solid fa-user p-2"></span>
+                                    <input formControlName="email" type="text" placeholder="Email adresa">
+                                </div>
+                                <small
+                                    *ngIf="loginForm.controls['email'].dirty && loginForm.hasError('required','email')"
+                                    class="text-danger">*Email adresa je obavezna!</small>
+                                <br>
+                                <div class="input-field">
+                                    <span class="fa-solid fa-lock p-2"></span>
+                                    <input formControlName="password" [type]="type" placeholder="Lozinka">
+                                    <span (click)="sakrijPrikazi()"><a><i
+                                                class="fa-sharp fa-solid {{eyeIcon}} pl-1"></i></a></span>
+                                </div>
+                            </div>
+                            <small
+                                *ngIf="loginForm.controls['password'].dirty && loginForm.hasError('required','password')"
+                                class="text-danger">*Lozinka je obavezna!</small>
+
+                            <!-- za Zaboravili ste lozinku -->
+                            <div class="form-inline fr mt-4" style="text-align: center;">
+                                <a id="forget" class="font-weight-bold" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    Zaboravili ste lozinku?
+                                </a>
+                            </div>
+
+                            <button (click)="onLogin()" type="submit"
+                                class="btn btn-primary btn-block mt-4 w-100">Prijavite se</button>
+                            <div class="text-center pt-4 text-muted"></div>
+                        </form>
+                        <div class="mx-3 bordert">
+                            <div class="text-center py-3">
+                                <img id="logo" src="..\assets\logo-light.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- za Zaboravili ste lozinku -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color: #20262e;">
+
+            <div class="modal-header">
+                <p class="modal-title" id="exampleModalLabel" style="color: white;">
+                    <span style="font-size: 25px; font-weight: 700; color: #ddd;">Zaboravili ste lozinku?</span><br>
+                    <small style="color: #355099;">Unesite Vašu email adresu na koju ćemo poslati link za resetovanje lozinke.</small>
+                </p>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group pt-3">
+                    <div class="input-field">
+                        <span class="fa fa-user p-2"></span>
+                        <input type="text" (keydown.enter)="confirmToSend()" [(ngModel)]="resetPasswordEmail" (ngModelChange)="checkValidEmail($event)" placeholder="Email">
+                    </div>
+                </div>
+                <small *ngIf="!resetPasswordEmail" class="text-danger">*Email je obavezan.*</small>
+                <small *ngIf="!isValidEmail && resetPasswordEmail" class="text-danger">*Uneti email je neispravan.*</small>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" id="closeBtn" class="btn btn-secondary" style="background-color: red;" data-bs-dismiss="modal">Zatvori</button>
+                <button type="button" (click)="confirmToSend()" class="btn btn-primary">Pošalji</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<app-toast></app-toast>

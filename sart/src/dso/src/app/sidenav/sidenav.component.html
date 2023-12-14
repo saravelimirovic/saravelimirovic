@@ -1,0 +1,75 @@
+<nav id="header" class="navbar navbar-expand navbar-dark px-2" style="justify-content: right;">
+  <a class="navbar-brand p-lg-2" style="display: flex;  cursor: pointer;" [routerLink]="['/upravljanje-korisnikom/' + userId]"
+  ><p class="h4" style="padding-right: 5px;">{{email}}</p><span class="fa-solid fa-circle-user " style="padding-left: 5px;"></span></a>
+</nav>
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+    <div class="logo-container">
+      <button class="logo" (click)="toggleCollapse()"><img src="../../../assets/logo.png"></button>
+      <div class="logo-text" *ngIf="collapsed">WattApp</div>
+      <i id="dugme"  [ngClass]="collapsed ? 'fas fa-chevron-left' : 'fas fa-chevron-right'" (click)="toggleCollapse()" style="cursor: pointer;"></i>
+    </div>
+    <ul class="sidenav-nav" *ngIf="dispecer == 'admin'" >
+      <li class="sidenav-nav-item" *ngFor="let data of navData2" [ngStyle]="data.label === 'Izloguj se' && !collapsed? 
+      {'bottom' : '0', 'position':'absolute', 'width':'50px'} :  data.label === 'Izloguj se' && collapsed? {'bottom' : '0', 'position':'absolute', 'width':'235px'} :{'color':'white'}"
+      >
+        <a class="sidenav-nav-link" (click)="handleClick(data)" 
+            *ngIf="data.items && data.items.length>0">
+        <i class="sidenav-link-icon" [class]="data.icon" (click)="open()"></i>
+        <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
+        <i *ngIf="data.items && collapsed" class="menu-collapse-icon"
+        [ngClass]="!data.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'" ></i>
+      </a>
+      <a class="sidenav-nav-link"
+      *ngIf="!data.items || (data.items && data.items.length === 0)" 
+       [routerLink]="[data.routeLink]"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">
+       <i class="sidenav-link-icon" [class]="data.icon"></i>
+        <span class="sidenav-link-text" *ngIf="collapsed"  >{{data.label}}</span>
+      </a>
+      <div *ngIf="collapsed && data.items && data.items.length > 0" >
+        <app-sublevel
+          [data]="data"
+          [collapsed]="collapsed"
+          [multiple]="multiple"
+          [expanded]="data.expanded"
+        >
+        </app-sublevel>
+
+      </div>
+
+      </li>
+    </ul>
+    <ul class="sidenav-nav" *ngIf="dispecer == 'dispečer'" >
+      <li class="sidenav-nav-item" *ngFor="let data of navData" [ngStyle]="data.label === 'Izloguj se' && !collapsed? 
+      {'bottom' : '0', 'position':'absolute', 'width':'50px'} :  data.label === 'Izloguj se' && collapsed? {'bottom' : '0', 'position':'absolute', 'width':'235px'} :{'color':'white'}"
+      >
+        <a class="sidenav-nav-link" (click)="handleClick(data)" 
+            *ngIf="data.items && data.items.length>0">
+        <i class="sidenav-link-icon" [class]="data.icon" (click)="open()"></i>
+        <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
+        <i *ngIf="data.items && collapsed" class="menu-collapse-icon"
+        [ngClass]="!data.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'" ></i>
+      </a>
+      <a class="sidenav-nav-link"
+      *ngIf="!data.items || (data.items && data.items.length === 0)" 
+       [routerLink]="[data.routeLink]"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: true}">
+       <i class="sidenav-link-icon" [class]="data.icon"></i>
+        <span class="sidenav-link-text" *ngIf="collapsed"  >{{data.label}}</span>
+      </a>
+      <div *ngIf="collapsed && data.items && data.items.length > 0" >
+        <app-sublevel
+          [data]="data"
+          [collapsed]="collapsed"
+          [multiple]="multiple"
+          [expanded]="data.expanded"
+        >
+        </app-sublevel>
+
+      </div>
+
+      </li>
+    </ul>
+</div>

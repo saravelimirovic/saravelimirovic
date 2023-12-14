@@ -1,0 +1,128 @@
+<div class="body">
+    <!-- <div class="rectangle"></div> -->
+    <p-toast></p-toast>
+    <div class="zaglavlje d-flex align-items-center mb-1">
+
+        <h4 class="text-right">Detalji o korisniku</h4> 
+        <button *ngIf="dozvolaEdit" mat-icon-button color="primary" class="custom-button" (click)="edit()" style="margin-top: 23px; margin-left: 20px;"
+            ><mat-icon class="centered-icon">edit</mat-icon></button>
+        
+        <!-- <button *ngIf="dozvolaZaRegistrovanje" class="btn btn-primary mt-4 w-90" 
+                routerLink="/registracija-objekta/{{id}}">Registruj objekat</button> -->
+        <!-- <button *ngIf="dozvolaZaRegistrovanje" class="btn btn-primary mt-4 w-90"
+                (click)="openDialog(id)">Prikaži objekte</button> -->
+        <button *ngIf="dozvolaZaRegistrovanje" class="btn btn-primary mt-4 w-90" style="position: absolute; right: 62px; background-color: #588157; border: 1px solid #588157;"
+                routerLink="/uredjaji/{{id}}">Prikaži uređaje</button>
+        <button class="btn btn-primary profile-button" style="position: absolute; right: 210px; margin-top: 1.5rem; padding-top: 8px; padding-bottom: 7px;"
+                 *ngIf="dozvolaZaBrisanje" id="obrisi" type="button" (click)="ObrisiKorisnika(korisnik.id)">Obriši korisnka</button>
+
+    </div>
+
+    <div class="glavni">
+
+        <div class="levi mt-3">
+                <div class="p-3 py-5">
+
+                    <div class="row mt-3" *ngIf="korisnik">
+
+                        <form class="form2" [formGroup]="EditUserForm">
+
+                            <div class="box"><label class="labels">Korisničko ime</label><input type="text" class="form-control" formControlName="ime" placeholder="{{korisnik.ime}}"  [(ngModel)]="ime">
+                                <small *ngIf="EditUserForm.controls['ime'].dirty && EditUserForm.hasError('required','ime')"
+                                class="text-danger">*Ime je obavezno!</small> 
+                                <small *ngIf="EditUserForm.get('ime')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small>
+                            </div>
+                            
+                            <div class="box"><label class="labels">Email</label><input type="text" class="form-control" formControlName="email" placeholder="{{korisnik.email}}"  [(ngModel)]="email">
+                                <small *ngIf="EditUserForm.controls['email'].dirty && EditUserForm.hasError('required','email')" 
+                                class="text-danger">*Email je obavezan!</small>
+                                <small *ngIf="EditUserForm.controls['email'].dirty && EditUserForm.hasError('email','email')" 
+                                class="text-danger">*Email nije validan!</small>
+                            </div>
+                            
+                            <div class="box"><label class="labels">JMBG</label><input type="text" class="form-control" formControlName="jmbg" placeholder="{{korisnik.jmbg}}" [(ngModel)]="jmbg">
+                                <small *ngIf="EditUserForm.controls['jmbg'].dirty && EditUserForm.hasError('required','jmbg')"
+                                class="text-danger">*JMBG je obavezan!</small>
+                                <small *ngIf="EditUserForm.get('jmbg')!!.hasError('pattern')"
+                                class="text-danger">*JMBG nije validan!</small> 
+                            </div>
+                            
+                            <div class="box"><label class="labels">Adresa stanovanja</label><input type="text" class="form-control"formControlName="ulica" placeholder="{{korisnik.ulica}}" [(ngModel)]="ulica" id="ULICA">
+                                <small *ngIf="EditUserForm.controls['ulica'].dirty && EditUserForm.hasError('required','ulica')"
+                                class="text-danger">*Ulica je obavezna!</small>
+                                <small *ngIf="EditUserForm.get('ulica')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                            </div>
+    
+                            <div class="box"><label class="labels">Kućni broj</label><input type="text" class="form-control"formControlName="adresniBroj" placeholder="{{korisnik.adresniBroj}}" [(ngModel)]="adresniBroj" id="BROJ">
+                                <small *ngIf="EditUserForm.controls['adresniBroj'].dirty && EditUserForm.hasError('required','adresniBroj')"
+                                class="text-danger">*Broj je obavezan!</small> 
+                                <small *ngIf="EditUserForm.get('adresniBroj')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                            </div>
+                            
+                            <div class="box"><label class="labels">Naselje</label><input type="text" class="form-control" formControlName="naselje" placeholder="{{korisnik.naselje}}" [(ngModel)]="naselje">
+                                <small *ngIf="EditUserForm.controls['naselje'].dirty && EditUserForm.hasError('required','naselje')"
+                                class="text-danger">*Naselje je obavezno!</small>
+                                <small *ngIf="EditUserForm.get('naselje')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small>
+                            </div>
+                            
+                            <div class="box"><label class="labels">Grad</label><input type="text" class="form-control" formControlName="grad" placeholder="{{korisnik.grad}}" [(ngModel)]="grad" id="GRAD">
+                                <small *ngIf="EditUserForm.controls['grad'].dirty && EditUserForm.hasError('required','grad')"
+                                class="text-danger">*Grad je obavezan!</small>
+                                <small *ngIf="EditUserForm.get('grad')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                            </div>
+                            
+                            <div class="box"><label class="labels">Broj telefona</label><input type="text" class="form-control" formControlName="brojTelefona"  placeholder="{{korisnik.brTelefona}}" [(ngModel)]="brojTelefona">
+                                <small *ngIf="EditUserForm.controls['brojTelefona'].dirty && EditUserForm.hasError('required','brojTelefona')"
+                                class="text-danger">*Broj telefona je obavezan!</small> 
+                                <small *ngIf="EditUserForm.get('brojTelefona')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                            </div>
+                            
+                            <div class="box"><label class="labels">Rola</label>
+                                <select [(ngModel)]="rolaId" class="form-control" formControlName="rolaId" name="rolaId" style="color: white;">
+                                    <option style="color: white;" *ngFor="let r of role" [value]="r._id"> {{r.naziv}} </option>
+                                </select>
+                            
+                            </div>
+                        </form>
+    
+                    </div>
+                    <div class="mt-5 text-center dugmici" style="display: flex; margin-left: 50px;" *ngIf="korisnik">
+                         <!-- <button mat-icon-button color="primary" class="custom-button" (click)="edit()"><mat-icon class="centered-icon">edit</mat-icon></button> -->
+                        <button class="btn btn-primary profile-button" type="button" [ngStyle]="{'visibility':isDivVisible ? 'visible' : 'hidden'}" [disabled]="!EditUserForm.valid" (click)="sacuvajIzmene()">Sačuvaj izmene</button>
+                        <button class="btn btn-primary profile-button" type="button" [ngStyle]="{'visibility':isDivVisible ? 'visible' : 'hidden'}" (click)="odustani()" style="background-color: #545B77;">Odustani</button>
+                        <!-- <button class="btn btn-primary profile-button" *ngIf="dozvolaZaBrisanje" id="obrisi" type="button" (click)="ObrisiKorisnika(korisnik.id)">Obriši korisnka</button> -->
+                        <button (click)="backClicked()" class="btn btn-primary backbutton" style="background-color: #2a323d; border: 1px solid #2a323d;">Nazad</button>
+                    </div>
+            </div>
+            <!-- <div id="map"></div> -->
+        </div>
+    
+        <div class="desni mt-3">
+            <div class="p-3 py-5">
+                <div class="row mt-3">
+
+                    <div class="box"  [ngStyle]="{'display':dozvolaObjekti ? 'block' : 'none'}" style="margin-top: 0px;"><label class="labels">Adrese svih objekata</label>
+                        <button *ngIf="dozvolaZaRegistrovanje" class="btn btn-primary w-90" style="margin-bottom: 10px; margin-left: 20px; background-color: #588157; border: 1px solid #588157;"
+                            routerLink="/registracija-objekta/{{id}}">Registruj novi objekat</button>
+                        <div class="select5">
+                            <select class="form-control" (change)="popup($event)" name="format20" id="format20" [(ngModel)]="objectId">
+                            <option class="options" [value]="item.id" *ngFor="let item of objekat">{{item.fullAddress}}</option>
+                            </select>
+                        </div>
+                    </div>
+            
+                    <div id="map" [ngStyle]="{ 'height': dozvolaObjekti? '650px' : '850px', 'margin-top': dozvolaObjekti ? '52px' : '20px' }"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <app-toast></app-toast>
+</div>

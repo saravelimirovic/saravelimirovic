@@ -1,0 +1,215 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  background: #20262e;
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.p-element{
+  .p-tag.p-tag-danger{
+    background-color: rgb(245, 16, 16) !important;
+  }
+  .p-tag.p-tag-success{
+    background-color: rgb(28, 194, 28) !important;
+  }
+}
+
+// *{
+//   color:rgb(255, 255, 255);
+// }
+
+hr{
+  color:grey;
+}
+
+.card{
+  background-color: rgb(53, 9, 9);
+}
+
+.my-custom-class {
+  color: white;
+}
+
+.child1 {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+.child2{
+  display: inline-block;
+  padding-left: 1rem;
+  vertical-align: middle;
+  font-weight: 100;
+}
+
+.text{
+  font-weight: 300;
+}
+
+.data-field{
+  margin-top: 10px;
+}
+
+.backbutton{
+  background-color: #3b5577;
+  border-color: #3b5577;
+  }
+
+.backbutton:hover{
+  background-color: #49678f;
+}
+
+.chart-container{
+  height: 93%;
+  width: 100%;
+}
+
+.button4{
+  float: right;
+  margin-top: 5px;
+}
+
+.backbutton2{
+  background-color: rgb(156, 26, 26);
+  border: 1px solid rgb(182, 81, 98);
+}
+
+.backbutton2:hover{
+  background-color: rgb(196, 5, 5);
+  border: 1px solid rgb(180, 96, 110);
+}
+
+@media screen and (max-width: 767px){
+
+  .text.title4{
+    font-size: 22px;
+    text-align: center;
+    margin-top: 7vh;
+  }
+
+  .text.title2{
+    font-size: 22px;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 1vh;
+  }
+
+  #info2{
+    font-size: 5;
+  }
+
+  .button4{
+    margin-right: 40%;
+    margin-top: 3px;
+    margin-bottom: 3px;
+  }
+
+  #info2{
+    padding-bottom: 5px;
+    padding-left: 7px;
+  }
+
+  .button4{
+    position: static;
+    top: 10px;
+  }
+
+  .flex{
+    display: block;
+  }
+
+  .cardowner{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    margin: auto;
+  }
+
+  .col{
+    min-width: 135px;
+  }
+
+  .col-sm{
+    text-align: center;
+    margin-top: 1vh;
+  }
+
+  .dropdown{
+    width: 50px !important;
+    height: 50px !important;
+    float: none;
+  }
+
+  .card-header.changed2{
+    font-size: 4vw;
+  }
+
+  .card-title4{
+    font-size: 20px;
+  }
+
+  .chart-container{
+    width: 95%;
+  }
+
+  .card-footer{
+    font-size: 3.7vw;
+  }
+
+  app-arrow{
+    display: none;
+  }
+
+  .text.subtitle{
+    width: 100%;
+    margin-top: 10%;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .htmlData{
+    width: 90%;
+    margin: 10px auto;
+  }
+  .exportbuttons{
+    margin-top: 30px;
+    padding-left: 0;
+    font-size: 20px;
+    text-align: right;
+    max-width: 30%;
+  }
+
+  #MyChart2{
+    width: 300px;
+    height:300px;
+  }
+
+  .labels{
+    margin-top: 40px;
+    text-align: right;
+    margin-left: 5px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  #radioButton1{
+    float: right;
+    font-size: 12px;
+  }
+
+  #radioButton2{
+    float: right;
+    font-size: 12px;
+  }
+
+  #deletebutton{
+    margin-bottom: 15px;
+    margin-left: 10px;
+  }
+
+}

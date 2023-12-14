@@ -1,0 +1,120 @@
+.outer {
+  min-height: 100vh;
+  background-color: #20262e;
+  // background-image: url("../../../assets/light.jpg");
+  // background-repeat: no-repeat, repeat;
+  // background-position: center;
+  // background-size: cover;
+  display: flex;
+  justify-content: center;
+}
+.panel{
+  max-width: 600px;
+  margin: 0 auto;
+}
+.panel-heading {
+  text-align: center;
+  // margin-bottom: 10px;
+  color: #f8f6f6;
+}
+
+#h3{
+  text-align: center;
+  font-size: calc(1.3rem + .6vw);
+  // font-weight: bold;
+}
+
+#forget {
+  min-width: 100px;
+  margin-left: auto;
+  text-decoration: none;
+  cursor: pointer;
+  color:  #479dbe;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.form-inline label {
+  padding-left: 10px;
+  margin: 0;
+  cursor: pointer;
+
+}
+
+.btn {
+  background:  #355099;
+  margin-top: 20px;
+  border-radius: 15px;
+  border-color:   #17476b;
+}
+
+.btn:hover {
+  background:  #273f83;
+}
+
+
+.panel {
+  min-height: 380px;
+  box-shadow: 0 0 8px #052249;
+  border-radius: 12px;
+  margin-top: 150px;
+  opacity: 0.85;
+  font-weight: 700;
+  // background-color: rgba(12, 12, 24, 0.5);
+  background-color: #191e24;
+}
+
+.input-field {
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #373a58;
+  color: #a1b1c2;
+  font-weight: 600;
+  background-color: rgba(12, 12, 24, 0.5);
+  // opacity: 0.85;
+}
+
+.input-field.error {
+  border: 1px solid red;
+  color: red;
+}
+
+input[type='text'],
+input[type='password'] {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  width: 100%;
+  font-weight: 600;
+  color: #f1f1f1;
+  background-color: transparent;
+  opacity: 0.95;
+}
+
+.fa-eye-slash.btn {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  font-weight: 600;
+}
+
+.bordert::after {
+  position: absolute;
+  top: -13px;
+  left: 33%;
+  background-color: #fff;
+  padding: 0 8px;
+}
+
+#logo {
+  height: 110px;
+}
+
+#closeBtn:hover {
+  background-color: darkred !important;
+}

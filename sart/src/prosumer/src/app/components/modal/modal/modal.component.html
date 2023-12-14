@@ -1,0 +1,65 @@
+<div class="modal-header">
+  <h5 class="modal-title" id="exampleModalLabel" *ngIf="situacija == 0 || situacija == 1 || situacija == 2 || situacija == 3">Promena statusa</h5>
+  <h5 class="modal-title" id="exampleModalLabel" *ngIf="situacija == 4">Brisanje uređaja</h5>
+  <h5 class="modal-title" id="exampleModalLabel" *ngIf="situacija == 5">Brisanje skladišta</h5>
+  <h5 class="modal-title" id="exampleModalLabel" *ngIf="situacija == 6">Dodavanje novog uređaja</h5>
+</div>
+<div class="modal-body" *ngIf="situacija == 0 || situacija == 3">Da li ste sigurni da želite da {{changeOnOf}} uređaj?</div>
+<div class="modal-body" *ngIf="situacija == 1">Da li ste sigurni da želite da {{changeOnOf}} dozvolu za pregled ovog uređaja?</div>
+<div class="modal-body" *ngIf="situacija == 2">Da li ste sigurni da želite da {{changeOnOf}} dozvolu za upravljanje ovim uređajem?</div>
+<div class="modal-body" *ngIf="situacija == 4">Da li ste sigurni da želite da obrišete uređaj?</div>
+<div class="modal-body" *ngIf="situacija == 5">Da li ste sigurni da želite da obrišete skladište?</div>
+<div class="modal-body" *ngIf="situacija == 6">
+  <form>
+    <label for="sobe" class="block text-900 font-medium mb-2 mt-2">Prostorija</label>
+    <div class="block">
+      <p-dropdown id="sobe" name="sobe" optionLabel="fullAddress" optionValue="id" class="w-full mb-3" autoWidth="false" [style]="{'width':'100%'}"
+      [options]="sobe" [(ngModel)]="selectedSoba" optionLabel="naziv"></p-dropdown>
+      </div>
+    <label for="tip" class="block text-900 font-medium mb-2 mt-2">Tip uređaja</label>
+    <div class="block">
+      <p-dropdown id="tip" (onChange)="changeModeleUredjaja()" name="tip" optionLabel="fullAddress" optionValue="id" class="w-full mb-3" autoWidth="false" [style]="{'width':'100%'}"
+      [options]="tip" [(ngModel)]="selectedTip" optionLabel="name"></p-dropdown>
+      </div>
+    <label for="vrsta" class="block text-900 font-medium mb-2 mt-2">Vrsta uređaja</label>
+    <div class="block">
+    <p-dropdown id="vrsta" *ngIf="selectedTip == 1" (onChange)="changeModeleUredjaja()" name="vrsta" optionLabel="fullAddress" optionValue="id" class="w-full mb-3" autoWidth="false" [style]="{'width':'100%'}"
+      [options]="potrosaci" [(ngModel)]="selectedVrstaPotrosaci" optionLabel="naziv"></p-dropdown>
+      <p-dropdown id="vrsta" *ngIf="selectedTip == 2" (onChange)="changeModeleUredjaja()" name="vrsta" optionLabel="fullAddress" optionValue="id" class="w-full mb-3" autoWidth="false" [style]="{'width':'100%'}"
+      [options]="proizvodjaci" [(ngModel)]="selectedVrstaProizvodjac" optionLabel="naziv"></p-dropdown>
+    </div>
+    <label for="model" class="block text-900 font-medium mb-2 mt-2">Naziv uređaja</label>
+    <div class="block">
+      <p-dropdown id="model" name="model" optionLabel="fullAddress" optionValue="id" class="w-full mb-3" autoWidth="false" [style]="{'width':'100%'}"
+        [options]="modeliUredjaja" [(ngModel)]="selectedModelUredjaja" optionLabel="naziv"></p-dropdown>
+    </div>
+    <div *ngIf="selectedModelUredjaja == modeliUredjaja[modeliUredjaja.length - 1]?.id">
+    <label for="model" class="block text-900 font-medium mb-2 mt-2">Unesite naziv uređaja</label>
+    <div class="block">
+      <input type="text" name="customnaziv" placeholder="Unesite naziv uređaja" class="form-control" [style]="{'width':'100%'}" [(ngModel)]="customNazivUredjaja">
+    </div>
+      <label for="model" class="block text-900 font-medium mb-2 mt-2">Potrošnja uređaja u mirovanju[kWh]</label>
+      <div class="block">
+        <input type="number" id="naziv" name="naziv" class="form-control" autoWidth="false" [style]="{'width':'100%'}"
+         [(ngModel)]="customPotrosnjaMirovanje">
+      </div>
+        <label for="model" class="block text-900 font-medium mb-2 mt-2">Prosečna potrošnja uređaja[kWh]</label>
+        <div class="block">
+          <input type="number" id="naziv" name="naziv" class="form-control" autoWidth="false" [style]="{'width':'100%'}"
+           [(ngModel)]="customProsecnaPotrosnja">
+        </div>
+      </div>
+    <label for="dozvolaPregled" class="block text-900 font-medium mb-2 mt-2">Dozvola za pregled uređaja</label>
+    <p-dropdown id="dozvolaPregled" name="dozvolaPregled" (onChange)="changeDozvole($event)" appendTo="body" optionLabel="fullAddress" optionValue="id" class="w-full mb-3" autoWidth="false" [style]="{'width':'100%'}"
+    [options]="dozvolaPregled" [(ngModel)]="selectedDozvolaPregled" optionLabel="name"></p-dropdown>
+    <label for="dozvolaUpravljanje" class="block text-900 font-medium mb-2 mt-2">Dozvola za kontrolu uređaja</label>
+    <p-dropdown id="dozvolaUpravljanje" name="dozvolaUpravljanje" [disabled]="selectedDozvolaPregled == 2" [(ngModel)]="selectedDozvolaUpravljanje" appendTo="body" optionLabel="fullAddress" optionValue="id" class="w-full mb-3" autoWidth="false" [style]="{'width':'100%'}"
+    [options]="dozvolaUpravljanje" optionLabel="name"></p-dropdown>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="modalRef.close()">
+    Odustani
+  </button>
+  <button type="button" class="btn btn-primary" (click)="accept()">OK</button>
+</div>

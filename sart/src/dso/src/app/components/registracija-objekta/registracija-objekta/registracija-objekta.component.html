@@ -1,0 +1,71 @@
+<body>
+    <div class="row">
+
+        <h3>Registruj objekat</h3>
+
+        <form [formGroup]="AddObjectForm" *ngIf="AddObjectForm">
+            <h4>Objekat</h4> 
+            <div class="wrapper">
+                
+                <div class="box">
+                    <label class="labels">Naziv</label>
+                    <input class="form-control" formControlName="naziv" type="text" placeholder="Kuca">
+                </div>
+
+                <div class="box">
+                    <label class="labels">Korisnik</label>
+                    <input class="form-control" type="text" value={{this.korisnik.ime}}>
+                </div>
+                    
+               
+                
+                <div class="box" *ngIf="showMe"><label class="labels">Grad</label><input id="GRAD" class="form-control" formControlName="grad"
+                    type="text" placeholder="Grad">
+                    <small *ngIf="AddObjectForm.controls['grad'].dirty && AddObjectForm.hasError('required','grad')"
+                                class="text-danger">*Grad je obavezan!</small>
+                            <small *ngIf="AddObjectForm.get('grad')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                </div>
+                
+                <div class="box" *ngIf="showMe"><label class="labels">Naselje</label><input class="form-control" formControlName="naselje"
+                     type="text" placeholder="Naselje">
+                     <small *ngIf="AddObjectForm.controls['naselje'].dirty && AddObjectForm.hasError('required','naselje')"
+                                class="text-danger">*Naselje je obavezno!</small>
+                            <small *ngIf="AddObjectForm.get('naselje')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                </div> 
+
+                <div class="box" *ngIf="showMe">
+                    <label class="labels">Ulica</label><input id="ULICA" type="text" class="form-control" formControlName="ulica"
+                        placeholder="Ulica" value="">
+                        <small *ngIf="AddObjectForm.controls['ulica'].dirty && AddObjectForm.hasError('required','ulica')"
+                                class="text-danger">*Ulica je obavezna!</small>
+                            <small *ngIf="AddObjectForm.get('ulica')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                </div> 
+        
+                <div class="ulica" id="broj" *ngIf="showMe">
+                    <label class="labels">Kućni broj</label>
+                    <input id="BROJ" type="text" class="form-control" placeholder="Kućni broj" formControlName="broj"
+                        value="">
+                        <small *ngIf="AddObjectForm.controls['broj'].dirty && AddObjectForm.hasError('required','broj')"
+                                class="text-danger">*Broj je obavezan!</small> 
+                            <small *ngIf="AddObjectForm.get('broj')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                </div>       
+                
+                <!-- <button class="btn btn-primary btn-block mt-4 w-90" (click)="AddNewObject()">Registruj objekat</button> -->
+
+                <div id="check">
+                    <input type="checkbox" id="cek" (change)="showHide()">
+                    <label style="color: white; font-size: 16px;">  Prijavi objekat na drugoj adresi</label>
+                </div>
+
+            </div>
+
+            <button class="btn btn-primary btn-block mt-4 w-90" (click)="AddNewObject()" (keyup.enter)="AddNewObject()">Registruj objekat</button>
+            <button class="btn btn-primary btn-block mt-4 w-90" routerLink="/signup">Registruj novog korisnika</button>
+        </form>
+
+    </div>
+</body>

@@ -1,0 +1,6 @@
+<app-sidenav (onToggleSideNav)="onToggleSideNav($event)" *ngIf="showNavbar"></app-sidenav>
+<app-body
+  [collapsed]="isSideNavCollapsed"
+   [screenWidth]="screenWidth" [isLogin]="showNavbar"></app-body>
+
+<router-outlet *ngIf="!showNavbar"></router-outlet>

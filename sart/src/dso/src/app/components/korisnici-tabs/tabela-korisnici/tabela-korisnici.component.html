@@ -1,0 +1,193 @@
+<div class="container">
+
+  <div class="filter">
+
+    <div class="row" style="color: white;">
+      <div class="form" style="width:20% ;">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control form-input" placeholder="Ime..." (keydown.enter)="filterUsers()" [(ngModel)]="filterObj.ime">
+        <!-- <span class="left-pan"><i class="fa fa-microphone"></i></span> -->
+      </div>
+      <div class="form" style="width:20% ;">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control form-input" placeholder="Grad..." (keydown.enter)="filterUsers()" [(ngModel)]="filterObj.grad">
+        <!-- <span class="left-pan"><i class="fa fa-microphone"></i></span> -->
+      </div>
+      <div class="form" style="width:20% ;">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control form-input" placeholder="Naselje..." (keydown.enter)="filterUsers()" [(ngModel)]="filterObj.naselje">
+        <!-- <span class="left-pan"><i class="fa fa-microphone"></i></span> -->
+      </div>
+      <div class="form" style="width:20% ;">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control form-input" placeholder="Ulica..." (keydown.enter)="filterUsers()" [(ngModel)]="filterObj.ulica">
+        <!-- <span class="left-pan"><i class="fa fa-microphone"></i></span> -->
+      </div>
+      <!-- <div class="form" style="width:20% ;" id="z">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control form-input" placeholder="Rola..." [(ngModel)]="filterObj.rola">
+        
+      </div> -->
+
+      <div class="form" style="width:20% ;">
+        <select class="form-control" [(ngModel)]="filterObj.rolaUzimam" (keydown.enter)="filterUsers()" name="rolaId">
+          <option value="0" selected>--- Izaberi rolu --- </option>
+          <option value="3"> Prozumer </option>
+          <option value="4"> Potrošač </option>
+          <option value="5"> Proizvođač </option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="row" style="color: white;">
+
+      <div class="prvi" style="width: 50%;">
+        <p>Potrošnja [kWh] :</p>
+
+        <div class="form">
+          <input type="text" class="form-control form-input-sm" placeholder="Od" (keydown.enter)="filterUsers()" [(ngModel)]="filterObj.potrosnjaOd"> 
+        </div>
+
+        <!-- <p style="float: left; margin-top: 12px; margin-left: 3px;">kWh</p> -->
+        <!-- <p style="float: left; margin-left: 15px; margin-right: 25px;"> &#9135; </p> -->
+
+        <div class="form d" style="margin-left: 3%;"> <!-- margin-left: 17px; -->
+          <input type="text" class="form-control form-input-sm" placeholder="Do" (keydown.enter)="filterUsers()" [(ngModel)]="filterObj.potrosnjaDo">
+        </div>
+        <!-- <p style="float: left; margin-top: 12px; margin-left: 3px;">kWh</p> -->
+
+      </div>
+
+
+
+      <div class="drugi" style="width: 50%;">
+        <!-- <div class="row" style="color: white;"> -->
+        <p>Proizvodnja [kWh] :</p>
+
+        <div class="form" >
+          <!-- <i class="fa fa-search"></i> -->
+          <input type="text" class="form-control form-input-sm" placeholder="Od" (keydown.enter)="filterUsers()" [(ngModel)]="filterObj.proizvodnjaOd">
+        </div>
+
+        <!-- <p style="float: left; margin-top: 12px; margin-left: 3px;">kWh</p> -->
+        <!-- <p style="float: left; margin-left: 15px; margin-right: 25px;"> &#9135; </p> -->
+
+        <div class="form d" style="margin-left: 3%;">
+          <input type="text" class="form-control form-input-sm" placeholder="Do" (keydown.enter)="filterUsers()" [(ngModel)]="filterObj.proizvodnjaDo">
+        </div>
+        <!-- <p style="float: left; margin-top: 12px; margin-left: 3px;">kWh</p> -->
+
+      </div>
+      
+
+        <!-- <mat-slider min="0" [max]="max1" discrete="true" step="1" showTickMarks="true">
+          <input matSliderStartThumb [(ngModel)]="filterObj.potrosnjaOd">
+          <input matSliderEndThumb [(ngModel)]="filterObj.potrosnjaDo">
+        </mat-slider>
+        <br>
+        <div style="text-align: center;">
+          <label class="text-center">{{filterObj.potrosnjaOd}} kW - {{filterObj.potrosnjaDo}} kW </label>
+        </div> 
+      </div>
+     <p> Proizvodnja :</p>
+      
+
+      <div class="col" style="width: 15% !important;">
+        <div class="prvi">
+        <input style="width:15% ;" type="text" class="form-control form-input" placeholder="Od.." [(ngModel)]="filterObj.proizvodnjaOd">
+      </div>
+      <div class="drugi">
+        <input style="width:15% ;" type="text" class="form-control form-input" placeholder="Do.." [(ngModel)]="filterObj.proizvodnjaDo">
+      </div>
+
+         <mat-slider min="0" [max]="max2" discrete="true" step="1" showTickMarks="true">
+          <input matSliderStartThumb [(ngModel)]="filterObj.proizvodnjaOd">
+          <input matSliderEndThumb [(ngModel)]="filterObj.proizvodnjaDo">
+        </mat-slider>
+        <br>
+        <div style="text-align: center;">
+          <label>{{filterObj.proizvodnjaOd}} kW - {{filterObj.proizvodnjaDo}} kW </label>
+        </div> 
+      </div> -->
+
+    </div> 
+
+    <div class="dugmad" style="color: white;">
+      <button style="min-width: 7%; padding: 8px" (click)="filterUsers()">Primeni</button>
+      <button style="min-width: 7%; margin-right: 5px; padding: 8px;background-color: #B04759; border-color: #B04759;"
+        (click)="obrisiFilter()">Poništi</button>
+      <button (click)="exportExcel()" title="Eksportuj u Excel" icon="pi pi-file-excel" pButton pRipple
+        style="min-width: 3%; float: left;" matTooltip="Eksportuj u Excel"></button>
+        <button pButton  pRipple (click)="exportToPDF()"
+        style="min-width: 3%; float: left; margin-left: 5px; background-color: #fb9b0b; border: 1px solid #fb9b0b;" >
+          <span class="button-icon pi pi-file-pdf"  matTooltip="Eksportuj u PDF" ></span>
+        </button>
+    </div>
+
+  </div>
+
+  <!-- <div class="row" style="width: 5%; float: right; margin-right: 0px !important;">
+    <button type="button" title="Eksportuj u Excel" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
+      class="p-button-success" pTooltip="XLS" tooltipPosition="bottom"
+      style="background-color: rgb(17, 180, 17); min-width: 35px; color: aliceblue; margin-top: 20px;"></button>
+  </div> -->
+
+  <br>
+
+  <table class="table table" id="excel-table">
+    <tr id="header">
+      <th>Ime</th>
+      <th>Grad</th>
+      <th>Naselje</th>
+      <th>Ulica</th>
+      <th>Rola</th>
+      <th>Potrošnja[kWh]</th>
+      <th>Proizvodnja[kWh]</th>
+      <!-- <th>I</th> -->
+      <th style="text-align: center;">Pregledaj uređaje </th>
+    </tr>
+
+    <tr [routerLink]="['/upravljanje-korisnikom/' + korisnik.id]"
+      *ngFor="let korisnik of korisnici| paginate: { itemsPerPage: itemsPerPage, currentPage: p, totalItems: total } let i = index">
+      <td>{{ korisnik.ime }}</td>
+      <td>{{ korisnik.grad }}</td>
+      <td>{{ korisnik.naselje }}</td>
+      <td>{{ korisnik.ulica }}</td>
+      <td
+        [ngStyle]="{'color': korisnik.rola ==='prozumer'? '#44EE77' : korisnik.rola==='potrošač'? '#EF3340' : '#FFCD58' }"
+        style="font-weight: 700;">{{ korisnik.rola }}
+      </td>
+      <td>{{ korisnik.potrosnja }}</td>
+      <td>{{ korisnik.proizvodnja }}</td>
+      <!-- <td style="text-align: center;"><button class="b" [routerLink]="['/uredjaji/' + korisnik.id]" 
+          mat-icon-button color="primary"><mat-icon>edit</mat-icon></button></td> -->
+      <td mat-icon-button color="primary" style="text-align: center;">
+        <!-- <button class="b" [routerLink]="['/uredjaji/' + korisnik.id]"> -->
+        <!-- <i class="fa-sharp fa-solid fa-gear" style="color: #588157;"></i> -->
+        <div class="b1" style="margin-top: -4px;" [routerLink]="['/uredjaji/' + korisnik.id]">
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+            </svg> -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+            <path
+              d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+          </svg>
+        </div>
+        <!-- </button> -->
+      </td>
+    </tr>
+
+  </table>
+
+  <div class="pag">
+    <div style="float: right; top:0px"><pagination-controls class="my-pagination" (pageChange)="pageChangeEvent($event)"
+        [maxSize]="maxSize" previousLabel="Nazad" nextLabel="Napred"></pagination-controls>
+    </div>
+  </div>
+
+  <div style="color: aliceblue; float: left; padding-top:4px">Prikaz {{start}} - {{last}} od {{total}} korisnika</div>
+
+</div>

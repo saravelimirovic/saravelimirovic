@@ -1,0 +1,116 @@
+$button: #588157;
+
+.row{
+    padding-top: 20px;
+}
+
+.column{
+    width: 49%;
+    float: left;
+    padding-top: 25px;
+}
+h3 {
+    color: white;
+    text-align: left;
+    // padding-left: 15px;
+    font-size: 20px;
+    padding-top: 0px;
+  }
+hr{
+    color: $button;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+
+* {
+	box-sizing: border-box;
+}
+
+
+// body {
+// 	background-image: linear-gradient(45deg, #588157, #7c9e7b);
+// 	font-family: 'Muli', sans-serif;
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: center;
+// 	flex-direction: column;
+// 	min-height: 100vh;
+// 	margin: 0;
+// }
+
+.courses-container {
+	width: 50% !important;
+}
+
+.kontejner {
+    display: inline-flex;
+    width: 100%;
+}
+
+.course {
+	background-color: #191e24;
+	border-radius: 10px;
+	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+	display: flex;
+	max-width: 100%;
+	margin: 20px;
+	overflow: hidden;
+}
+
+ol {
+    margin-bottom: 0px;
+}
+
+.course li {
+	color: #fff;
+    font-size: 21px;
+    cursor: pointer;
+}
+
+.course li:hover {
+    color: #588157;
+}
+
+.course h2 {
+	letter-spacing: 1px;
+	margin: 10px 0;
+}
+
+.course-preview {
+	background-color: #588157;
+	color: #fff;
+	padding: 30px;
+	max-width: 250px;
+}
+
+.course-preview a {
+	color: #fff;
+	display: inline-block;
+	font-size: 12px;
+	opacity: 0.6;
+	margin-top: 30px;
+	text-decoration: none;
+}
+
+.course-info {
+	padding: 30px;
+	position: relative;
+	width: 100%;
+}

@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="filter">
+
+    <div class="row">
+      <div class="form" style="width:25% ;">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control form-input" placeholder="Ime..." [(ngModel)]="filterObj.ime">
+      </div>
+      <div class="form" style="width:25% ;">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control form-input" placeholder="Grad..." [(ngModel)]="filterObj.grad">
+      </div>
+      <div class="form" style="width:25% ;">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control form-input" placeholder="Naselje..." [(ngModel)]="filterObj.naselje">
+      </div>
+      <div class="form" style="width:25% ;">
+        <i class="fa fa-search"></i>
+        <input type="text" class="form-control form-input" placeholder="Ulica..." [(ngModel)]="filterObj.ulica">
+      </div>
+     
+    </div>
+
+
+    <div class="dugmad" style="color: white;">
+      <button style="min-width: 7%; padding: 8px;" (click)="getDispecere2()">Primeni</button>
+      <button style="min-width: 7%; margin-right: 5px; padding: 8px; background-color: #B04759; border-color: #B04759;" (click)="obrisiFilter()">Poništi</button>
+      <button style="min-width: 3%; height: 40px !important; float: left;" icon="pi pi-file-excel" pButton pRipple  matTooltip="Eksportuj u Excel" (click)="exportExcel()" ></button>
+    </div>
+
+  </div> 
+
+  <!-- <div class="row" style="width: 5%; float: right; margin-right: 0px !important;">
+    <button type="button" title="Eksportuj u Excel" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
+      class="p-button-success" pTooltip="XLS" tooltipPosition="bottom"
+      style="background-color: rgb(17, 180, 17); min-width: 35px; color: aliceblue; margin-top: 20px;"></button>
+  </div> -->
+
+  <br>
+
+  <table class="table2" id="excel-table">
+    <tr id="header2">
+      <th>Ime</th>
+      <th>Grad</th>
+      <th>Naselje</th>
+      <th>Ulica</th>
+   
+    </tr>
+
+    <tr 
+      *ngFor="let dispecer of dispeceri| paginate: { itemsPerPage: itemsPerPage, currentPage: p, totalItems: total } let i = index" [routerLink]="['/upravljanje-korisnikom/' + dispecer.id]">
+      <td>{{ dispecer.ime }}</td>
+      <td>{{ dispecer.grad }}</td>
+      <td>{{ dispecer.naselje }}</td>
+      <td>{{ dispecer.ulica }}</td>
+  
+    </tr>
+  </table>
+
+  <div class="pag">
+    <div style="float: right; top:0px"><pagination-controls class="my-pagination" (pageChange)="pageChangeEvent($event)"
+         previousLabel="Nazad" nextLabel="Napred"></pagination-controls>
+    </div>
+  </div>
+
+  <div style="color: aliceblue; float: left; padding-top:4px">Prikaz {{start}} - {{last}} od {{total}} korisnika</div>
+
+</div>

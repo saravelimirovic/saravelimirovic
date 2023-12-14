@@ -1,0 +1,15 @@
+<mat-tab-group animationDuration="0ms" (selectedTabChange)="onTabClick($event)">
+    <mat-tab label="Tabelarni prikaz korisnika">
+        <app-spinner></app-spinner>
+        <br>
+        <app-tabela-korisnici></app-tabela-korisnici>
+    </mat-tab>
+    <mat-tab label="Mapa">
+        <br>
+
+    </mat-tab>
+   
+</mat-tab-group>
+<div *ngIf="check=='da'">
+    <app-mapa></app-mapa>
+</div>

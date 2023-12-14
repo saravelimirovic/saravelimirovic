@@ -1,0 +1,62 @@
+<div class="outer">
+    <p-toast></p-toast>
+    <div class="container">
+        <div class="row">
+            <div class="text">
+                <div class="panel border">
+                    <div class="panel-heading">
+                        <h3 class="pt-3 font-weight-bold">
+                            Resetuj lozinku
+                        </h3>
+                    </div>
+                    <div class="panel-body p-3">
+                        <form [formGroup]="resetPasswordForm">
+                            <div class="form-group pt-3">
+                                <div class="input-field">
+                                    <span class="fa-solid fa-user p-2"></span>
+                                    <input type="password" placeholder="Nova lozinka" formControlName="password">
+                                    <!-- <span (click)="sakrijPrikazi()">
+                                        <a><i class="fa-sharp fa-solid {{eyeIcon}} pl-1"></i></a>
+                                    </span> -->
+                                </div>
+                                <small
+                                    *ngIf="resetPasswordForm.controls['password'].dirty && resetPasswordForm.hasError('required','password')" class="text-danger">*Nova lozinka je obavezna!
+                                </small>
+                                <br>
+
+                                <div class="input-field">
+                                    <span class="fa-solid fa-lock p-2"></span>
+                                    <input formControlName="confirmPassword" type="password" placeholder="Potvrda lozinke">
+                                    <!-- <span (click)="sakrijPrikazi()">
+                                        <a><i class="fa-sharp fa-solid {{eyeIcon}} pl-1"></i></a>
+                                    </span> -->
+                                </div>
+                            </div>
+                            <small
+                                *ngIf="resetPasswordForm.controls['confirmPassword'].dirty && resetPasswordForm.hasError('required','confirmPassword')" class="text-danger">
+                                *Potvrda lozinke je obavezna!
+                            </small>
+
+                            <small
+                                *ngIf="resetPasswordForm.hasError('confirmPasswordValidator','confirmPassword')" class="text-danger">
+                                *Lozinke se ne poklapaju!
+                            </small>
+
+                            <!-- ??? -->
+                            <button type="submit" (click)="reset()" class="btn btn-primary btn-block mt-4 w-100">
+                                Resetuj
+                            </button>
+                            <div class="text-center pt-4 text-muted"></div>
+
+                        </form>
+                        <div class="mx-3 bordert">
+                            <div class="text-center py-3">
+                                <img id="logo" src="..\assets\logo-light.png">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

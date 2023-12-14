@@ -1,0 +1,45 @@
+<div class="main-body1">
+    <button pButton class="custom-button" (click)="exportToExcel()" >
+        <span class="button-icon pi pi-file-excel"  matTooltip="Eksportuj u Excel"  ></span>
+      </button>
+      <button pButton class="custom-button1" (click)="exportToPDF()">
+        <span class="button-icon pi pi-file-pdf"  matTooltip="Eksportuj u PDF" ></span>
+      </button>
+    <div class="table-container">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <ng-container matColumnDef="time" >
+                <th mat-header-cell *matHeaderCellDef> Vreme[h] </th>
+                <td mat-cell *matCellDef="let element"  [ngStyle]="element.time === currentDateTime ? {'color':'#588157'} : {'color':'white'}">   
+                    <!-- <i class="fa-solid fa-arrow-right" *ngIf="element.time === currentDateTime"></i>  -->
+                    {{element.time}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="potrosnjaPred">
+                <th mat-header-cell *matHeaderCellDef> Predikcija potrošnje[kWh] </th>
+                <td mat-cell *matCellDef="let element" [ngStyle]="element.time === currentDateTime ? {'color':'#588157'} : {'color':'white'}"> {{element.potrosnjaPred}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="potrosnja">
+                <th mat-header-cell *matHeaderCellDef> Potrošnja[kWh] </th>
+                <td mat-cell *matCellDef="let element" [ngStyle]="element.time === currentDateTime ? {'color':'#588157'} : {'color':'white'}"> {{element.potrosnja}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="proizvodnjaPred">
+                <th mat-header-cell *matHeaderCellDef> Predikcija proizvodnje[kWh]</th>
+                <td mat-cell *matCellDef="let element" [ngStyle]="element.time === currentDateTime ? {'color':'#588157'} : {'color':'white'}"> {{element.proizvodnjaPred}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="proizvodnja">
+                <th mat-header-cell *matHeaderCellDef> Proizvodnja[kWh] </th>
+                <td mat-cell *matCellDef="let element" [ngStyle]="element.time === currentDateTime ? {'color':'#588157'} : {'color':'white'}"> {{element.proizvodnja}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row;let i = index; columns: displayedColumns;" on-mouseover='showTooltips(i,row)' on-mouseout='hideTooltips()'></tr>
+        </table>
+
+    </div>
+
+    <br>
+</div>

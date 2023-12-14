@@ -1,0 +1,102 @@
+* {
+  color: rgb(255, 255, 255);
+}
+
+.card {
+  background-color: rgb(53, 9, 9);
+}
+
+.uredjaji {
+  height: 40px;
+  width: 40px;
+}
+
+.text {
+  font-weight: 400;
+}
+
+.text.central {
+  margin-top: 5px;
+}
+
+hr {
+  color: #42A5F5;
+}
+
+.divAdresa {
+  float: right;
+}
+
+.naslovPrikaz, .naslovAdresa {
+  color: white;
+  text-align: left;
+  font-size: 20px;
+  padding-top: 0px;
+}
+.s {
+  cursor: pointer;
+  color: white;
+  background-color: transparent;
+  option{
+  color: white;
+  background-color: #20262e;
+  }
+}
+.chart-container{
+  max-width: 55vw;
+  height: 40vh;
+  // border: solid;
+  // box-shadow: 0 0 0 0.1rem rgb(14, 14, 14);
+  border-radius: 12px;
+  background-color: #191e24;
+  // margin-left: 50px;
+  text-align: center;
+  padding-bottom: 40px;
+}
+::ng-deep.mat-mdc-tab-body-content{
+  overflow: hidden !important;
+}
+
+
+#s {
+  padding: 7px;
+  border-radius: 7px;
+}
+
+.col1 {
+  float: right;
+}
+
+.mail {
+  // padding-left: 10px;
+  // text-align: center;
+  font-size: 14px;
+  color: grey;
+  position: relative;
+  top: 2px;
+  white-space: nowrap;
+}
+.text.central
+{
+  padding-left: 10px !important;
+
+}
+
+.row-cols-1.row-cols-md-3 .col {
+  display: flex;
+}
+
+.row-cols-1.row-cols-md-3 .card {
+  flex: 1;
+}
+
+
+.p-element {
+  .p-tag.p-tag-danger {
+    background-color: rgb(245, 16, 16) !important;
+  }
+
+  .p-tag.p-tag-success {
+    background-color: rgb(28, 194, 28) !important;
+  }
+}

@@ -1,0 +1,115 @@
+<div class="body">
+<div class="row">
+<div class="col-lg-3">
+<h1 class="text title3 text-light">Upravljanje uređajima</h1>
+</div>
+<div class="col-lg-3 col-sm-12">
+  <div class="select2">
+  <select class="form-control" name="format2" id="format2" [(ngModel)]="objectId" (change)="changeObjekat($event)">
+    <option [value]="item.id" *ngFor="let item of objektiKorisnika">{{item.fullAddress}}</option>
+  </select>
+</div>
+</div>
+<div class="col-lg-6">
+  <button class="btn btn-primary align-middle button6" (click)="openModal(6)">Dodajte novi uređaj</button>
+  </div>
+</div>
+<!-- <ng-template [ngIf]="1"> -->
+<h4 class="text subtitle3 text-light">Trenutno stanje uređaja</h4>
+
+<br>
+<br>
+
+<mat-tab-group mat-stretch-tabs dynamicHeight class="tabs">
+  <mat-tab label="one">
+    <ng-template mat-tab-label>
+      <span class="my-custom-class">Svi uređaji</span>
+    </ng-template>
+
+<div *ngIf="potrosaci.length">
+<div>
+<h5 class="mt-4 text title3 text-light" id="opening">Potrošači</h5>
+<hr>
+<div class="cardowner row row-cols-1 row-cols-md-3 mt-4">
+  <div class="col3" style="max-width: 250px;" *ngFor="let item of potrosaci" (click)="navigate($event,item.id)">
+    <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+      <div class="card-header changed">
+          <div class="switchuredjaja">
+            <app-switch-uredjaja [isOn]="(item.status | uppercase)" [deviceId]="item.id" class="switch"></app-switch-uredjaja>
+          </div>
+        </div>
+      <div class="card-body" matTooltip="Pogledajte više informacija o uredjaju">
+        <img class="uredjaji" style="float: left; margin-left: 10px;" src="../../../assets/uredjaji/{{item.vrstaUredjaja}}.png">
+        <h5 class="card-title2">{{item.naziv}}</h5>
+      </div>
+      <div class="card-footer"><h6 class="card-title2">{{(item.vrednost).toFixed(2)}} Wh</h6></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<div *ngIf="proizvodjaci.length">
+<h5 class="mt-4 text title2 text-light" id="proizvodjaci">Proizvođači</h5>
+<hr>
+<div class="cardowner row row-cols-1 row-cols-md-3 mt-4">
+  <div class="col3" style="max-width: 250px;" *ngFor="let item of proizvodjaci" (click)="navigate($event,item.id)">
+    <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+      <div class="card-header changed">
+          <div class="switchuredjaja">
+            <app-switch-uredjaja [isOn]="(item.status | uppercase)" style="visibility: hidden;" [deviceId]="item.id" class="switch"></app-switch-uredjaja>
+          </div>
+        </div>
+      <div class="card-body" matTooltip="Pogledajte više informacija o uredjaju">
+        <img class="uredjaji" style="float: left; margin-left: 10px;" src="../../../assets/uredjaji/{{item.vrstaUredjaja}}.png">
+        <h5 class="card-title2">{{item.naziv}}</h5>
+      </div>
+      <div class="card-footer"><h6 class="card-title2">{{(item.vrednost).toFixed(2)}} Wh</h6></div>
+    </div>
+  </div>
+</div>
+</div>
+<div *ngIf="skladista.length">
+<h5 class="mt-4 text title2 text-light">Skladišta</h5>
+<hr>
+<div class="cardowner row row-cols-1 row-cols-md-3 mt-4">
+  <div class="col3" style="max-width: 250px;" *ngFor="let item of skladista" routerLink="/skladiste/{{item.id}}">
+    <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+      <div class="card-header changed">
+          <div class="switchuredjaja">
+            <app-switch-uredjaja style="visibility: hidden;"></app-switch-uredjaja>
+          </div>
+        </div>
+      <div class="card-body" matTooltip="Pogledajte više informacija o uredjaju">
+        <img class="uredjaji" style="float: left; margin-left: 10px;" src="../../../assets/uredjaji/Akumulator.png">
+        <h5 class="card-title2">{{item.naziv}}</h5>
+      </div>
+      <div class="card-footer"><h6 class="card-title2">{{(item.potrosnjaZaCuvanjePoSatu).toFixed(2)}} Wh</h6></div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- </ng-template> -->
+</mat-tab>
+<mat-tab *ngFor="let item of tipoviProstorija">
+  <ng-template mat-tab-label>
+    <span class="my-custom-class">{{item.naziv}}</span>
+  </ng-template>
+  <div class="cardowner row row-cols-1 row-cols-md-3 mt-4">
+    <div class="col3" style="max-width: 250px;" *ngFor="let uredjaj of item.uredjaji" (click)="navigate($event,uredjaj.id)">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">
+            <div class="switchuredjaja">
+              <app-switch-uredjaja [style.visibility]="uredjaj.tipUredjaja == 'Proizvođač' ? 'hidden' : 'visible'" [isOn]="(uredjaj.status | uppercase)" [deviceId]="uredjaj.id" class="switch"></app-switch-uredjaja>
+            </div>
+          </div>
+        <div class="card-body" matTooltip="Pogledajte više informacija o uredjaju">
+          <img class="uredjaji" style="float: left; margin-left: 10px;" src="../../../assets/uredjaji/{{uredjaj.vrstaUredjaja}}.png">
+          <h5 class="card-title2">{{uredjaj.naziv}}</h5>
+        </div>
+        <div class="card-footer"><h6 class="card-title2">{{(uredjaj.vrednost).toFixed(2)}} Wh</h6></div>
+      </div>
+    </div>
+  </div>
+</mat-tab>
+</mat-tab-group>
+</div>

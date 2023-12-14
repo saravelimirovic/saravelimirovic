@@ -1,0 +1,258 @@
+<body>
+    <div class="row">
+
+        <h3>Registruj korisnika</h3>
+
+        <form [formGroup]="signUpForm">
+            <!-- <h4 class="oKorisniku">Informacije o korisniku</h4>  -->
+            <!-- <h4 class="zaPrijavu">Podaci za prijavu na aplikaciju</h4> -->
+            <div class="wrapper">
+
+                <div class="levi">
+                    <h4 class="oKorisniku">Informacije o korisniku</h4> 
+                    <div class="box">
+                        <label class="labels">Ime</label>
+                        <input class="form-control" formControlName="ime" type="text" placeholder="Ime">
+                        <small *ngIf="signUpForm.controls['ime'].dirty && signUpForm.hasError('required','ime')"
+                            class="text-danger">*Ime je obavezno!</small> 
+                        <small *ngIf="signUpForm.get('ime')!!.hasError('pattern')"
+                            class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                    </div> 
+                
+                    <div class="box">
+                        <label class="labels">Prezime</label>
+                        <input class="form-control" formControlName="prezime" type="text" placeholder="Prezime">
+                        <small *ngIf="signUpForm.controls['prezime'].dirty && signUpForm.hasError('required','prezime')"
+                            class="text-danger">*Prezime je obavezno!</small>
+                        <small *ngIf="signUpForm.get('prezime')!!.hasError('pattern')"
+                            class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                    </div>
+                
+                    <div class="box">
+                        <label class="labels">JMBG</label>
+                        <input class="form-control" formControlName="jmbg" type="text" placeholder="JMBG">
+                        <small *ngIf="signUpForm.controls['jmbg'].dirty && signUpForm.hasError('required','jmbg')"
+                            class="text-danger">*JMBG je obavezan!</small>
+                        <small *ngIf="signUpForm.get('jmbg')!!.hasError('pattern')"
+                            class="text-danger">*JMBG nije validan!</small> 
+                    </div>
+                    
+                    <div class="box"></div>
+
+                    <div class="box">
+                        <label class="labels">Broj telefona</label>
+                        <input class="form-control" formControlName="brojTelefona" type="text" placeholder="Broj telefona">
+                        <small *ngIf="signUpForm.controls['brojTelefona'].dirty && signUpForm.hasError('required','brojTelefona')"
+                            class="text-danger">*Broj telefona je obavezan!</small> 
+                        <small *ngIf="signUpForm.get('brojTelefona')!!.hasError('pattern')"
+                            class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                    </div>
+
+                    <div class="box"></div>
+
+                    <div class="box">
+                        <p class="labels">Rola</p>
+                        <select [(ngModel)]="rolaId" class="form-control" formControlName="rolaId" name="rolaId" style="color: white;">
+                            <option style="color: white;" *ngFor="let r of role" [value]="r._id"> {{r.naziv}} </option>
+                        </select>
+                        <!-- <small *ngIf="signUpForm.controls['rolaId'].dirty && signUpForm.hasError('required','rolaId')"
+                            class="text-danger">*Izaberite rolu!</small>  -->
+                    </div>       
+                </div>
+
+                <div class="desni">
+                    <h4 class="zaPrijavu">Podaci za prijavu na aplikaciju</h4>
+                    <div class="box">
+                        <label class="labels">Email adresa</label>
+                        <input class="form-control" formControlName="email" type="email" placeholder="Email adresa">
+                        <small *ngIf="signUpForm.controls['email'].dirty && signUpForm.hasError('required','email')" 
+                            class="text-danger">*Email je obavezan!</small>
+                        <small *ngIf="signUpForm.controls['email'].dirty && signUpForm.hasError('email','email')" 
+                            class="text-danger">*Email nije validan!</small>
+                    </div>
+                
+                    <div class="box">
+                        <label class="labels">Lozinka</label>
+                        <input class="form-control"formControlName="lozinka" [type]="type" placeholder="Lozinka">
+                        <span (click)="sakrijPrikazi()">
+                            <a id="oko">
+                                <i class="fa-sharp fa-solid {{eyeIcon}} pl-1"></i>
+                            </a>
+                        </span>
+                        <small *ngIf="signUpForm.controls['lozinka'].dirty && signUpForm.hasError('required','lozinka')"
+                            class="text-danger">*Lozinka je obavezna!</small>
+                    </div>
+                
+                </div>
+
+                
+                <div class="dole">   
+                    <h4 class="adr">Adresa prebivališta</h4>
+
+                    <div class="levi">
+                        <div class="box">
+                            <label class="labels">Grad</label>
+                            <input class="form-control" formControlName="grad" type="text" placeholder="Grad" id="GRAD">
+                            <small *ngIf="signUpForm.controls['grad'].dirty && signUpForm.hasError('required','grad')"
+                                class="text-danger">*Grad je obavezan!</small>
+                            <small *ngIf="signUpForm.get('grad')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                        </div>
+                    
+                        <div class="box">
+                            <label class="labels">Naselje</label>
+                            <input class="form-control" formControlName="naselje" type="text" placeholder="Naselje">
+                            <small *ngIf="signUpForm.controls['naselje'].dirty && signUpForm.hasError('required','naselje')"
+                                class="text-danger">*Naselje je obavezno!</small>
+                            <small *ngIf="signUpForm.get('naselje')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                        </div> 
+                    </div>
+            
+                    <div class="desni">
+                        <div class="box">
+                            <label class="labels">Ulica</label>
+                            <input type="text" class="form-control" formControlName="ulica" placeholder="Ulica" value="" id="ULICA">
+                            <small *ngIf="signUpForm.controls['ulica'].dirty && signUpForm.hasError('required','ulica')"
+                                class="text-danger">*Ulica je obavezna!</small>
+                            <small *ngIf="signUpForm.get('ulica')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                        </div> 
+    
+                        <div class="box">
+                            <label class="labels">Kućni broj</label>
+                            <input type="text" class="form-control" formControlName="adresniBroj" placeholder="Broj ulice" value="" id="BROJ">
+                            <small *ngIf="signUpForm.controls['adresniBroj'].dirty && signUpForm.hasError('required','adresniBroj')"
+                                class="text-danger">*Broj je obavezan!</small> 
+                            <small *ngIf="signUpForm.get('adresniBroj')!!.hasError('pattern')"
+                                class="text-danger">*Razmak ne može biti prvi/jedini uneti karakter.</small> 
+                        </div> 
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-block mt-4 w-90" [disabled]="!signUpForm.valid" style="border-radius: 11px; padding: 5px;" (click)="onSignUp()" >Registruj korisnika</button>
+
+            </div>
+        </form>
+
+    </div>
+</body>
+                
+                     
+
+<!-- <body>
+    <div class="row">
+
+        <h3>Registruj korisnika</h3>
+
+        <form [formGroup]="signUpForm" style="margin-top: 60px;">
+            <h4 class="oKorisniku">Informacije o korisniku</h4> 
+            <h4 class="zaPrijavu">Podaci za prijavu na aplikaciju</h4>
+            <div class="wrapper">
+                
+                <div class="box">
+                    <label class="labels">Ime</label>
+                    <input class="form-control" formControlName="ime" type="text" placeholder="Ime">
+                    <small *ngIf="signUpForm.controls['ime'].dirty && signUpForm.hasError('required','ime')"
+                        class="text-danger">*Ime je obavezno!</small> 
+                </div> 
+
+                <div class="box">
+                    <label class="labels">Email adresa</label>
+                    <input class="form-control" formControlName="email" type="email" placeholder="Email adresa">
+                    <small *ngIf="signUpForm.controls['email'].dirty && signUpForm.hasError('required','email')" 
+                        class="text-danger">*Email je obavezan!</small>
+                    <small *ngIf="signUpForm.controls['email'].dirty && signUpForm.hasError('email','email')" 
+                        class="text-danger">*Email nije validan!</small>
+                </div>
+             
+                <div class="box">
+                    <label class="labels">Prezime</label>
+                    <input class="form-control" formControlName="prezime" type="text" placeholder="Prezime">
+                    <small *ngIf="signUpForm.controls['prezime'].dirty && signUpForm.hasError('required','prezime')"
+                        class="text-danger">*Prezime je obavezno!</small>
+                </div>
+
+                <div class="box">
+                    <label class="labels">Lozinka</label>
+                    <input class="form-control"formControlName="lozinka" [type]="type" placeholder="Lozinka">
+                    <span (click)="sakrijPrikazi()">
+                        <a id="oko">
+                            <i class="fa-sharp fa-solid {{eyeIcon}} pl-1"></i>
+                        </a>
+                    </span>
+                    <small *ngIf="signUpForm.controls['lozinka'].dirty && signUpForm.hasError('required','lozinka')"
+                        class="text-danger">*Lozinka je obavezna!</small>
+                    <small *ngIf="signUpForm.get('lozinka')!!.hasError('pattern')"
+                        class="text-danger">*Lozinka mora da sadrzi minimum 8 karaktera, jednu cifru i jedan specijalan karakter!</small>
+                </div>
+            
+                <div class="box">
+                    <label class="labels">JMBG</label>
+                    <input class="form-control" formControlName="jmbg" type="text" placeholder="JMBG">
+                    <small *ngIf="signUpForm.controls['jmbg'].dirty && signUpForm.hasError('required','jmbg')"
+                        class="text-danger">*JMBG je obavezan!</small>
+                    <small *ngIf="signUpForm.get('jmbg')!!.hasError('pattern')"
+                        class="text-danger">*JMBG nije validan!</small> 
+                </div>
+                
+                <div class="box"></div>
+
+                <div class="box">
+                    <label class="labels">Broj telefona</label>
+                    <input class="form-control" formControlName="brojTelefona" type="text" placeholder="Broj telefona">
+                    <small *ngIf="signUpForm.controls['brojTelefona'].dirty && signUpForm.hasError('required','brojTelefona')"
+                        class="text-danger">*Broj telefona je obavezan!</small> 
+                </div>
+
+                <div class="box"></div>
+
+                <div class="box">
+                    <p class="labels">Rola</p>
+                    <select [(ngModel)]="rolaId" class="form-control" formControlName="rolaId" name="rolaId">
+                        <option *ngFor="let r of role" [value]="r._id"> {{r.naziv}} </option>
+                    </select>
+                    <small *ngIf="signUpForm.controls['rolaId'].dirty && signUpForm.hasError('required','rolaId')"
+                        class="text-danger">*Izaberite rolu!</small> 
+                </div>       
+                
+                
+
+                <h4 class="adr">Adresa prebivališta</h4>
+
+                <div class="box">
+                    <label class="labels">Grad</label>
+                    <input class="form-control" formControlName="grad" type="text" placeholder="Grad">
+                    <small *ngIf="signUpForm.controls['grad'].dirty && signUpForm.hasError('required','grad')"
+                        class="text-danger">*Grad je obavezan!</small>
+                </div>
+               
+                <div class="box">
+                    <label class="labels">Naselje</label>
+                    <input class="form-control" formControlName="naselje" type="text" placeholder="Naselje">
+                    <small *ngIf="signUpForm.controls['naselje'].dirty && signUpForm.hasError('required','naselje')"
+                        class="text-danger">*Naselje je obavezno!</small>
+                </div> 
+           
+                <div class="box">
+                    <label class="labels">Ulica</label>
+                    <input type="text" class="form-control" formControlName="ulica" placeholder="Ulica" value="">
+                    <small *ngIf="signUpForm.controls['ulica'].dirty && signUpForm.hasError('required','ulica')"
+                        class="text-danger">*Ulica je obavezna!</small>
+                </div> 
+
+                <div class="ulica" id="broj">
+                    <label class="labels">Broj</label>
+                    <input type="text" class="form-control" formControlName="adresniBroj" placeholder="Broj ulice" value="">
+                    <small *ngIf="signUpForm.controls['adresniBroj'].dirty && signUpForm.hasError('required','adresniBroj')"
+                        class="text-danger">*Broj je obavezan!</small> 
+                </div> 
+                     
+
+                <button class="btn btn-primary btn-block mt-4 w-90" style="border-radius: 11px; padding: 5px;" (click)="onSignUp()" >Registruj korisnika</button>
+
+            </div>
+        </form>
+
+    </div>
+</body> -->

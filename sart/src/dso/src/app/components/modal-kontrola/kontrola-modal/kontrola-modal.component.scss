@@ -1,0 +1,35 @@
+.modal-body{
+    background-color: rgb(45, 44, 56);
+  }
+  .modal-footer{
+    border-top: 1px solid rgb(34, 27, 27);
+    background-color: rgb(45, 44, 56);
+  }
+  .modal-header{
+    background-color: rgb(45, 44, 56);
+    border-bottom: 1px solid rgb(34, 27, 27);
+  }
+  .btn.btn-secondary{
+    background-color: #3b5577;
+    border-color: #3b5577;
+  }
+  .btn.btn-secondary:hover{
+    background-color: #49678f;
+  }
+  .btn.btn-secondary:focus{
+    outline: none;
+    box-shadow: none;
+  }
+  .btn-close{
+    background-color: rgb(45, 44, 56);
+  }
+  
+  .btn.btn-primary{
+    background-color: rgb(40, 77, 156);
+    border-color: rgb(40, 77, 156);
+  }
+  
+  .btn.btn-primary:hover{
+    background-color: rgb(23, 60, 141);
+  }
+  

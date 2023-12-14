@@ -1,0 +1,268 @@
+html, body {
+  max-width: 100%;
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+hr{
+  color: grey;
+}
+
+.labels2 {
+  color: #ffffff;
+  font-size: 20px;
+  float: right;
+  margin-right: 29%;
+}
+
+.grid{
+  border: 1px solid black;
+}
+
+.custom-container {
+  width: 50%;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.gridOwner{
+  margin-top: 10px;
+}
+
+.htmlData{
+  margin-top: 10px;
+}
+
+.col.col2{
+  width: 50%;
+  float: left;
+}
+
+#radioButton1{
+  float: right;
+}
+
+#radioButton2{
+  float: right;
+  margin-right: 10px;
+}
+
+
+.chart-container{
+  height: 93%;
+  width: 100%;
+}
+
+// *{
+//   color:rgb(255, 255, 255);
+// }
+
+.card{
+  background-color: rgb(53, 9, 9);
+}
+
+.tabs{
+  ariaLabel{
+    color: white;
+  }
+}
+
+.dropdown{
+  float: right;
+  margin-right: 40px;
+}
+
+.my-custom-class {
+    color: white;
+}
+
+.chart{
+  height: 100%;
+  width: 100%;
+}
+
+#format {
+  bottom: 0;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  -ms-appearance:none;
+  appearance:none;
+  outline:0;
+  box-shadow:none;
+  border:0!important;
+  background: #1f262e;
+  background-image: none;
+  flex: 1;
+  padding: 0 .5em;
+  color:#d9dfe8;
+  cursor:pointer;
+  font-size: 1em;
+  font-family: 'Open Sans', sans-serif;
+}
+#format::-ms-expand {
+  display: none;
+}
+.select {
+  position: relative;
+  display: flex;
+  width: 20em;
+  height: 3em;
+  float: right;
+  line-height: 3;
+  background: #1f262e;
+  overflow: hidden;
+  border-radius: .25em;
+  border: 2px solid #424752;
+  color: #999a9e;
+
+}
+.select::after {
+  content: '\25BC';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 0 1em;
+  background: #1f262e;
+  cursor:pointer;
+  pointer-events:none;
+  transition:.25s all ease;
+}
+.select:hover::after {
+  color: #dbdcdd;
+}
+.select:hover {
+  border: 2px solid #a5cbe0;
+}
+.select:focus {
+  border: 2px solid #a5cbe0;
+}
+
+option {
+  background: #1f262e;
+}
+option:hover {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px){
+
+  .chart-container{
+    width: 95%;
+  }
+
+  .line{
+    display: none;
+  }
+
+  .select{
+    margin-right: 24%;
+    margin-top: 8px;
+    margin-bottom: -6px;
+    width: 13em;
+  }
+
+  #title{
+    font-weight: bold;
+    margin-top: 7vh;
+    font-size: 28px;
+  }
+
+  #format {
+    font-size: 0.9em;
+  }
+
+  .text.title{
+    font-size: 22px;
+    text-align: center;
+    margin-top: 2vh;
+  }
+
+  .text.title2{
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .cardowner{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    margin: auto;
+  }
+
+  .col{
+    min-width: 135px;
+    cursor: none;
+  }
+
+  .col-sm{
+    text-align: center;
+    margin-top: 1vh;
+  }
+
+  .dropdown{
+    width: 50px !important;
+    height: 50px !important;
+    float: none;
+    margin-left: 40px;
+  }
+
+  .card-header.changed{
+    font-size: 4vw;
+  }
+
+  .card-title{
+    font-size: 20px;
+  }
+
+  .card-footer{
+    font-size: 3.7vw;
+  }
+
+  app-arrow{
+    display: none;
+  }
+
+  .text.subtitle2{
+    width: 100%;
+    margin-top: 10%;
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .htmlData{
+    width: 90%;
+    margin: 10px auto;
+  }
+  .exportbuttons{
+    margin-top: 30px;
+    padding-left: 0;
+    font-size: 20px;
+    text-align: right;
+    max-width: 30%;
+  }
+
+  #MyChart2{
+    width: 300px;
+    height:300px;
+  }
+
+  .labels{
+    margin-top: 40px;
+    text-align: right;
+    margin-left: 5px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  #radioButton1{
+    float: right;
+    font-size: 12px;
+  }
+
+  #radioButton2{
+    float: right;
+    font-size: 12px;
+  }
+
+}

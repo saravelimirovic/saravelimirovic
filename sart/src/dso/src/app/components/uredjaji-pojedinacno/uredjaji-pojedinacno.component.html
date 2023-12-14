@@ -1,0 +1,368 @@
+<div class="row">
+  <div class="col">
+    <h3>Podaci o uređaju</h3>
+    <hr style="color: #42A5F5;">
+
+  </div>
+</div>
+<mat-tab-group dynamicHeight class="tabs" (selectedTabChange)="tabChanged($event)">
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span class="my-custom-class">Osnovne informacije</span>
+    </ng-template>
+    <br>
+    <div class="container d-flex justify-content-center mt-5">
+
+      <div class="card1">
+
+        <div class="top-container">
+
+          <img *ngIf="vrstaUredjaja" src="../../../assets/uredjaji/{{vrstaUredjaja}}.png"
+            class="img-fluid profile-image" width="70">
+
+          <div class="ml-3">
+            <h5 class="name">{{vrstaUredjaja}}</h5>
+            <p class="mail">{{nazivUredjaja}}</p>
+          </div>
+        </div>
+        <!--     
+    
+        <div class="middle-container d-flex justify-content-between align-items-center mt-3 p-2">
+            <div class="dollar-div px-3">
+              
+              <div class="round-div"><i class="fa fa-dollar dollar"></i></div>
+    
+            </div>
+            <div class="d-flex flex-column text-right mr-2">
+              <span class="current-balance">Current Balance</span>
+              <span class="amount"><span class="dollar-sign">$</span>1476</span>
+            </div>
+    
+        </div> -->
+
+
+        <div class="recent-border mt-4">
+          <span class="recent-orders">Tip uređaja :</span>
+          <span class="recent-orders" style="margin-left: 10px;">{{tipUredjaja}}</span>
+
+        </div>
+        <div class="recent-border mt-4">
+          <span class="recent-orders">Trenutni status : </span>
+          <span class="recent-orders" style="margin-left: 10px;"> <p-tag severity="danger" value="Isključen"
+              *ngIf="(statusUredjaj | uppercase) == 'NE'"></p-tag>
+            <p-tag  severity="success" value="Uključen" *ngIf="( statusUredjaj == 'DA' || statusUredjaj  == 'Da')"></p-tag>
+          </span>
+          <span *ngIf="(dozvolaZaKontrolu=='Da' || dozvolaZaKontrolu=='DA') &&  tipUredjaja == 'Potrošač'"  class="recent-orders" style="margin-left: 10px;"><button pButton pRipple label="Izmeni"
+              icon="pi pi-pencil" class="p-button-text" (click)="Izmeni()"></button></span>
+
+             
+
+        </div>
+        <div class="recent-border mt-4" *ngIf="open">
+          <span class="recent-orders" *ngIf="statusUredjaj  == 'NE' ||statusUredjaj  == 'Ne' ">Uključite uređaj ?  </span>
+          
+          <span  class="recent-orders" *ngIf="( statusUredjaj == 'DA' || statusUredjaj  == 'Da')">Isključite uređaj ?</span>
+          <span class="recent-orders" style="margin-left: 10px;"> <p-tag severity="success" value="Uključi"
+            *ngIf="(statusUredjaj | uppercase) == 'NE'" (click)="OnOff()"></p-tag>
+          <p-tag severity="danger" value="Isključi" *ngIf="( statusUredjaj == 'DA' || statusUredjaj  == 'Da')" (click)="OnOff()"></p-tag>
+        </span>
+
+        </div>
+
+
+      </div>
+
+    </div>
+    <!-- <div class="col-md-4" style="margin-left: 35px;"><button (click)="backClicked()"
+        class="btn btn-primary backbutton mt-4">Nazad</button></div> -->
+    <!-- <button type="button" class="btn btn-danger" (click)="openModal()"> See Modal with Form </button> -->
+    
+  </mat-tab>
+
+  <mat-tab label="Danas">
+    <ng-template mat-tab-label>
+      <span class="my-custom-class">Danas</span>
+    </ng-template>
+    <br>
+    <h3 class="text" style="font-size: 25px;">Današnji prikaz</h3>
+    <hr style="color: #42A5F5;">
+
+    <div class="row mt-4">
+      <div class="col-lg-8 col-md-12 col-sm-12">
+        <div class="row1">
+          <h5 class="text title2" *ngIf="tipUredjaja =='Potrošač'">Istorija i predikcija potrošnje</h5>
+          <h5 class="text title2" *ngIf="tipUredjaja =='Proizvođač'">Istorija i predikcija proizvodnje</h5>
+
+        </div>
+        <div class="chart-container2">
+          <canvas id="MyChart" #MyChart></canvas>
+        </div>
+      </div>
+    
+    
+
+      <div class="col-lg-4 col-md-12 col-sm-12 htmlData" id="htmlData">
+        <div class="exportbuttons1">
+          <h5 class="text title2" *ngIf="tipUredjaja =='Potrošač'">Potrošnja</h5>
+          <h5 class="text title2" *ngIf="tipUredjaja =='Proizvođač'">Proizvodnja</h5>
+          <button (click)="exportToExcel()" matTooltip="Eksportuj u Excel" type="button" pButton pRipple icon="pi pi-file-excel"  class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"
+                         style="background-color: #588157"></button>
+          <button (click)="exportToPDF()" matTooltip="Eksportuj u PDF" type="button" pButton pRipple icon="pi pi-file-pdf"  class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"
+                        style="background-color: #fb9b0b"></button>
+        </div>
+        
+        
+      
+        <div class="main-body2">
+          <div class="table-container" style="height: 60vh; overflow-y: scroll">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" id="t">
+
+              <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="vreme">
+                <th mat-header-cell *matHeaderCellDef> Vreme [h] </th>
+                <td mat-cell *matCellDef="let element"> {{element.vreme}} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="istorija">
+                <th mat-header-cell *matHeaderCellDef> Istorija [kW]</th>
+                <td mat-cell *matCellDef="let element"> {{element.istorija}} </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="predikcija">
+                <th mat-header-cell *matHeaderCellDef> Predikcija [kW] </th>
+                <td mat-cell *matCellDef="let element"> {{element.predikcija}} </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <!-- <ng-container matColumnDef="symbol">
+                <th mat-header-cell *matHeaderCellDef> Predikcija [kW] </th>
+                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+              </ng-container> -->
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row;let i = index; columns: displayedColumns;"
+                on-mouseover='showTooltipsDay(i,row)' on-mouseout='hideTooltipsDay()'></tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- row -->
+  </mat-tab>
+  <mat-tab label="Nedelja">
+    <ng-template mat-tab-label>
+      <span class="my-custom-class">Nedelja</span>
+    </ng-template>
+    <br>
+    <h2 class="text" style="font-size: 25px;">Nedeljni prikaz</h2>
+    <hr style="color: #42A5F5;">
+
+    <div class="row mt-4">
+      <div class="col-lg-8 col-md-12 col-sm-12">
+        <div class="row1">
+          <h5 class="text title2" *ngIf="tipUredjaja =='Potrošač'">Istorija i predikcija potrošnje</h5>
+          <h5 class="text title2" *ngIf="tipUredjaja =='Proizvođač'">Istorija i predikcija proizvodnje</h5>
+
+        </div>
+        <div class="chart-container2">
+          <canvas id="MyChart2" #MyChart2></canvas>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-sm-12 htmlData" id="htmlData">
+        <div class="exportbuttons1">
+          <h5 class="text title2" *ngIf="tipUredjaja =='Potrošač'">Potrošnja</h5>
+          <h5 class="text title2" *ngIf="tipUredjaja =='Proizvođač'">Proizvodnja</h5>
+          <button  (click)="exportToExcel1()" matTooltip="Eksportuj u Excel" type="button" pButton pRipple icon="pi pi-file-excel"  class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"
+                         style="background-color: #588157;"></button>
+          <button (click)="exportToPDF1()" matTooltip="Eksportuj u PDF" type="button" pButton pRipple icon="pi pi-file-pdf"  class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"
+                        style="background-color: #fb9b0b;"></button>
+        </div>
+
+        <div class="main-body2">
+          <div class="table-container" style="height: 60vh; overflow-y: scroll">
+            <table mat-table [dataSource]="dataSource2" class="mat-elevation-z8" id="t">
+
+              <!--- Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition" -->
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="vreme">
+                <th mat-header-cell *matHeaderCellDef> Datum </th>
+                <td mat-cell *matCellDef="let element"> {{element.vreme}} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="istorija">
+                <th mat-header-cell *matHeaderCellDef> Istorija [kW]</th>
+                <td mat-cell *matCellDef="let element"> {{element.istorija}} </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="predikcija">
+                <th mat-header-cell *matHeaderCellDef> Predikcija [kW] </th>
+                <td mat-cell *matCellDef="let element"> {{element.predikcija}} </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <!-- <ng-container matColumnDef="symbol">
+                  <th mat-header-cell *matHeaderCellDef> Predikcija [kW] </th>
+                  <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+                </ng-container> -->
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row;let i = index; columns: displayedColumns;"
+                on-mouseover='showTooltipsWeek(i,row)' on-mouseout='hideTooltipsWeek()'></tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Mesec">
+    <ng-template mat-tab-label>
+      <span class="my-custom-class">Mesec</span>
+    </ng-template>
+    <br>
+    <h2 class="text" style="font-size: 25px;">Mesečni prikaz</h2>
+    <hr style="color: #42A5F5;">
+    <div class="row mt-4">
+      <div class="col-lg-8 col-md-12 col-sm-12">
+        <div class="row1">
+          <h5 class="text title2" *ngIf="tipUredjaja =='Potrošač'">Istorija i predikcija potrošnje</h5>
+          <h5 class="text title2" *ngIf="tipUredjaja =='Proizvođač'">Istorija i predikcija proizvodnje</h5>
+
+        </div>
+        <div class="chart-container2">
+          <canvas id="MyChart3" #MyChart3></canvas>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-sm-12 htmlData" id="htmlData">
+        <div class="exportbuttons1">
+          <h5 class="text title2" *ngIf="tipUredjaja =='Potrošač'">Potrošnja</h5>
+          <h5 class="text title2" *ngIf="tipUredjaja =='Proizvođač'">Proizvodnja</h5>
+          <button type="button"(click)="exportToExcel2()" matTooltip="Eksportuj u Excel" pButton pRipple icon="pi pi-file-excel"  class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"
+                         style="background-color: #588157;"></button>
+          <button type="button"(click)="exportToPDF2()" matTooltip="Eksportuj u PDF" pButton pRipple icon="pi pi-file-pdf"  class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"
+                        style="background-color: #fb9b0b;"></button>
+        </div>
+        <div class="main-body2">
+          <div class="table-container" style="height: 60vh; overflow-y: scroll">
+            <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8" id="t">
+
+              <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="vreme">
+                <th mat-header-cell *matHeaderCellDef> Datum </th>
+                <td mat-cell *matCellDef="let element"> {{element.vreme}} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="istorija">
+                <th mat-header-cell *matHeaderCellDef> Istorija [kW]</th>
+                <td mat-cell *matCellDef="let element"> {{element.istorija}} </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="predikcija">
+                <th mat-header-cell *matHeaderCellDef> Predikcija [kW] </th>
+                <td mat-cell *matCellDef="let element"> {{element.predikcija}} </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <!-- <ng-container matColumnDef="symbol">
+                <th mat-header-cell *matHeaderCellDef> Predikcija [kW] </th>
+                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+              </ng-container> -->
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row;let i = index; columns: displayedColumns;"
+                on-mouseover='showTooltipsMonth(i,row)' on-mouseout='hideTooltipsMonth()'></tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </mat-tab>
+  <mat-tab label="Godina">
+    <ng-template mat-tab-label>
+      <span class="my-custom-class">Godina</span>
+    </ng-template>
+    <br>
+    <h2 class="text" style="font-size: 25px;">Godišnji prikaz</h2>
+    <hr style="color: #42A5F5;">
+    <div class="row mt-4">
+      <div class="col-lg-8 col-md-12 col-sm-12">
+        <div class="row1">
+          <h5 class="text title2" *ngIf="tipUredjaja =='Potrošač'">Istorija i predikcija potrošnje</h5>
+          <h5 class="text title2" *ngIf="tipUredjaja =='Proizvođač'">Istorija i predikcija proizvodnje</h5>
+
+        </div>
+        <div class="chart-container2">
+          <canvas id="MyChart4" #MyChart4></canvas>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-12 col-sm-12 htmlData" id="htmlData">
+        <div class="exportbuttons1">
+          <h5 class="text title2" *ngIf="tipUredjaja =='Potrošač'">Potrošnja</h5>
+          <h5 class="text title2" *ngIf="tipUredjaja =='Proizvođač'">Proizvodnja</h5>
+          <button type="button"(click)="exportToExcel3()" matTooltip="Eksportuj u Excel" pButton pRipple icon="pi pi-file-excel"  class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"
+                         style="background-color: #588157;"></button>
+          <button type="button"(click)="exportToPDF3()" matTooltip="Eksportuj u PDF" pButton pRipple icon="pi pi-file-pdf"  class="p-button-warning mr-2" pTooltip="PDF" tooltipPosition="bottom"
+                        style="background-color: #fb9b0b;"></button>
+        </div>
+        <div class="main-body2">
+          <div class="table-container" style="height: 60vh; overflow-y: scroll">
+            <table mat-table [dataSource]="dataSource4" class="mat-elevation-z8" id="t">
+
+              <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+              <!-- Position Column -->
+              <ng-container matColumnDef="vreme">
+                <th mat-header-cell *matHeaderCellDef> Mesec </th>
+                <td mat-cell *matCellDef="let element"> {{element.vreme}} </td>
+              </ng-container>
+
+              <!-- Name Column -->
+              <ng-container matColumnDef="istorija">
+                <th mat-header-cell *matHeaderCellDef> Istorija [kW]</th>
+                <td mat-cell *matCellDef="let element"> {{element.istorija}} </td>
+              </ng-container>
+
+              <!-- Weight Column -->
+              <ng-container matColumnDef="predikcija">
+                <th mat-header-cell *matHeaderCellDef> Predikcija [kW] </th>
+                <td mat-cell *matCellDef="let element"> {{element.predikcija}} </td>
+              </ng-container>
+
+              <!-- Symbol Column -->
+              <!-- <ng-container matColumnDef="symbol">
+                <th mat-header-cell *matHeaderCellDef> Predikcija [kW] </th>
+                <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+              </ng-container> -->
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row;let i = index; columns: displayedColumns;"
+                on-mouseover='showTooltipsYear(i,row)' on-mouseout='hideTooltipsYear()'></tr>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </mat-tab>
+</mat-tab-group>

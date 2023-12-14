@@ -1,0 +1,33 @@
+<nav id="header" [ngClass]=" isMobile ? 'navbar navbar-expand navbar-dark px-2 justify-content-center navbar-fixed-top fixed-top' : 'navbar navbar-expand navbar-dark px-2 justify-content-center'">
+  <img src="../../../assets/weather/menu2.png" class="menu-toggle" style="height: 70%; width: 30px; z-index: 10; margin-left: 5px;" (click)="toggleCollapse($event)" *ngIf="isMobile">
+  <a class="navbar-brand p-lg-2"><p class="h4">Platforma za upravljanje uređajima</p></a>
+</nav>
+<div class="sidenav" (click)="toggleCollapse($event)" id="navigation" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+    <div class="logo-container" *ngIf="!isMobile">
+      <button class="logo"><img src="../../../assets/logo.png"></button>
+      <div class="logo-text" *ngIf="collapsed">WattApp</div>
+      <i id="dugme"  [ngClass]="collapsed ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"></i>
+    </div>
+    <div id="list">
+    <ul class="sidenav-nav">
+      <li class="sidenav-nav-item" *ngFor="let data of navData">
+        <a class="sidenav-nav-link" [ngStyle]="!collapsed && isMobile ? {pointerEvents: 'none'} : {}" [routerLink]="[data.routeLink]"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+        <i class="sidenav-link-icon" [class]="data.icon"></i>
+        <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
+      </a>
+      </li>
+    </ul>
+    <ul id="sidenav-nav2">
+      <li id="item" id="sidenav-nav-item2">
+        <a id="sidenav-nav-link2" routerLink="login"
+            routerLinkActive="active" [ngStyle]="!collapsed && isMobile ? {pointerEvents: 'none'} : {}"
+            [routerLinkActiveOptions]="{exact: true}">
+        <i id="sidenav-link-icon2" class="fal fa-sign-out-alt"></i>
+        <span id="sidenav-link-text2" *ngIf="collapsed">Izloguj se</span>
+      </a>
+      </li>
+    </ul>
+  </div>
+</div>

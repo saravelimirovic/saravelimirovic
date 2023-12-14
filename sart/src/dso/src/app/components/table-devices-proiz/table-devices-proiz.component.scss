@@ -1,0 +1,73 @@
+$headercolor: #588157;
+$back: #191e24;
+$button: #588157;
+
+table[_ngcontent-sdg-c175]{
+  width: 30vw !important;
+}
+
+table {
+  width: 100%;
+  position: relative !important;
+    text-align: center;
+    background-color: #191e24;
+  }
+  .mat-mdc-table .mdc-data-table__row {
+    height: 5.7vh !important;
+    // width: 20vw !important;
+  }
+  .mdc-data-table__cell{
+    padding: 0px 8px 0px 8px !important;
+    width: 15vw !important;
+  }
+  .mdc-data-table__cell, .mdc-data-table__header-cell{
+    padding: 0px 8px 0px 8px !important;
+    width: 15vw !important;
+
+
+
+  }
+  .mat-mdc-table .mdc-data-table__header-row{
+    height: 5.7vh !important;
+    position: sticky !important;
+    top: 0 !important;
+    // width: 20vw !important;
+
+  }
+  .mat-column{
+    min-width: 50px !important;
+
+  }
+  .main-body{
+    // padding-bottom: 15px;
+    // mat-form-filed{
+    //   width: 100%;
+    //   background-color: $back;
+    // }
+    th{
+      background-color: $headercolor;
+    }
+
+  }
+  .mat-mdc-row:hover .mat-mdc-cell {
+    border-color: white;
+    cursor: pointer;
+  }
+.b{
+  background-color: $button ;
+  color: white;
+  min-width: 10%;
+  height: 50px;
+  float: right;
+  border-radius: 5px;
+  border-color: $button;
+}
+.b:hover{
+  background: #ffffff;
+  box-shadow: none;
+  color: black
+}
+.action{
+    display: flex;
+    gap: 5px
+  }

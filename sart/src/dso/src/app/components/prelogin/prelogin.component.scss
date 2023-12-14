@@ -1,0 +1,55 @@
+.body {
+  min-width: 100%;
+  min-height:100%;
+  margin: 0px;
+  background-image: linear-gradient(rgba(32, 38, 46, 0.4), rgba(4, 9, 30, 0.7)), url('../../../assets/ligth.jpg');
+  background-repeat: no-repeat, repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  justify-content: flex-start;
+}
+.logo{
+  max-width: 120px;
+  max-height: 120px;
+  margin-left: 20px;
+}
+section {
+  padding-top: 100px;
+  max-width: 650px;
+  margin: 60px 100px;
+  background-color: transparent;
+  color: #f7e7ce;
+  h1{
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 800;
+    line-height: 60px;
+    margin-bottom: 30px;
+  }
+  h1 span{
+    color:  #588157;
+  }
+  p{
+    font-size: 1.7rem;
+    color: #f7e7ce;
+    font-weight: 780;
+    margin-bottom: 40px;
+  }  
+}
+button {
+  background-color: #333;
+  text-transform: uppercase;
+  color: #f7e7ce;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+button:hover{
+  background:  #588157;
+}

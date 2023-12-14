@@ -1,0 +1,134 @@
+$headercolor: #588157;
+$back: #191e24;
+$button: #588157;
+
+table[_ngcontent-sdg-c175]{
+  width: 30vw !important;
+}
+
+.table-container {
+  height: 41vh; 
+  width: 100%; 
+  overflow-y: scroll
+}
+
+table {
+  width: 80%;
+  position: relative !important;
+    background-color: #191e24 !important;
+  }
+  .mat-mdc-table .mdc-data-table__row {
+    height: 4.42vh !important;
+    // width: 20vw !important;
+  }
+  .mdc-data-table__cell{
+    //padding: 0px 8px 0px 8px !important;
+    padding: 15px;
+    // text-align: center;
+  }
+  .mdc-data-table__header-cell{
+    padding: 0px 8px 0px 8px !important;
+    // text-align: center !important;
+  }
+ 
+  .mat-mdc-table .mdc-data-table__header-row{
+    height: 5vh !important;
+
+    position: sticky !important;
+    top: 0 !important;
+    // width: 20vw !important;
+  
+
+  }
+  :host ::ng-deep  .mat-sort-header-content {
+   text-align: inherit !important;
+  }  
+  .mat-column{
+    min-width: 35px !important;
+
+  }
+  .main-body1{
+    // padding-bottom: 30px;
+    // mat-form-filed{
+    //   width: 100%;
+    //   background-color: $back;
+    // }
+    th{
+      background-color: $headercolor !important;
+    }
+
+  }
+  .mat-mdc-row:hover .mat-mdc-cell {
+    border-color: white;
+    cursor: pointer;
+  }
+.b{
+  background-color: $button ;
+  color: white;
+  min-width: 10%;
+  height: 50px;
+  float: right;
+  border-radius: 5px;
+  border-color: $button;
+}
+.b:hover{
+  background: #ffffff;
+  box-shadow: none;
+  color: black
+}
+.action{
+    display: flex;
+    gap: 5px
+  }
+
+  .custom-button {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #588157;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 0.5vh !important;
+    height: 3vh !important;
+    float: right;
+  }
+  
+  .custom-button1 {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    // background-color: rgb(255, 187, 60);
+    background-color: #fb9b0b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 0.5vh !important;
+    height: 3vh !important;
+    float: right;
+    margin-right: 5px;
+  }
+  
+  .custom-button .button-icon {
+    // margin-right: 8px; /* Adjust the spacing between the icon and the text */
+    font-size: 15px; /* Adjust the size of the icon */
+  }
+
+  .custom-button:hover {
+    background-color: #395e39;
+  }
+
+  .custom-button1:hover {
+    background-color: rgb(204, 156, 68);
+  }
+
+
+  // moj komp Sara
+@media (max-width: 1540px){
+  .table-container {
+    height: 44vh;
+  }
+}
+// 

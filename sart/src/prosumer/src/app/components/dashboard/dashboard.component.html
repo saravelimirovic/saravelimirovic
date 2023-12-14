@@ -1,0 +1,769 @@
+<div class="container-fluid" *ngIf="!isMobile">
+  <div class="row">
+    <div class="col-6 offset-6 custom-container">
+      <label class="labels2">Adresa</label>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-6 col-sm-12">
+  <h1 id="title" class="text title text-light">Početna strana</h1>
+  </div>
+  <div class="col-lg-6 col-sm-12" *ngIf="isMobile">
+    <h1 class="text title text-light">Adresa</h1>
+  </div>
+<div class="col-lg-6 col-sm-12">
+  <div class="select">
+  <select class="form-control" name="format" id="format" [(ngModel)]="objectId" (change)="changeObjekat($event)">
+    <option [value]="item.id" *ngFor="let item of objektiKorisnika">{{item.fullAddress}}</option>
+  </select>
+</div>
+</div>
+</div>
+<h5 class="text subtitle2 text-light"><strong>Kontrolna tabla</strong></h5>
+<div class="mt-4" style="min-height: 800px;">
+<mat-tab-group mat-stretch-tabs dynamicHeight class="tabs" (selectedTabChange)="tabChanged($event)">
+  <mat-tab label="one">
+    <ng-template mat-tab-label>
+      <span class="my-custom-class">Danas</span>
+    </ng-template>
+  <br>
+<h2 class="text title2 text-light">Današnji prikaz</h2>
+  <div class="cardowner row row-cols-1 row-cols-md-3 mt-4">
+    <div class="col" style="max-width: 400px;" *ngIf="(role == 'prozumer' || role == 'potrošač') && ukupnaPotrosnjaDanas">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed text-light">Potrošnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(ukupnaPotrosnjaDanas).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer" *ngIf="procenatPotrosnjaDanas!! > 0"><app-arrow [isPotrosnja]="true" [range]="procenatPotrosnjaDanas"></app-arrow> +{{procenatPotrosnjaDanas!!}}% u odnosu na juče</div>
+        <div class="card-footer" *ngIf="procenatPotrosnjaDanas!! <= 0"><app-arrow [isPotrosnja]="true" [range]="procenatPotrosnjaDanas"></app-arrow> {{procenatPotrosnjaDanas!!}}% u odnosu na juče</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 400px;" *ngIf="(role == 'prozumer' || role == 'proizvođač') && ukupnaDnevnaProizvodnja">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Proizvodnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(ukupnaDnevnaProizvodnja).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer" *ngIf="procenatProizvodnjaDanas!! > 0"><app-arrow [isPotrosnja]="false" [range]="procenatProizvodnjaDanas"></app-arrow> +{{procenatProizvodnjaDanas}}% u odnosu na juče</div>
+        <div class="card-footer" *ngIf="procenatProizvodnjaDanas!! <= 0"><app-arrow [isPotrosnja]="false" [range]="procenatProizvodnjaDanas"></app-arrow> {{procenatProizvodnjaDanas}}% u odnosu na juče</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 250px;" *ngIf="(role == 'prozumer' || role == 'potrošač') && maxPotrosnjaDanas.usage">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Maksimalna potrošnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(maxPotrosnjaDanas.usage!!).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer changedtext">{{maxPotrosnjaDanas.date | date: 'dd/MM/yyyy'}} {{maxPotrosnjaDanas.time?.substring(0,5)}}h</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 250px;" *ngIf="(role == 'prozumer' || role == 'proizvođač') && maxProizvodnjeDanas.usage">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Maksimalna proizvodnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(maxProizvodnjeDanas.usage!!).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer changedtext">{{maxProizvodnjeDanas.date | date: 'dd/MM/yyyy'}} {{maxProizvodnjeDanas.time?.substring(0,5)}}h</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 400px;" *ngIf="ukupnoSkladisteno">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Ukupno skladišteno do danas</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(ukupnoSkladisteno!!).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer changedtext"><summary style="visibility: hidden;">u odnosu na</summary></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row mt-4" *ngIf="(role == 'prozumer' || role == 'potrošač') && potrosnja1dIstorija.length">
+    <hr>
+    <div class="col-lg-8 col-md-12 col-sm-12 plswork">
+      <div class="row">
+      <div class="col-sm-12">
+        <h5 class="text title2 text-light">Istorija i predikcija potrošnje</h5>
+      </div>
+    </div>
+    <div class="chart-container">
+      <canvas id="MyChart" #MyChart></canvas>
+      </div>
+    </div>
+    <div class="row" *ngIf="isMobile">
+    <div class="col exportbuttons">
+    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(0)" class="p-button-success mr-2 text-light"  pTooltip="XLS" tooltipPosition="bottom"
+                   style="background-color: rgb(17, 180, 17);"></button>
+    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(0)" class="p-button-warning mr-2 text-light" pTooltip="PDF" tooltipPosition="bottom"
+                  style="background-color: rgb(255, 187, 60);"></button>
+    </div>
+  </div>
+    <div class="col-lg-4 col-md-12 col-sm-12 htmlData" id="htmlData">
+      <div style="display: flex; align-items: center;">
+      <div>
+      <h5 class="text title2 text-light">Potrošnja</h5>
+      </div>
+      <div style="max-width: 80px; margin-left: 10px; padding-bottom: 10px;" *ngIf="!isMobile">
+        <div style="display: flex;
+        justify-content: center;
+        align-items: center;">
+        <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(0)" class="p-button-success mr-2 text-light"  pTooltip="Exportuj tabelu u EXCEL" tooltipPosition="bottom"
+         style="background-color: rgb(17, 180, 17); min-width: 35px;"></button>
+        <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(0)" class="p-button-warning mr-2 text-light" pTooltip="Exportuj tabelu u PDF" tooltipPosition="bottom"
+        style="background-color: rgb(255, 187, 60); min-width: 35px;"></button>
+        </div>
+      </div>
+    </div>
+      <p-table #dt [columns]="exportColumnsPotrosnjaDanas" selectionMode="single" [(selection)]="selectedPotrosnja" (onRowSelect)="onRowSelectPotrosnjaDanas($event)" [value]="potrosnja1dPredikcija" [scrollable]="true" scrollHeight="503px">
+        <ng-template pTemplate="header">
+            <tr>
+              <th class="text-center" pSortableColumn="date">
+                Datum
+                <p-sortIcon field="date"></p-sortIcon>
+              </th>
+                <th class="text-center" pSortableColumn="time">
+                  Vreme[h]
+                  <p-sortIcon field="time"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage2">
+                  Istorija[kWh]
+                  <p-sortIcon field="usage2"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage">
+                  Predikcija[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-potrosnja let-i="rowIndex">
+          <tr  [pSelectableRow]="rowData" [pSelectableRowIndex]="i">
+                <td class="text-center">{{potrosnja.date | date : 'dd/MM/yyyy'}}</td>
+                <td class="text-center">{{potrosnja.time.substring(0,5)}}</td>
+                <td class="text-center">{{potrosnja.usage}}</td>
+                <td class="text-center">{{potrosnja.usage2}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+  </div>
+</div>
+<div class="row mt-4" *ngIf="(role == 'prozumer' || role == 'proizvođač') && proizvodnja1dIstorija.length">
+  <hr class="mt-2">
+  <div class="col-lg-8 col-md-12 col-sm-12 plswork">
+    <div class="row">
+      <div class="col-sm-12">
+        <h5 class="text title2 text-light">Istorija i predikcija proizvodnje</h5>
+      </div>
+    </div>
+    <div class="chart-container">
+      <canvas id="MyChart2" #MyChart2></canvas>
+    </div>
+    </div>
+    <div class="row" *ngIf="isMobile">
+    <div class="col exportbuttons">
+    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(1)" class="p-button-success mr-2 text-light"  pTooltip="XLS" tooltipPosition="bottom"
+                   style="background-color: rgb(17, 180, 17);"></button>
+    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(1)" class="p-button-warning mr-2 text-light" pTooltip="PDF" tooltipPosition="bottom"
+                  style="background-color: rgb(255, 187, 60);"></button>
+    </div>
+  </div>
+      <div class="col-lg-4 col-md-12 col-sm-12 htmlData" id="htmlData">
+        <div style="display: flex; align-items: center;">
+          <div>
+          <h5 class="text title2 text-light">Proizvodnja</h5>
+          </div>
+          <div style="max-width: 80px; margin-left: 10px; padding-bottom: 10px;" *ngIf="!isMobile">
+            <div style="display: flex;
+            justify-content: center;
+            align-items: center;">
+            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(1)" class="p-button-success mr-2 text-light"  pTooltip="Exportuj tabelu u EXCEL" tooltipPosition="bottom"
+             style="background-color: rgb(17, 180, 17); min-width: 35px;"></button>
+            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(1)" class="p-button-warning mr-2 text-light" pTooltip="Exportuj tabelu u PDF" tooltipPosition="bottom"
+            style="background-color: rgb(255, 187, 60); min-width: 35px;"></button>
+            </div>
+          </div>
+        </div>
+        <p-table #dt [value]="proizvodnja1dPredikcija" selectionMode="single" [(selection)]="selectedProizvodnja" (onRowSelect)="onRowSelectProizvodnjaDanas($event)" [scrollable]="true" scrollHeight="503px" [columns]="exportColumnsProizvodnjaDanas">
+          <ng-template pTemplate="header">
+            <tr>
+              <th class="text-center" pSortableColumn="date">
+                Datum
+                <p-sortIcon field="date"></p-sortIcon>
+              </th>
+              <th class="text-center" pSortableColumn="time">
+                Vreme[h]
+                <p-sortIcon field="time"></p-sortIcon>
+              </th>
+              <th class="text-center" pSortableColumn="usage2">
+                Istorija[kWh]
+                <p-sortIcon field="usage"></p-sortIcon>
+              </th>
+              <th class="text-center" pSortableColumn="usage">
+                Predikcija[kWh]
+                <p-sortIcon field="usage"></p-sortIcon>
+              </th>
+          </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-proizvodnja let-i="rowIndex">
+            <tr  [pSelectableRow]="rowData" [pSelectableRowIndex]="i">
+                <td class="text-center">{{proizvodnja.date | date : 'dd/MM/yyyy'}}</td>
+                  <td class="text-center">{{proizvodnja.time.substring(0,5)}}</td>
+                  <td class="text-center">{{proizvodnja.usage}}</td>
+                  <td class="text-center">{{proizvodnja.usage2}}</td>
+              </tr>
+          </ng-template>
+      </p-table>
+    </div>
+    </div>
+    <div>
+    </div>
+
+
+</mat-tab>
+<mat-tab label="Nedelja">
+  <ng-template mat-tab-label>
+    <span class="my-custom-class">Nedelja</span>
+  </ng-template>
+  <br>
+<h2 class="text title2 text-light">Nedeljni prikaz</h2>
+
+  <div class="cardowner row row-cols-1 row-cols-md-3 mt-4">
+    <div class="col" style="max-width: 400px;" *ngIf="(role == 'prozumer' || role == 'potrošač') && ukupnaPotrosnjaNedelja">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed ">Potrošnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(ukupnaPotrosnjaNedelja).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer" *ngIf="procenatPotrosnjaNedelja!! > 0"><app-arrow [isPotrosnja]="true" [range]="procenatPotrosnjaNedelja"></app-arrow> +{{procenatPotrosnjaNedelja}}% u odnosu na prošlu nedelju</div>
+        <div class="card-footer" *ngIf="procenatPotrosnjaNedelja!! <= 0"><app-arrow [isPotrosnja]="true" [range]="procenatPotrosnjaNedelja"></app-arrow> {{procenatPotrosnjaNedelja}}% u odnosu na prošlu nedelju</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 400px;" *ngIf="(role == 'prozumer' || role == 'proizvođač') && ukupnaNedeljnaProizvodnja">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Proizvodnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(ukupnaNedeljnaProizvodnja).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer" *ngIf="procenatProizvodnjaNedelja!! > 0"><app-arrow [isPotrosnja]="false" [range]="procenatProizvodnjaNedelja"></app-arrow> +{{procenatProizvodnjaNedelja}}% u odnosu na prošlu nedelju</div>
+        <div class="card-footer" *ngIf="procenatProizvodnjaNedelja!! <= 0"><app-arrow [isPotrosnja]="false" [range]="procenatProizvodnjaNedelja"></app-arrow> {{procenatProizvodnjaNedelja}}% u odnosu na prošlu nedelju</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 250px;" *ngIf="(role == 'prozumer' || role == 'potrošač') && maxPotrosnjaNedelja.usage">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Maksimalna potrošnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(maxPotrosnjaNedelja.usage!!).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer changedtext">{{maxPotrosnjaNedelja.date | date: 'dd/MM/yyyy'}}</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 250px;" *ngIf="(role == 'prozumer' || role == 'proizvođač') && maxProizvodnjeNedelja.usage">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Maksimalna proizvodnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(maxProizvodnjeNedelja.usage!!).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer changedtext">{{maxProizvodnjeDanas.date | date: 'dd/MM/yyyy'}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4" *ngIf="(role == 'prozumer' || role == 'potrošač') && potrosnja7dIstorija.length">
+    <hr>
+    <div class="col-lg-9 col-md-12 col-sm-12 plswork">
+      <div class="row">
+      <div class="col-sm-12">
+        <h5 class="text title2 text-light">Istorija i predikcija potrošnje</h5>
+      </div>
+    </div>
+    <div class="chart-container">
+      <canvas id="MyChart3" #MyChart3></canvas>
+      </div>
+    </div>
+    <div class="row" *ngIf="isMobile">
+    <div class="col exportbuttons">
+    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(2)" class="p-button-success mr-2 text-light"  pTooltip="XLS" tooltipPosition="bottom"
+                   style="background-color: rgb(17, 180, 17);"></button>
+    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(2)" class="p-button-warning mr-2 text-light" pTooltip="PDF" tooltipPosition="bottom"
+                  style="background-color: rgb(255, 187, 60);"></button>
+    </div>
+  </div>
+    <div class="col-lg-3 col-md-12 col-sm-12 htmlData" id="htmlData">
+      <div style="display: flex; align-items: center;">
+        <div>
+        <h5 class="text title2 text-light">Potrošnja</h5>
+        </div>
+        <div style="max-width: 80px; margin-left: 10px; padding-bottom: 10px;" *ngIf="!isMobile">
+          <div style="display: flex;
+          justify-content: center;
+          align-items: center;">
+          <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(2)" class="p-button-success mr-2 text-light"  pTooltip="Exportuj tabelu u EXCEL" tooltipPosition="bottom"
+           style="background-color: rgb(17, 180, 17); min-width: 35px;"></button>
+          <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(2)" class="p-button-warning mr-2 text-light" pTooltip="Exportuj tabelu u PDF" tooltipPosition="bottom"
+          style="background-color: rgb(255, 187, 60); min-width: 35px;"></button>
+          </div>
+        </div>
+      </div>
+      <p-table #dt [columns]="exportColumnsPotrosnjaNedelja" selectionMode="single" [(selection)]="selectedPotrosnja" (onRowSelect)="onRowSelectPotrosnjaNedelja($event)" [value]="potrosnja7dIstorija" [scrollable]="true" scrollHeight="503px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center" pSortableColumn="date">
+                  Datum
+                  <p-sortIcon field="date"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage">
+                  Istorija[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage2">
+                  Predikcija[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-potrosnja let-i="rowIndex">
+            <tr  [pSelectableRow]="rowData" [pSelectableRowIndex]="i">
+                <td class="text-center" *ngIf="!getDate(potrosnja.date)">{{potrosnja.date.substring(5,10) | date: 'dd/MM'}}</td>
+                <td class="text-center" *ngIf="getDate(potrosnja.date)">Danas</td>
+                <td class="text-center">{{potrosnja.usage}}</td>
+                <td class="text-center">{{potrosnja.usage2}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+  </div>
+</div>
+<div class="row mt-4" *ngIf="(role == 'prozumer' || role == 'proizvođač') && proizvodnja7dIstorija.length">
+  <hr class="mt-2">
+  <div class="col-lg-9 col-md-12 col-sm-12 plswork">
+    <div class="row">
+      <div class="col-sm-12">
+        <h5 class="text title2 text-light">Istorija i predikcija proizvodnje</h5>
+      </div>
+    </div>
+    <div class="chart-container">
+      <canvas id="MyChart4" #MyChart4></canvas>
+    </div>
+    </div>
+    <div class="row" *ngIf="isMobile">
+    <div class="col exportbuttons">
+    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(3)" class="p-button-success mr-2 text-light"  pTooltip="XLS" tooltipPosition="bottom"
+                   style="background-color: rgb(17, 180, 17);"></button>
+    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(3)" class="p-button-warning mr-2 text-light" pTooltip="PDF" tooltipPosition="bottom"
+                  style="background-color: rgb(255, 187, 60);"></button>
+    </div>
+  </div>
+      <div class="col-lg-3 col-md-12 col-sm-12 htmlData" id="htmlData">
+        <div style="display: flex; align-items: center;">
+          <div>
+          <h5 class="text title2 text-light">Proizvodnja</h5>
+          </div>
+          <div style="max-width: 80px; margin-left: 10px; padding-bottom: 10px;" *ngIf="!isMobile">
+            <div style="display: flex;
+            justify-content: center;
+            align-items: center;">
+            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(3)" class="p-button-success mr-2 text-light"  pTooltip="Exportuj tabelu u EXCEL" tooltipPosition="bottom"
+             style="background-color: rgb(17, 180, 17); min-width: 35px;"></button>
+            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(3)" class="p-button-warning mr-2 text-light" pTooltip="Exportuj tabelu u PDF" tooltipPosition="bottom"
+            style="background-color: rgb(255, 187, 60); min-width: 35px;"></button>
+            </div>
+          </div>
+        </div>
+        <p-table #dt [value]="proizvodnja7dIstorija" selectionMode="single" [(selection)]="selectedProizvodnja" (onRowSelect)="onRowSelectProizvodnjaNedelja($event)" [scrollable]="true" scrollHeight="503px" [columns]="exportColumnsProizvodnjaNedelja">
+          <ng-template pTemplate="header">
+              <tr>
+                <th class="text-center" pSortableColumn="date">
+                  Datum
+                  <p-sortIcon field="date"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage">
+                  Istorija[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage2">
+                  Predikcija[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-proizvodnja let-i="rowIndex">
+              <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="i">
+                <td class="text-center"*ngIf="!getDate(proizvodnja.date)">{{proizvodnja.date.substring(5,10) | date: 'dd/MM'}}</td>
+                <td class="text-center" *ngIf="getDate(proizvodnja.date)">Danas</td>
+                <td class="text-center">{{proizvodnja.usage}}</td>
+                <td class="text-center">{{proizvodnja.usage2}}</td>
+              </tr>
+          </ng-template>
+      </p-table>
+    </div>
+    </div>
+    <div>
+    </div>
+</mat-tab>
+<mat-tab label="Mesec">
+  <ng-template mat-tab-label>
+    <span class="my-custom-class">Mesec</span>
+  </ng-template>
+  <h2 class="text title2 mt-4 text-light">Mesečni prikaz</h2>
+
+  <div class="cardowner row row-cols-1 row-cols-md-3 mt-4">
+    <div class="col" style="max-width: 400px;" *ngIf="(role == 'prozumer' || role == 'potrošač') && ukupnaPotrosnjaMesec">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Potrošnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(ukupnaPotrosnjaMesec).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer" *ngIf="procenatPotrosnjaMesec!! > 0"><app-arrow [isPotrosnja]="true" [range]="procenatPotrosnjaMesec"></app-arrow> +{{procenatPotrosnjaMesec!!}}% u odnosu na prošli mesec</div>
+        <div class="card-footer" *ngIf="procenatPotrosnjaMesec!! <= 0"><app-arrow [isPotrosnja]="true" [range]="procenatPotrosnjaMesec"></app-arrow> {{procenatPotrosnjaMesec!!}}% u odnosu na prošli mesec</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 400px;" *ngIf="(role == 'prozumer' || role == 'proizvođač') && ukupnaMesecnaProizvodnja">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Proizvodnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(ukupnaMesecnaProizvodnja).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer" *ngIf="procenatProizvodnjaMesec!! > 0"><app-arrow [isPotrosnja]="false" [range]="procenatProizvodnjaMesec"></app-arrow> +{{procenatProizvodnjaMesec!!}}% u odnosu na prošli mesec</div>
+        <div class="card-footer" *ngIf="procenatProizvodnjaMesec!! <= 0"><app-arrow [isPotrosnja]="false" [range]="procenatProizvodnjaMesec"></app-arrow> {{procenatProizvodnjaMesec!!}}% u odnosu na prošli mesec</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 250px;" *ngIf="(role == 'prozumer' || role == 'potrošač') && maxPotrosnjaMesec.usage">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Maksimalna potrošnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(maxPotrosnjaMesec.usage!!).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer changedtext">{{maxPotrosnjaMesec.date | date: 'dd/MM/yyyy'}}</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 250px;" *ngIf="(role == 'prozumer' || role == 'proizvođač') && maxProizvodnjeMesec.usage">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Maksimalna proizvodnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(maxProizvodnjeMesec.usage!!).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer changedtext">{{maxProizvodnjeMesec.date | date: 'dd/MM/yyyy'}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4" *ngIf="(role == 'prozumer' || role == 'potrošač') && potrosnja31dIstorija.length">
+    <hr>
+    <div class="col-lg-9 col-md-12 col-sm-12 plswork">
+      <div class="row">
+      <div class="col-sm-12">
+        <h5 class="text title2 text-light">Istorija i predikcija potrošnje</h5>
+      </div>
+    </div>
+    <div class="chart-container">
+      <canvas id="MyChart5" #MyChart5></canvas>
+      </div>
+    </div>
+    <div class="row" *ngIf="isMobile">
+    <div class="col exportbuttons">
+    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(4)" class="p-button-success mr-2 text-light"  pTooltip="XLS" tooltipPosition="bottom"
+                   style="background-color: rgb(17, 180, 17);"></button>
+    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(4)" class="p-button-warning mr-2 text-light" pTooltip="PDF" tooltipPosition="bottom"
+                  style="background-color: rgb(255, 187, 60);"></button>
+    </div>
+  </div>
+    <div class="col-lg-3 col-md-12 col-sm-12 htmlData" id="htmlData">
+      <div style="display: flex; align-items: center;">
+        <div>
+        <h5 class="text title2 text-light">Potrošnja</h5>
+        </div>
+        <div style="max-width: 80px; margin-left: 10px; padding-bottom: 10px;" *ngIf="!isMobile">
+          <div style="display: flex;
+          justify-content: center;
+          align-items: center;">
+          <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(4)" class="p-button-success mr-2 text-light"  pTooltip="Exportuj tabelu u EXCEL" tooltipPosition="bottom"
+           style="background-color: rgb(17, 180, 17); min-width: 35px;"></button>
+          <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(4)" class="p-button-warning mr-2 text-light" pTooltip="Exportuj tabelu u PDF" tooltipPosition="bottom"
+          style="background-color: rgb(255, 187, 60); min-width: 35px;"></button>
+          </div>
+        </div>
+      </div>
+      <p-table #dt [columns]="exportColumnsPotrosnjaNedelja" selectionMode="single" [(selection)]="selectedPotrosnja" (onRowSelect)="onRowSelectPotrosnjaMesec($event)" [value]="potrosnja31dIstorija" [scrollable]="true" scrollHeight="503px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center" pSortableColumn="date">
+                  Datum
+                  <p-sortIcon field="date"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage">
+                  Istorija[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage2">
+                  Predikovana[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-potrosnja let-i="rowIndex">
+            <tr  [pSelectableRow]="rowData" [pSelectableRowIndex]="i">
+                <td class="text-center" *ngIf="!getDate(potrosnja.date)">{{potrosnja.date.substring(5,10) | date: 'dd/MM'}}</td>
+                <td class="text-center" *ngIf="getDate(potrosnja.date)">Danas</td>
+                <td class="text-center">{{potrosnja.usage}}</td>
+                <td class="text-center">{{potrosnja.usage2}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+  </div>
+</div>
+<div class="row mt-4" *ngIf="(role == 'prozumer' || role == 'proizvođač') && proizvodnja31dIstorija.length">
+  <hr class="mt-2">
+  <div class="col-lg-9 col-md-12 col-sm-12 plswork">
+    <div class="row">
+      <div class="col-sm-12">
+        <h5 class="text title2 text-light">Istorija i predikcija proizvodnje</h5>
+      </div>
+    </div>
+    <div class="chart-container">
+      <canvas id="MyChart6" #MyChart6></canvas>
+    </div>
+    </div>
+    <div class="row" *ngIf="isMobile">
+    <div class="col exportbuttons">
+    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(5)" class="p-button-success mr-2 text-light"  pTooltip="XLS" tooltipPosition="bottom"
+                   style="background-color: rgb(17, 180, 17);"></button>
+    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(5)" class="p-button-warning mr-2 text-light" pTooltip="PDF" tooltipPosition="bottom"
+                  style="background-color: rgb(255, 187, 60);"></button>
+    </div>
+  </div>
+      <div class="col-lg-3 col-md-12 col-sm-12 htmlData" id="htmlData">
+        <div style="display: flex; align-items: center;">
+          <div>
+          <h5 class="text title2 text-light">Proizvodnja</h5>
+          </div>
+          <div style="max-width: 80px; margin-left: 10px; padding-bottom: 10px;" *ngIf="!isMobile">
+            <div style="display: flex;
+            justify-content: center;
+            align-items: center;">
+            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(5)" class="p-button-success mr-2 text-light"  pTooltip="Exportuj tabelu u EXCEL" tooltipPosition="bottom"
+             style="background-color: rgb(17, 180, 17); min-width: 35px;"></button>
+            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(5)" class="p-button-warning mr-2 text-light" pTooltip="Exportuj tabelu u PDF" tooltipPosition="bottom"
+            style="background-color: rgb(255, 187, 60); min-width: 35px;"></button>
+            </div>
+          </div>
+        </div>
+        <p-table #dt [value]="proizvodnja31dIstorija" selectionMode="single" [(selection)]="selectedProizvodnja" (onRowSelect)="onRowSelectProizvodnjaMesec($event)" [scrollable]="true" scrollHeight="503px" [columns]="exportColumnsProizvodnjaNedelja">
+          <ng-template pTemplate="header">
+              <tr>
+                <th class="text-center" pSortableColumn="date">
+                  Datum
+                  <p-sortIcon field="date"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage">
+                  Istorija[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage2">
+                  Predikovana[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-proizvodnja let-i="rowIndex">
+              <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="i">
+                <td class="text-center" *ngIf="!getDate(proizvodnja.date)">{{proizvodnja.date.substring(5,10) | date: 'dd/MM'}}</td>
+                <td class="text-center" *ngIf="getDate(proizvodnja.date)">Danas</td>
+                <td class="text-center">{{proizvodnja.usage}}</td>
+                <td class="text-center">{{proizvodnja.usage2}}</td>
+              </tr>
+          </ng-template>
+      </p-table>
+    </div>
+    </div>
+    <div>
+    </div>
+</mat-tab>
+<mat-tab label="Godina">
+  <ng-template mat-tab-label>
+    <span class="my-custom-class">Godina</span>
+  </ng-template>
+  <h2 class="text title2 mt-4 text-light">Godišnji prikaz</h2>
+
+  <div class="cardowner row row-cols-1 row-cols-md-3 mt-4">
+    <div class="col" style="max-width: 400px;" *ngIf="(role == 'prozumer' || role == 'potrošač') && ukupnaPotrosnjaGodina">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Potrošnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(ukupnaPotrosnjaGodina).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer"><app-arrow style="visibility: hidden;"></app-arrow></div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 400px;" *ngIf="(role == 'prozumer' || role == 'proizvođač') && ukupnaGodisnjaProizvodnja">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Proizvodnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(ukupnaGodisnjaProizvodnja).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer"><app-arrow style="visibility: hidden;"></app-arrow></div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 250px;" *ngIf="(role == 'prozumer' || role == 'potrošač') && maxPotrosnjaGodina.usage">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Maksimalna potrošnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(maxPotrosnjaGodina.usage!!).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer changedtext">{{month(maxPotrosnjaGodina.month!!)}} {{maxPotrosnjaGodina.year}}</div>
+      </div>
+    </div>
+    <div class="col" style="max-width: 250px;" *ngIf="(role == 'prozumer' || role == 'proizvođač') && maxProizvodnjeGodina.usage">
+      <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+        <div class="card-header changed">Maksimalna proizvodnja</div>
+        <div class="card-body">
+          <h5 class="card-title">{{(maxProizvodnjeGodina.usage!!).toFixed(2)}}kWh</h5>
+        </div>
+        <div class="card-footer changedtext">{{month(maxProizvodnjeGodina.month!!)}} {{maxProizvodnjeGodina.year}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-4" *ngIf="(role == 'prozumer' || role == 'potrošač') && potrosnja365dIstorija.length">
+    <hr>
+    <div class="col-lg-9 col-md-12 col-sm-12 plswork">
+      <div class="row">
+      <div class="col-sm-12">
+        <h5 class="text title2 text-light">Istorija i predikcija potrošnje</h5>
+      </div>
+    </div>
+    <div class="chart-container">
+      <canvas id="MyChart7" #MyChart7></canvas>
+      </div>
+    </div>
+    <div class="row" *ngIf="isMobile">
+    <div class="col exportbuttons">
+    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(6)" class="p-button-success mr-2 text-light"  pTooltip="XLS" tooltipPosition="bottom"
+                   style="background-color: rgb(17, 180, 17);"></button>
+    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(6)" class="p-button-warning mr-2 text-light" pTooltip="PDF" tooltipPosition="bottom"
+                  style="background-color: rgb(255, 187, 60);"></button>
+    </div>
+  </div>
+    <div class="col-lg-3 col-md-12 col-sm-12 htmlData" id="htmlData">
+      <div style="display: flex; align-items: center;">
+        <div>
+        <h5 class="text title2 text-light">Potrošnja</h5>
+        </div>
+        <div style="max-width: 80px; margin-left: 10px; padding-bottom: 10px;" *ngIf="!isMobile">
+          <div style="display: flex;
+          justify-content: center;
+          align-items: center;">
+          <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(6)" class="p-button-success mr-2 text-light"  pTooltip="Exportuj tabelu u EXCEL" tooltipPosition="bottom"
+           style="background-color: rgb(17, 180, 17); min-width: 35px;"></button>
+          <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(6)" class="p-button-warning mr-2 text-light" pTooltip="Exportuj tabelu u PDF" tooltipPosition="bottom"
+          style="background-color: rgb(255, 187, 60); min-width: 35px;"></button>
+          </div>
+        </div>
+      </div>
+      <p-table #dt [columns]="exportColumnsPotrosnjaNedelja" selectionMode="single" [(selection)]="selectedPotrosnja" (onRowSelect)="onRowSelectPotrosnjaGodina($event)" [value]="potrosnja365dIstorija" [scrollable]="true" scrollHeight="503px">
+        <ng-template pTemplate="header">
+            <tr>
+                <th class="text-center" pSortableColumn="month">
+                  Mesec
+                  <p-sortIcon field="date"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="year">
+                  Godina
+                  <p-sortIcon field="date"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage">
+                  Istorija[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage2">
+                  Predikovana[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-potrosnja let-i="rowIndex">
+            <tr  [pSelectableRow]="rowData" [pSelectableRowIndex]="i">
+                <td class="text-center">{{month(potrosnja.month)}}</td>
+                <td class="text-center">{{potrosnja.year}}</td>
+                <td class="text-center">{{potrosnja.usage}}</td>
+                <td class="text-center">{{potrosnja.usage2}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+  </div>
+</div>
+<div class="row mt-4" *ngIf="(role == 'prozumer' || role == 'proizvođač') && proizvodnja365dIstorija.length">
+  <hr class="mt-2">
+  <div class="col-lg-9 col-md-12 col-sm-12 plswork">
+    <div class="row">
+      <div class="col-sm-12">
+        <h5 class="text title2 text-light">Istorija i predikcija proizvodnje</h5>
+      </div>
+    </div>
+    <div class="chart-container">
+      <canvas id="MyChart8" #MyChart8></canvas>
+    </div>
+    </div>
+    <div class="row" *ngIf="isMobile">
+    <div class="col exportbuttons">
+    <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(7)" class="p-button-success mr-2 text-light"  pTooltip="XLS" tooltipPosition="bottom"
+                   style="background-color: rgb(17, 180, 17);"></button>
+    <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(7)" class="p-button-warning mr-2 text-light" pTooltip="PDF" tooltipPosition="bottom"
+                  style="background-color: rgb(255, 187, 60);"></button>
+    </div>
+  </div>
+      <div class="col-lg-3 col-md-12 col-sm-12 htmlData" id="htmlData">
+        <div style="display: flex; align-items: center;">
+          <div>
+          <h5 class="text title2 text-light">Proizvodnja</h5>
+          </div>
+          <div style="max-width: 80px; margin-left: 10px; padding-bottom: 10px;" *ngIf="!isMobile">
+            <div style="display: flex;
+            justify-content: center;
+            align-items: center;">
+            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel(7)" class="p-button-success mr-2 text-light"  pTooltip="Exportuj tabelu u EXCEL" tooltipPosition="bottom"
+             style="background-color: rgb(17, 180, 17); min-width: 35px;"></button>
+            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="openPDF(7)" class="p-button-warning mr-2 text-light" pTooltip="Exportuj tabelu u PDF" tooltipPosition="bottom"
+            style="background-color: rgb(255, 187, 60); min-width: 35px;"></button>
+            </div>
+          </div>
+        </div>
+        <p-table #dt [value]="proizvodnja365dIstorija" selectionMode="single" [(selection)]="selectedProizvodnja" (onRowSelect)="onRowSelectProizvodnjaGodina($event)" [scrollable]="true" scrollHeight="503px" [columns]="exportColumnsProizvodnjaGodina">
+          <ng-template pTemplate="header">
+              <tr>
+                <th class="text-center" pSortableColumn="month">
+                  Mesec
+                  <p-sortIcon field="date"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="year">
+                  Godina
+                  <p-sortIcon field="date"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage">
+                  Istorija[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+                <th class="text-center" pSortableColumn="usage2">
+                  Predikovana[kWh]
+                  <p-sortIcon field="usage"></p-sortIcon>
+                </th>
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-proizvodnja let-i="rowIndex">
+              <tr [pSelectableRow]="rowData" [pSelectableRowIndex]="i">
+                <td class="text-center">{{month(proizvodnja.month)}}</td>
+                <td class="text-center">{{proizvodnja.year}}</td>
+                <td class="text-center">{{proizvodnja.usage}}</td>
+                <td class="text-center">{{proizvodnja.usage2}}</td>
+              </tr>
+          </ng-template>
+      </p-table>
+    </div>
+    </div>
+    <div>
+    </div>
+</mat-tab>
+</mat-tab-group>
+</div>
+<hr>
+<h5 class="text title2 text-light">Vremenska prognoza</h5>
+<app-weather-widget-main></app-weather-widget-main>

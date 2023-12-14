@@ -1,0 +1,41 @@
+.fas.fa-power-off.on{
+  background-color: rgb(29, 139, 19);
+  color: rgb(224, 220, 220);
+  border-radius: 50%;
+  width: 17px;
+  height: 17px;
+}
+
+
+.fas.fa-power-off{
+  background-color: rgb(255, 0, 43);
+  color: rgb(255, 255, 255);
+  border-radius: 50%;
+  width: 17px;
+  height: 17px;
+}
+
+:host{
+  cursor: pointer;
+}
+
+@media screen and (max-width: 767px){
+
+  *{
+    font-size: 17px;
+  }
+
+  .fas.fa-power-off.on{
+  padding-top: 2px;
+  padding-right: 2px;
+  width: 20px;
+  height: 20px;
+  }
+
+  .fas.fa-power-off{
+    padding-top: 2px;
+    padding-right: 2px;
+    width: 20px;
+    height: 20px;
+  }
+}

@@ -1,0 +1,68 @@
+<app-spinner></app-spinner>
+
+<div class="kontejner">
+    <div class="courses-container">
+        <div class="course">
+            <div class="course-preview">
+                <h2>TOP 3 potrošača</h2>
+            </div>
+            <div class="course-info">
+                <ol>
+                    <li [routerLink]="['/upravljanje-korisnikom/' + p.id]" *ngFor="let p of topPotrosaci">{{p.ime}}, {{ p.potrosnja }} kWh</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    
+    <div class="courses-container">
+        <div class="course">
+            <div class="course-preview">
+                <h2>TOP 3 proizvođača</h2>
+            </div>
+            <div class="course-info">
+                <ol>
+                    <li [routerLink]="['/upravljanje-korisnikom/' + p.id]" *ngFor="let p of topProizvodjaci">{{p.ime}}, {{ p.proizvodnja }} kWh</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<br>
+<br>
+<br>
+
+
+<h3 style="font-size: 1.5rem;">Statistika potrošnje i proizvodnje energije po uređajima u poslednjih godinu dana</h3>
+<hr>
+<h3>Udeo u ukupnoj potrošnji : </h3>
+<div class="row">
+    <div class="col col-6">
+        <app-chart-korisnici></app-chart-korisnici>
+    </div>
+    <div class="col col-6">
+        <app-table-devices></app-table-devices>
+    </div>
+</div>
+<hr >
+<h3>Udeo u ukupnoj proizvodnji : </h3>
+
+<div class="row">
+    <div class="col col-6">
+        <app-chart-devices-proiz></app-chart-devices-proiz>
+    </div>
+    <div class="col col-6">    
+        <app-table-devices-proiz></app-table-devices-proiz>
+    </div>
+</div>
+    
+<!--
+<div class="column">
+    <app-chart-korisnici></app-chart-korisnici>
+    <app-chart-devices-proiz></app-chart-devices-proiz></div>
+<div class="column" style="margin-left: 20px;">
+    <app-table-devices></app-table-devices>
+    <app-table-devices-proiz></app-table-devices-proiz>
+</div>
+-->

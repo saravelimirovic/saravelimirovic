@@ -1,0 +1,134 @@
+<div class="row">
+  <div class="col" *ngIf="korisnik">
+      <div style="float: left;">
+        <h3 class="naslovPrikaz">Prikaz uređaja korisnika : {{korisnik.ime}} </h3>
+        <br>
+        <p style="float: left;" *ngIf="uredjajiPot.length>0">Potrošnja objekta u poslednjih mesec dana : {{potrObject}} [kWh]</p>
+        <br>
+        <p style="float: left;" *ngIf="uredjajiProiz.length>0">Proizvodnja objekta u poslednjih mesec dana : {{proizObject}} [kWh]</p>
+      </div>
+      
+      <div *ngIf="objekti && objekti.length > 0">
+        <div class="divAdresa"><h3 class="naslovAdresa">Adresa objekta : </h3>
+          <select #select id="s" (change)="onSelected($event)" [(ngModel)]="selectedValue">
+            <!-- <option value="default" selected>{{objekti[1]}}</option> -->
+            <option *ngFor="let objekat of objekti" [value]="objekat.id" selected>
+              {{objekat.lokacija}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+  </div>
+</div>
+
+<div *ngIf="!objekti || objekti.length === 0">
+  <p>Nemate dozvolu za pregled uređaja korisnika.</p>
+</div>
+
+<!-- <mat-tab-group animationDuration="0ms" style="padding-top: 20px;" (selectedTabChange)="onTabClick($event)"> -->
+  <!-- <mat-tab label="Uređaji"> -->
+    <ng-template [ngIf]="1">
+      <div *ngIf="uredjajiPot.length>0">
+      <h5 class="mt-4" id="opening">Potrošači</h5>
+      <hr>
+      <div class="row row-cols-1 row-cols-md-3 mt-4">
+        <div class="col" style="max-width: 250px;" *ngFor="let uredjaj of uredjajiPot">
+          <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3" routerLink="/uredjaji/{{id}}/uredjaj/{{uredjaj.idObjekatUredjaj}}" style="cursor: pointer;" matTooltip="Pogledajte više informacija o uredjaju" >
+            <div class="card-header changed" style="text-align: center !important;">
+              <div class="rowww" style="height: 20px;">
+                <div class="colll">
+                  <div class="switch-button">
+                    <p-tag *ngIf="uredjaj.status == 'Ne'"  severity="danger" value="Isključen"></p-tag>
+                    <p-tag *ngIf="uredjaj.status == 'Da'" severity="success" value="Uključen"></p-tag>
+                  </div>
+                
+                  <!-- <app-switch-uredjaja style="float: left;"></app-switch-uredjaja> -->
+                </div>
+                <div class="col">
+                  <!-- <i class="fal fa-info-square fa-lg"></i> -->
+                
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <img class="uredjaji" style="float: left; margin-left: 10px;"
+                src="../../../assets/uredjaji/{{uredjaj.vrstaUredjaja}}.png">
+              <h5 class="text central">{{uredjaj.vrstaUredjaja}}</h5>
+              <p class="mail">Prostorija: {{uredjaj.nazivProstorije}}</p>
+            </div>
+            <div class="card-footer">
+              <h6>Današnja potrošnja</h6>
+              <h6>{{uredjaj.usageAll | number : '.2-2'}} kWh</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="uredjajiProiz.length>0">
+      <h5 class="mt-4" id="opening">Proizvođači</h5>
+      <hr>
+
+      <div class="row row-cols-1 row-cols-md-3 mt-4">
+        <div class="col" style="max-width: 250px;" *ngFor="let uredjaj of uredjajiProiz">
+          <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3"  routerLink="/uredjaji/{{id}}/uredjaj/{{uredjaj.idObjekatUredjaj}}" style="cursor: pointer;" matTooltip="Pogledajte više informacija o uredjaju">
+            <div class="card-header changed">
+              <div class="row" style="height: 20px;">
+                <div class="col">
+
+                <div class="switch-button">
+                  <p-tag *ngIf="uredjaj.status == 'Ne'"  severity="danger" value="Isključen"></p-tag>
+                  <p-tag *ngIf="uredjaj.status == 'Da'" severity="success" value="Uključen"></p-tag>
+                </div>
+                
+              </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <img class="uredjaji" style="float: left; margin-left: 10px;"
+                src="../../../assets/uredjaji/{{uredjaj.vrstaUredjaja}}.png">
+              <h5 class="text central">{{uredjaj.vrstaUredjaja}}</h5>
+              <p class="mail">Lokacija: {{uredjaj.nazivProstorije}}</p>
+            </div>
+            <div class="card-footer">
+              <h6>Današnja proizvodnja</h6>
+              <h6>{{uredjaj.usageAll | number : '.2-2'}} kWh</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="skladista.length>0">
+      <h5 class="mt-4" id="opening">Skladišta</h5>
+      <hr>
+
+      <div class="row row-cols-1 row-cols-md-3 mt-4">
+        <div class="col" style="max-width: 250px;" *ngFor="let s of skladista">
+          <div class="col-lg-12 col-md-12 card text-center text-white bg-dark mb-3">
+            <div class="card-header changed">
+              <div class="row" style="height: 20px;">
+                
+              </div>
+            </div>
+            <div class="card-body">
+              <img class="uredjaji" style="float: left; margin-left: 10px;"
+                src="../../../assets/uredjaji/Akumulator.png">
+              <h5 class="text central">Akumulator</h5>
+            </div>
+            <div class="card-footer">
+              <h6>Skladišteno</h6>
+              <h6>{{s['trenutnoStanje']}} kWh</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </ng-template>
+  <!-- </mat-tab> -->
+  <!-- <mat-tab label="Statistika"> -->
+    <!-- <h5 class="mt-4" id="opening">Grafički prikaz potrošnje svih uređaja tokom dana:</h5>
+    <hr>
+  </mat-tab>
+ 
+</mat-tab-group> -->
+
