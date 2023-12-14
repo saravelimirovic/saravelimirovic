@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".ui.MyInfoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/go_back"
+                android:layout_width="61dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="15dp"
+                android:backgroundTint="@color/white"
+                android:drawableRight="@drawable/baseline_keyboard_arrow_left_24_green"
+                android:fontFamily="@font/montserrat_medium"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="parent"></Button>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/FirstNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_light"
+                        android:text="Ime"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/dark_gray_text"
+                        android:textSize="16dp"
+                        android:textStyle="bold"></TextView>
+
+                    <EditText
+                        android:id="@+id/first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@drawable/input_field"
+                        android:drawablePadding="8dp"
+                        android:fontFamily="@font/montserrat_light"
+                        android:hint="Ime"
+                        android:drawableStart="@drawable/outline_person_24"
+                        android:padding="8dp"
+                        android:textColorHighlight="@color/cardview_dark_background"
+                        android:maxLines="1"
+                        android:singleLine="true"
+
+                        android:textSize="16dp"></EditText>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp">
+                    <TextView
+                        android:id="@+id/LastNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_light"
+                        android:text="Prezime"
+                        android:textAlignment="viewStart"
+                        android:textColor="@color/dark_gray_text"
+                        android:textSize="16dp"
+                        android:textStyle="bold"></TextView>
+
+                    <EditText
+                        android:id="@+id/last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/input_field"
+                        android:drawablePadding="8dp"
+                        android:fontFamily="@font/montserrat_light"
+                        android:hint="Prezime"
+                        android:drawableStart="@drawable/outline_person_24"
+                        android:padding="8dp"
+                        android:textColorHighlight="@color/cardview_dark_background"
+                        android:maxLines="1"
+                        android:singleLine="true"
+
+                        android:textSize="16dp"></EditText>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/phoneNumberText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/montserrat_light"
+                android:text="Broj telefona"
+                android:textAlignment="viewStart"
+                android:textColor="@color/dark_gray_text"
+                android:textSize="16dp"
+                android:textStyle="bold"></TextView>
+
+            <EditText
+                android:id="@+id/phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/input_field"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/montserrat_light"
+                android:hint="065 245 56 89"
+                android:drawableStart="@drawable/outline_person_24"
+                android:padding="8dp"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:maxLines="1"
+                android:singleLine="true"
+
+                android:textSize="16dp"></EditText>
+
+            <Button
+                android:id="@+id/saveChangesButton"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="@color/green_primary"
+                android:fontFamily="@font/montserrat_medium"
+                android:includeFontPadding="false"
+                android:letterSpacing="0.02"
+                android:padding="8dp"
+                android:text="Sačuvaj izmene"
+                android:textSize="20dp"
+                app:cornerRadius="8dp"></Button>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">MalacProdavac</string>
+    <string name="forgot_password"><u>Zaboravio si šifru?</u></string>
+    <string name="already_registered">Nemaš nalog?<u> Registruj se</u></string>
+    <string name="already_logged_in">Već imaš nalog?<u> Prijavi se</u></string>
+    <string name="email_vrf">Nije Vam stigao email?<u> Pošalji ponovo</u></string>
+    <string name="price_placeholder">%d din</string>
+    <string name="top_algn">TOP</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_register_final_compose">RegisterFinalCompose</string>
+    <string name="title_activity_compose_example">ComposeExample</string>
+    <string name="title_activity_compose_route_example">ComposeRouteExample</string>
+</resources>

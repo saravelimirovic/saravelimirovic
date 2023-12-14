@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical" >
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/go_back"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:backgroundTint="@color/transparent"
+                android:paddingTop="8dp"
+                android:drawableTop="@drawable/baseline_keyboard_arrow_left_24_green"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:layout_marginLeft="82dp"
+            android:text="Porudžbine"
+            android:textAlignment="center"
+            android:textColor="@color/green_primary"
+            android:textSize="20dp"
+            android:textStyle="bold"
+        />
+
+    </LinearLayout>
+
+
+
+    <ListView
+            android:id="@+id/ordersListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"/>
+
+
+</LinearLayout>

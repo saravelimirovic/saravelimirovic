@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:tag="login_tag"
+    tools:context=".ui.LoginActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="237dp"
+        android:layout_height="107dp"
+        android:background="@drawable/logo"
+
+        android:elevation="21dp"
+        app:layout_constraintBottom_toTopOf="@+id/card_view"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+    <ImageView
+        android:id="@+id/circle_center"
+        android:layout_width="627dp"
+        android:layout_height="438dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/circle_shape"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.473"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.21" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="75dp" />
+
+    <androidx.cardview.widget.CardView
+
+        android:minHeight="500dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/card_view"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline5">
+
+
+        <LinearLayout
+            android:layout_width="362dp"
+            android:layout_height="540dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/loginText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:text="Prijava"
+                android:textAlignment="center"
+                android:textColor="@color/green_primary"
+                android:textSize="24dp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:id="@+id/emailText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:fontFamily="@font/montserrat_light"
+                android:text="Email"
+                android:textAlignment="viewStart"
+                android:textColor="@color/dark_gray_text"
+                android:textSize="16dp"
+                android:textStyle="bold"></TextView>
+
+            <EditText
+                android:id="@+id/login_email"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/input_field"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/montserrat_light"
+                android:hint="Unesi Email"
+                android:drawableStart="@drawable/outline_person_24"
+                android:drawableLeft="@drawable/outline_person_24"
+                android:padding="8dp"
+                android:textColorHighlight="@color/cardview_dark_background"
+                android:maxLines="1"
+                android:singleLine="true"
+
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/passwordText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="@font/montserrat_light"
+                android:text="Šifra"
+                android:textAlignment="viewStart"
+                android:textColor="@color/dark_gray_text"
+                android:textSize="16dp"
+                android:textStyle="bold"></TextView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:inputType="textPassword"
+                    android:background="@drawable/input_field"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:drawableLeft="@drawable/outline_lock_24"
+                    android:hint="Unesi šifru"
+                    android:padding="8dp"
+                    android:textColorHighlight="@color/cardview_dark_background"
+                    android:textSize="16dp"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+
+                <ImageButton
+                    android:id="@+id/toggleButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/password"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@id/password"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:padding="8dp"
+                    android:src="@drawable/outline_remove_red_eye_24"/>
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/forgot_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_light"
+                android:text="@string/forgot_password"
+                android:layout_marginTop="16dp"
+                android:textSize="16dp"
+                android:textColor="@color/dark_gray_text"
+                android:textAlignment="textEnd"></TextView>
+
+            <Button
+                android:id="@+id/loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="@color/green_primary"
+                android:fontFamily="@font/montserrat_medium"
+                android:includeFontPadding="false"
+                android:letterSpacing="0.02"
+                android:padding="8dp"
+                android:text="Prijavi se"
+                android:textSize="20dp"
+                app:cornerRadius="8dp"></Button>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/login_to_register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="0dp"
+                    android:textSize="16dp"
+                    android:textColor="@color/dark_gray_text"
+
+                    android:fontFamily="@font/montserrat_light"
+                    android:text="@string/already_registered"
+                    android:textAlignment="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

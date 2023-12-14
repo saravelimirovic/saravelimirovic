@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item android:title="Glavno" android:id="@+id/glavno">
+        <menu>
+            <item
+                android:id="@+id/drawer_home"
+                android:icon="@drawable/home_fill0_wght400_grad0_opsz24"
+                android:title="Početna">
+            </item>
+            <item
+                android:id="@+id/drawer_explore"
+                android:icon="@drawable/search_black_24dp__1_"
+                android:title="Pretraži">
+            </item>
+            <item
+                android:id="@+id/drawer_chat"
+                android:icon="@drawable/chat_fill0_wght400_grad_25_opsz24"
+                android:title="Inboks">
+            </item>
+            <item
+                android:id="@+id/drawer_notf"
+                android:icon="@drawable/notifications_fill0_wght400_grad0_opsz24"
+                android:title="Obaveštenja">
+            </item>
+        </menu>
+    </item>
+    <item android:title="Nalog">
+        <menu>
+            <item
+                android:id="@+id/drawer_profile"
+                android:icon="@drawable/account_circle_fill0_wght400_grad0_opsz24"
+                android:title="Profil">
+            </item>
+            <item
+                android:id="@+id/drawer_account"
+                android:icon="@drawable/manage_accounts_fill0_wght400_grad_25_opsz24"
+                android:title="Nalog">
+            </item>
+        </menu>
+    </item>
+    <item android:title="Kupovina">
+        <menu>
+            <item
+                android:id="@+id/drawer_orders"
+                android:icon="@drawable/list_alt_fill0_wght400_grad_25_opsz24"
+                android:title="Naručeno">
+            </item>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/drawer_logout"
+        android:icon="@drawable/logout_fill0_wght400_grad0_opsz24"
+        android:title="Odjavi se">
+    </item>
+</menu>

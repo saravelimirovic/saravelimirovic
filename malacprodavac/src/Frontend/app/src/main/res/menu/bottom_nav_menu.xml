@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/miHome"
+        android:title="Početna"
+        android:icon="@drawable/round_settings_24">
+
+    </item>
+
+    <item
+        android:id="@+id/miHome2"
+        android:title="Pretraži"
+        android:icon="@drawable/circle_shape">
+
+    </item>
+
+
+    <item android:id="@+id/placeholderBut"
+        android:title="">
+
+    </item>
+
+    <item
+        android:id="@+id/miHome3"
+        android:title="Inboks"
+        android:icon="@drawable/circle_shape">
+
+    </item>
+    <item
+        android:id="@+id/miHome4"
+        android:title="Podešavanja"
+        android:icon="@drawable/circle_shape">
+
+    </item>
+
+</menu>

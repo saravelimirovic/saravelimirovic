@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+            android:id="@+id/backgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@drawable/add_route">
+    </ImageView>
+
+    <androidx.cardview.widget.CardView
+            android:layout_width="362dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            app:cardCornerRadius="15dp"
+            android:layout_marginTop="250dp"
+            android:layout_centerHorizontal="true">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+            <TextView
+                    android:id="@+id/addRouteText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Odredi datum i vreme"
+                    android:textAlignment="center"
+                    android:textColor="@color/green_primary"
+                    android:textSize="24dp"
+                    android:textStyle="bold"></TextView>
+
+            <TextView
+                    android:id="@+id/dateText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:text="Datum"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/dark_gray_text"
+                    android:textSize="16dp"
+                    android:textStyle="bold"></TextView>
+
+            <EditText
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/input_field"
+                    android:hint="Unesi datum polaska"
+                    android:inputType="none"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:drawableStart="@drawable/baseline_calendar"
+                    android:padding="8dp"
+                    android:textColorHighlight="@color/cardview_dark_background"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textSize="16dp"
+                    android:onClick="showDatePickerDialog" />
+
+            <TextView
+                    android:id="@+id/timeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:text="Vreme polaska"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/dark_gray_text"
+                    android:textSize="16dp"
+                    android:textStyle="bold"></TextView>
+
+
+            <EditText
+                    android:id="@+id/time"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/input_field"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:inputType="none"
+                    android:drawableLeft="@drawable/baseline_clock"
+                    android:hint="Unesi vreme polaska"
+                    android:padding="8dp"
+                    android:textColorHighlight="@color/cardview_dark_background"
+                    android:textSize="16dp"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:onClick="showTimePickerDialog" />
+
+            <Button
+                    android:id="@+id/nextStepButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:layout_marginTop="32dp"
+                    android:backgroundTint="@color/green_primary"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:includeFontPadding="false"
+                    android:letterSpacing="0.02"
+                    android:padding="8dp"
+                    android:text="Dalje"
+                    android:textSize="20dp"
+                    app:cornerRadius="8dp"></Button>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

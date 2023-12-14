@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context=".ui.RegisterActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="237dp"
+        android:layout_height="107dp"
+        android:background="@drawable/logo"
+        android:elevation="21dp"
+        app:layout_constraintBottom_toTopOf="@id/card_view"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+    <ImageView
+        android:id="@+id/circle_center"
+        android:layout_width="627dp"
+        android:layout_height="438dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/circle_shape"
+        android:elevation="20dp"
+        app:layout_constraintBottom_toTopOf="@id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.473"
+        tools:visibility="visible" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.21" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.22" />
+
+    <androidx.cardview.widget.CardView
+        android:minHeight="500dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/card_view"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline4">
+
+        <LinearLayout
+            android:layout_width="362dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/loginText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
+                android:text="Registracija"
+                android:textAlignment="center"
+                android:textColor="@color/green_primary"
+                android:textSize="24dp"
+                android:textStyle="bold"></TextView>
+
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/registrationFragmentField"
+                android:name="com.example.myapplication.ui.RegisterFirst"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                tools:layout="@layout/fragment_register_first" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp">
+
+                <Button
+                    android:id="@+id/registration_button_back_to_first_page"
+                    android:layout_width="51dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:backgroundTint="@color/white"
+                    android:drawableRight="@drawable/baseline_keyboard_arrow_left_24_green"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:padding="12dp"
+                    android:visibility="invisible"
+
+                    app:cornerRadius="50dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/registration_button_back_to_login"
+                    app:layout_constraintTop_toTopOf="parent"></Button>
+
+
+                <Button
+                    android:id="@+id/registration_button_back_to_login"
+                    android:layout_width="51dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:backgroundTint="@color/white"
+                    android:drawableRight="@drawable/baseline_keyboard_arrow_left_24_green"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:padding="12dp"
+                    android:visibility="visible"
+
+                    app:cornerRadius="50dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/registration_button_back_to_first_page"></Button>
+
+                <Button
+                    android:id="@+id/registration_button_first_page"
+                    android:layout_width="51dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:backgroundTint="@color/green_primary"
+                    android:drawableRight="@drawable/baseline_keyboard_arrow_right_26"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:padding="12dp"
+
+                    app:cornerRadius="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></Button>
+
+                <Button
+                    android:id="@+id/registration_button_second_page"
+                    android:layout_width="51dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:backgroundTint="@color/green_primary"
+                    android:drawableRight="@drawable/baseline_keyboard_arrow_right_26"
+                    android:drawablePadding="8dp"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:padding="12dp"
+                    android:visibility="invisible"
+
+                    app:cornerRadius="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></Button>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <Button
+                android:id="@+id/confirm_code"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:backgroundTint="@color/green_primary"
+                android:fontFamily="@font/montserrat_medium"
+                android:includeFontPadding="false"
+                android:letterSpacing="0.02"
+                android:padding="8dp"
+                android:text="Potvrdi kod"
+                android:textSize="20dp"
+                android:visibility="invisible"
+                app:cornerRadius="8dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="162dp"></Button>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/register_to_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:text="@string/already_logged_in"
+                    android:textAlignment="center"
+                    android:textColor="@color/dark_gray_text"
+                    android:textSize="16dp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="75dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
