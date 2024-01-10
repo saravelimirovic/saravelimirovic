@@ -67,4 +67,16 @@ public class Order {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public Double getTotalPrice() {
+        if (orderItems == null || orderItems.isEmpty()) {
+            return 0.0;
+        }
+
+        return orderItems.stream()
+                .mapToDouble(orderItem ->
+                        orderItem.getQuantity() * orderItem.getProduct().getPrice())
+                .sum();
+    }
+
 }

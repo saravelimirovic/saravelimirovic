@@ -3,6 +3,9 @@ package com.example.Backend.dto;
 import com.example.Backend.entity.Product;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 // vracam
 @Getter
 public class ProductInOrderDTO {
@@ -11,13 +14,16 @@ public class ProductInOrderDTO {
     private Double quantity;
     private String measuringUnit;
     private Double price;
-//    private String image;
+    private byte[] image;
 
-    public ProductInOrderDTO(Product product) {
+    public ProductInOrderDTO(Product product, Double quantity, byte[] image) {
         this.productId = product.getId();
         this.name = product.getName();
-        this.quantity = product.getQuantity();
+        this.quantity = quantity;
         this.measuringUnit = product.getMeasuringUnit().getId();
-        this.price = product.getPrice();
+        this.image = image;
+
+        BigDecimal totalPrice = BigDecimal.valueOf(quantity).multiply(BigDecimal.valueOf(product.getPrice()));
+        this.price = totalPrice.setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 }

@@ -13,8 +13,9 @@ import com.example.myapplication.R
 import com.example.myapplication.models.CreditCardListItem
 import com.example.myapplication.ui.MyCreditCardActivity
 import com.example.myapplication.ui.OrderDetailsActivity
+import com.example.myapplication.ui.UserOrderDetails
 
-class CreditCardAdapter(context: Context, resource: Int, objects: List<CreditCardListItem>) :
+class CreditCardAdapter(context: Context, resource: Int, objects: List<CreditCardListItem>, private val intent: Intent) :
     ArrayAdapter<CreditCardListItem>(context, resource, objects) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -30,9 +31,18 @@ class CreditCardAdapter(context: Context, resource: Int, objects: List<CreditCar
         textViewCard.text = card?.nameOnCard
 
         itemView.setOnClickListener {
-            val intent = Intent(context, MyCreditCardActivity::class.java)
-            intent.putExtra("id", card?.id)
-            context.startActivity(intent)
+            if(!intent.getBooleanExtra("fromCart", false)) {
+                val intent = Intent(context, MyCreditCardActivity::class.java)
+                intent.putExtra("id", card?.id)
+                context.startActivity(intent)
+            }
+            else {
+                val newIntent = Intent(context, UserOrderDetails::class.java)
+                newIntent.putExtra("cardName", card?.nameOnCard)
+                newIntent.putExtra("companyId", intent.getLongExtra("companyId", 0))
+                context.startActivity(newIntent)
+            }
+
         }
 
         return itemView

@@ -61,21 +61,23 @@
                         android:src="@drawable/menu_big_white" />
 
                     <androidx.appcompat.widget.SearchView
-                        android:layout_width="0dp"
-                        android:layout_height="36dp"
-                        android:layout_margin="16dp"
-                        android:layout_weight="7"
-                        android:background="@drawable/search_bar_shape"
-                        android:backgroundTint="@color/white"
-                        android:clickable="true"
-                        android:clipChildren="false"
-                        android:clipToPadding="true"
-                        android:elevation="20dp"
-                        android:padding="0dp"
-                        android:text="Pretraži proizvode"
-                        android:tooltipText="Pretraži"
-                        app:closeIcon="@android:drawable/ic_menu_close_clear_cancel"
-                        tools:layout_editor_absoluteX="16dp" />
+                            android:id="@+id/searchId"
+                            android:layout_width="0dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="16dp"
+                            android:layout_weight="7"
+                            android:background="@drawable/search_bar_shape"
+                            android:backgroundTint="@color/white"
+                            android:clickable="true"
+                            android:clipChildren="false"
+                            android:clipToPadding="true"
+                            android:elevation="20dp"
+                            android:padding="0dp"
+                            android:inputType="text"
+                            android:tooltipText="Pretraži"
+                            app:closeIcon="@android:drawable/ic_menu_close_clear_cancel"
+                            tools:layout_editor_absoluteX="16dp" />
+
 
                 </LinearLayout>
 
@@ -103,42 +105,124 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="90dp"
+            android:layout_marginBottom="70dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/meowBottomNav"
-            app:layout_constraintTop_toBottomOf="@+id/cardView5">
+            app:layout_constraintTop_toBottomOf="@+id/cardView5"
+            app:layout_constraintVertical_bias="0.45">
 
-            <TextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/listOfCompanies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:clickable="true"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Lista"
+                    android:textColor="@color/green_primary"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/mapOfCompanies"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="66dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="4dp"
+                    android:clickable="true"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:text="Mapa"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/separator"
+                android:layout_width="55dp"
+                android:layout_height="4dp"
+                android:layout_marginLeft="10dp"
+                android:src="@color/green_primary" />
+
+            <RelativeLayout
+                    android:id="@+id/searchResults"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                <androidx.recyclerview.widget.RecyclerView
+
+                        android:numColumns="2"
+                        android:layout_gravity="center"
+                        android:id="@+id/explore_grid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp">
+
+                </androidx.recyclerview.widget.RecyclerView>
+            </RelativeLayout>
+
+            <androidx.cardview.widget.CardView
+                android:layout_margin="24dp"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="12dp"
+                android:visibility="gone"
+                android:id="@+id/map_companies_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <org.osmdroid.views.MapView
+                        android:id="@+id/mapCompanies"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <RelativeLayout
+                android:id="@+id/noComapnies"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_medium"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:text="Kompanije"
-                android:textSize="18sp" />
-
-            <GridView
-
-                android:id="@+id/explore_grid"
-                android:layout_marginTop="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:gravity="center"
-                android:numColumns="2">
+                app:layout_constraintStart_toStartOf="parent" tools:ignore="MissingConstraints">
 
-            </GridView>
-        </LinearLayout>
+            <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="200dp"
+                    app:cardCornerRadius="15dp"
+                    android:gravity="center">
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
 
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@drawable/baseline_youtube_searched_for_24">
+                    </ImageView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="190dp"
-            app:layout_constraintBottom_toTopOf="@+id/meowBottomNav"
-            app:layout_constraintTop_toBottomOf="@+id/cardView5">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nema rezultata za ovu pretragu."
+                            android:textSize="20dp"
+                            android:textColor="@color/green_primary"
+                            android:fontFamily="@font/montserrat_semibold"
+                            android:layout_gravity="center"
+                    />
+                </LinearLayout>
+            </RelativeLayout>
 
-
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <com.etebarian.meowbottomnavigation.MeowBottomNavigation

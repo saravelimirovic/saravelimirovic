@@ -41,14 +41,6 @@ public class Street {
     private List<Order> orders;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "startPointCity", fetch = LAZY, orphanRemoval = true)
-    private List<Route> startRoutes;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "endPointCity", fetch = LAZY, orphanRemoval = true)
-    private List<Route> endRoutes;
-
-    @JsonIgnore
     @OneToMany(mappedBy = "street", fetch = LAZY, orphanRemoval = true)
     private List<Company> companies;
 

@@ -44,7 +44,7 @@
                 android:background="@drawable/input_field"
                 android:drawablePadding="8dp"
                 android:fontFamily="@font/montserrat_light"
-                android:hint="Unesi Ime"
+                android:hint="Unesi ime"
                 android:padding="8dp"
                 android:textColorHighlight="@color/cardview_dark_background"
                 android:textSize="16dp"></EditText>
@@ -83,7 +83,7 @@
                 android:background="@drawable/input_field"
                 android:drawablePadding="8dp"
                 android:fontFamily="@font/montserrat_light"
-                android:hint="Unesi Prezime"
+                android:hint="Unesi prezime"
                 android:padding="8dp"
                 android:textColorHighlight="@color/cardview_dark_background"
                 android:textSize="16dp"></EditText>
@@ -116,7 +116,7 @@
         android:drawableLeft="@drawable/outline_person_24"
         android:drawablePadding="8dp"
         android:fontFamily="@font/montserrat_light"
-        android:hint="Unesi Email"
+        android:hint="Unesi email"
         android:padding="8dp"
         android:textColorHighlight="@color/cardview_dark_background"
         android:textSize="16dp"></EditText>

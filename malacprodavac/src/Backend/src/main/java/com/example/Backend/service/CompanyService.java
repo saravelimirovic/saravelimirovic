@@ -1,9 +1,6 @@
 package com.example.Backend.service;
 
-import com.example.Backend.dto.CompanyDTO;
-import com.example.Backend.dto.HomePageProductDTO;
-import com.example.Backend.dto.MyCompanyDTO;
-import com.example.Backend.dto.RegisterParam;
+import com.example.Backend.dto.*;
 import com.example.Backend.entity.*;
 import com.example.Backend.fileSystemImpl.FileSystemUtil;
 import com.example.Backend.fileSystemImpl.enums.ImageType;
@@ -26,6 +23,8 @@ public class CompanyService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final RatingProductRepository ratingProductRepository;
+    private final MapService mapService;
+
 
 
     private final FileSystemUtil fileSystem;
@@ -71,7 +70,7 @@ public class CompanyService {
     }
 
     @Transactional
-    public Company createCompany(CompanyDTO param, Long userId) {
+    public Company createCompany(CompanyDTO param, Long userId) throws Exception {
         City city = cityRepository.findCityByName(param.getCityName())
                 .orElse(null);
         if(city == null) {
@@ -96,7 +95,6 @@ public class CompanyService {
             streetRepository.save(street);
         }
 
-
         Company newCompany = new Company();
         newCompany.setName(param.getName());
         newCompany.setYearOfCreation(param.getYearOfCreation());
@@ -109,11 +107,16 @@ public class CompanyService {
             newCompany.setStreet(street);
         }
         if(param.getStreetNumber() == "") {
-            newCompany.setStreetNumber("bb");
+            newCompany.setStreetNumber("0");
         }
         else {
             newCompany.setStreetNumber(param.getStreetNumber());
         }
+
+        // Podesite koordinate korisnika
+        CoordinatesDTO coordinates = mapService.getCoordinates(param.getCityName(), param.getStreetName(), param.getStreetNumber(), param.getPostalCode());
+        newCompany.setLongitude(coordinates.getLongitude());
+        newCompany.setLatitude(coordinates.getLatitude());
 
         User user = userRepository.findUserById(userId)
                 .orElse(null);
@@ -123,7 +126,8 @@ public class CompanyService {
         Company addedCompany = companyRepository.save(newCompany);
 
         if(param.getLogo() != null) {
-            fileSystem.saveImage(String.valueOf(addedCompany.getId()), param.getLogo(), ImageType.LOGO);
+            byte[] image = Base64.getDecoder().decode(param.getLogo());
+            fileSystem.saveImage(String.valueOf(addedCompany.getId()), image, ImageType.LOGO);
         }
         // ako nije uneo sliku, postavlja se ona defaultna
         else {
@@ -156,17 +160,6 @@ public class CompanyService {
         return companies;
     }
 
-    @Transactional(readOnly = true)
-    public List<Company> getCompaniesByUserId(Long userId, Consumer<Company> init) {
-        List<Company> companies = companyRepository.findCompaniesByUserId(userId);
-
-        if (init != null) {
-            companies.forEach(init);
-        }
-
-        return companies;
-    }
-
     // za listu kompanija vraca za svaku pojedinacno ukupan rejt na osnovu svih proizvoda
     @Transactional(readOnly = true)
     public Map<Long, Double> getRatesForCompanies(List<Company> companies) {
@@ -194,12 +187,14 @@ public class CompanyService {
     }
 
     @Transactional(readOnly = true)
-    public List<Company> getCompaniesByStreetId(Long streetId, Consumer<Company> init) {
-        List<Company> companies = companyRepository.findByStreetId(streetId);
-
-        if (init != null) {
-            companies.forEach(init);
+    public List<Company> getSearchedCompanies(String search) {
+        if(search.equals("")) {
+            System.out.println("sve");
+            return companyRepository.findAll();
         }
+
+
+        List<Company> companies = companyRepository.findCompaniesByNameContainingIgnoreCase(search);
 
         return companies;
     }

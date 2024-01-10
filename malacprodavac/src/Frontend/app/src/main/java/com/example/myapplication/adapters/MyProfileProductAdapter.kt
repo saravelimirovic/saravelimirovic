@@ -11,6 +11,10 @@ import android.widget.TextView
 import com.example.myapplication.R
 import com.example.myapplication.models.MyProfileProduct
 import com.example.myapplication.ui.ProductActivity
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
+
 
 class MyProfileProductAdapter (context: Context, resource: Int, objects: List<MyProfileProduct>) :
     ArrayAdapter<MyProfileProduct>(context, resource, objects) {
@@ -28,8 +32,16 @@ class MyProfileProductAdapter (context: Context, resource: Int, objects: List<My
         val textViewPrice: TextView = itemView.findViewById(R.id.price)
         val imageViewProduct: ImageView = itemView!!.findViewById(R.id.productImage)
 
-        val resourceId = context.resources.getIdentifier("food", "drawable", context.packageName)
-        imageViewProduct.setImageResource(resourceId)
+        // Base64 string koji predstavlja sliku
+        val base64Image = "${product?.image}"
+
+        // Dekodiranje Base64 stringa u Bitmap
+        val decodedBytes = Base64.decode(base64Image, Base64.DEFAULT)
+        val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+        // Postavljanje dekodiranog Bitmap-a u ImageView
+        imageViewProduct.setImageBitmap(decodedBitmap)
+
         textViewName.text = "${product?.name}"
         textViewDesc.text = "${product?.description}"
         textViewPrice.text = "${product?.price} RSD"

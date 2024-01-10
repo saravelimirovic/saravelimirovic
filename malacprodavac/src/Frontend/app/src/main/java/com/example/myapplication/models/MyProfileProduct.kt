@@ -5,5 +5,6 @@ class MyProfileProduct (
     val name: String,
     val price: Double,
     val description: String,
-    val companyId: Long
+    val companyId: Long,
+    val image: String
 )

@@ -21,11 +21,11 @@ public interface CompanyRepository extends ListCrudRepository<Company, Long> {
 
     List<Company> findCompaniesByUserId(Long userId);
 
-
-
     List<Company> findCompaniesByUserIn(List<User> users);
 
     List<Company> findByStreetId(Long streetId);
 
     List<Company> findAllByIdNot(Long id);
+
+    List<Company> findCompaniesByNameContainingIgnoreCase(String search);
 }

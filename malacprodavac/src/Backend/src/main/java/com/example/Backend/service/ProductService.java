@@ -51,7 +51,8 @@ public class ProductService {
         Product addedProduct = productRepository.save(newProduct);
 
         if(param.getImage() != null) {
-            fileSystem.saveImage(String.valueOf(addedProduct.getId()), param.getImage(), ImageType.PRODUCT);
+            byte[] image = Base64.getDecoder().decode(param.getImage());
+            fileSystem.saveImage(String.valueOf(addedProduct.getId()), image, ImageType.PRODUCT);
         }
         // ako nije uneo sliku, postavlja se ona defaultna
         else {
@@ -118,4 +119,19 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+
+    @Transactional(readOnly = true)
+    public List<Product> getSearchedProducts(String search, Consumer<Product> init) {
+        List<Product> result = productRepository.findProductsByNameContainingIgnoreCase(search);
+
+        if (init != null) {
+            result.forEach(init);
+        }
+
+        return result;
+    }
+
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
 }

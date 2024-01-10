@@ -2,6 +2,8 @@ package com.example.myapplication.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +43,19 @@ class CompanyAdapterHome(private val context: Context, private val companies: Li
         val liked = context.resources.getIdentifier("favorite_fill1_wght400_grad0_opsz24", "drawable", context.packageName)
         val notLiked = context.resources.getIdentifier("favorite_fill0_wght400_grad0_opsz24", "drawable", context.packageName)
 
-        holder.productImage.setImageResource(resourceId)
+        // Base64 string koji predstavlja sliku
+        val base64Image = "${companyCard?.logo}"
+
+        // Dekodiranje Base64 stringa u Bitmap
+        val decodedBytes = Base64.decode(base64Image, Base64.DEFAULT)
+        val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+        // Postavljanje dekodiranog Bitmap-a u ImageView
+        if (!companyCard.logo.equals("null"))
+            holder.productImage.setImageBitmap(decodedBitmap)
+        else
+            holder.productImage.setImageResource(resourceId)
+
         if (companyCard.isLiked)
             holder.like.setImageResource(liked)
         else
@@ -57,17 +71,12 @@ class CompanyAdapterHome(private val context: Context, private val companies: Li
 
         holder.like.setOnClickListener {
             if(companyCard.isLiked) {
-                //unfollow
                 unfollowCompany(companyCard.id)
                 holder.like.setImageResource(notLiked)
-//                val intent = Intent(context, HomeActivity::class.java)
-//                context.startActivity(intent)
             }
             else {
                 followCompany(companyCard.id)
                 holder.like.setImageResource(liked)
-//                val intent = Intent(context, HomeActivity::class.java)
-//                context.startActivity(intent)
             }
         }
     }

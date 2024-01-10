@@ -2,6 +2,7 @@ package com.example.myapplication.ui
 
 import ProductAdapter
 import android.annotation.SuppressLint
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -73,6 +74,23 @@ class HomeActivity : AppCompatActivity() {
                 drawerLayout.closeDrawer(GravityCompat.END)
         }
 
+        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val role = sharedPreferences.getString("role", "empty")
+
+        if (role == "Dostavljač") {
+            navView.menu.removeItem(R.id.kupovina1)
+            navView.menu.removeItem(R.id.nalog1)
+        }
+
+        if (role == "Prodavac") {
+            navView.menu.removeItem(R.id.kupovina2)
+            navView.menu.removeItem(R.id.nalog2)
+        }
+        if (role == "Kupac") {
+            navView.menu.removeItem(R.id.kupovina2)
+            navView.menu.removeItem(R.id.kupovina1)
+            navView.menu.removeItem(R.id.nalog1)
+        }
 
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
@@ -97,8 +115,23 @@ class HomeActivity : AppCompatActivity() {
                     finish()
                 }
 
-                R.id.drawer_account -> {
+                R.id.drawer_account1 -> {
                     startActivity(Intent(this, UserAccountActivity::class.java))
+                    finish()
+                }
+
+                R.id.drawer_account2 -> {
+                    startActivity(Intent(this, UserAccountActivity::class.java))
+                    finish()
+                }
+
+                R.id.drawer_orders -> {
+                    startActivity(Intent(this, OrdersActivity::class.java))
+                    finish()
+                }
+
+                R.id.drawer_delivery_requests -> {
+                    startActivity(Intent(this, DeliveryRequests::class.java))
                     finish()
                 }
 
@@ -111,6 +144,7 @@ class HomeActivity : AppCompatActivity() {
                     editor.remove("lastName")
                     editor.remove("email")
                     editor.remove("password")
+                    editor.remove("companyAdded")
                     editor.apply()
 
                     val intent = Intent(this, LoginActivity::class.java)
@@ -120,40 +154,48 @@ class HomeActivity : AppCompatActivity() {
             }
             true
         }
-
         try {
-            @SuppressLint("MissingInflatedId", "LocalSuppress")
             val bottomNav = findViewById<MeowBottomNavigation>(R.id.meowBottomNav)
-            bottomNav.add(MeowBottomNavigation.Model(home,R.drawable.home_fill0_wght400_grad0_opsz24))
-            bottomNav.add(MeowBottomNavigation.Model(search,R.drawable.search_black_24dp__1_))
-            bottomNav.add(MeowBottomNavigation.Model(add,R.drawable.round_add_24))
-            bottomNav.add(MeowBottomNavigation.Model(notf,R.drawable.notifications_fill0_wght400_grad0_opsz24))
-            bottomNav.add(MeowBottomNavigation.Model(account,R.drawable.account_circle_fill0_wght400_grad0_opsz24))
+            bottomNav.add(MeowBottomNavigation.Model(home, R.drawable.home_fill0_wght400_grad0_opsz24))
+            bottomNav.add(MeowBottomNavigation.Model(search, R.drawable.search_black_24dp__1_))
+
+            val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+            val role = sharedPreferences.getString("role", "empty")
+
+            if (role == "Dostavljač" || role == "Prodavac") {
+                bottomNav.add(MeowBottomNavigation.Model(add, R.drawable.round_add_24))
+            }
+            bottomNav.add(MeowBottomNavigation.Model(notf, R.drawable.notifications_fill0_wght400_grad0_opsz24))
+            bottomNav.add(MeowBottomNavigation.Model(account, R.drawable.account_circle_fill0_wght400_grad0_opsz24))
 
             bottomNav.setOnClickMenuListener {
-                when(it.id) {
+                when (it.id) {
                     search -> {
-                        val intent   = Intent(this, ExploreActivity::class.java)
+                        val intent = Intent(this, ExploreActivity::class.java)
                         startActivity(intent)
                     }
-                    notf-> {
-                        val intent   = Intent(this, NotificationsActivity::class.java)
+                    notf -> {
+                        val intent = Intent(this, NotificationsActivity::class.java)
                         startActivity(intent)
                     }
-                    account-> {
-                        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
-                        val role = sharedPreferences.getString("role", "empty")
-                        if((role.equals("Kupac") || role.equals("Dostavljač")))
-                            startActivity(Intent(this, UserAccountActivity::class.java))
-                        else {
-                            val intent   = Intent(this, UserProfileActivity::class.java)
+                    account -> {
+                        if (role == "Prodavac") {
+                            startActivity(Intent(this, UserProfileActivity::class.java))
+                        } else {
+                            val intent = Intent(this, UserAccountActivity::class.java)
                             intent.putExtra("MyProfile", true)
                             startActivity(intent)
                         }
                     }
-                    add-> {
-                        val intent   = Intent(this, AddPayementMethod::class.java)
-                        startActivity(intent)
+                    add -> {
+                        if (role == "Dostavljač") {
+                            val intent = Intent(this, EnterRouteActivity::class.java)
+                            startActivity(intent)
+                        }
+                        if (role != "Dostavljač" && role != "Kupac") {
+                            val intent = Intent(this, AddProductActivity::class.java)
+                            startActivity(intent)
+                        }
                     }
                 }
             }
@@ -184,7 +226,7 @@ class HomeActivity : AppCompatActivity() {
                             objekat.getString("companyName"),
                             objekat.getDouble("totalRate"),
                             objekat.getBoolean("followed"),
-                            "slika"
+                            objekat.getString("logo"),
                         ))
                 }
 
@@ -197,7 +239,8 @@ class HomeActivity : AppCompatActivity() {
 
             },
             { error ->
-                Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
+                val noNearBy: RelativeLayout = findViewById(R.id.noNearBy)
+                noNearBy.visibility = View.VISIBLE
             }) {
             @Throws(AuthFailureError::class)
             override fun getHeaders(): Map<String, String> {
@@ -230,7 +273,7 @@ class HomeActivity : AppCompatActivity() {
                             objekat.getString("companyName"),
                             objekat.getDouble("totalRate"),
                             objekat.getBoolean("followed"),
-                            "slika"
+                            objekat.getString("logo")
                         ))
                 }
 
@@ -243,7 +286,7 @@ class HomeActivity : AppCompatActivity() {
 
             },
             { error ->
-                Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
+                //Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()
             }) {
             @Throws(AuthFailureError::class)
             override fun getHeaders(): Map<String, String> {

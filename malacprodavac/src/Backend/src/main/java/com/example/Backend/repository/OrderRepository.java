@@ -1,6 +1,7 @@
 package com.example.Backend.repository;
 
 import com.example.Backend.dto.MyOrderDTO;
+import com.example.Backend.entity.Delivery;
 import com.example.Backend.entity.Order;
 import com.example.Backend.entity.StatusOrder;
 import org.springframework.data.jpa.repository.Query;
@@ -21,5 +22,7 @@ public interface OrderRepository extends ListCrudRepository<Order, Long> {
 
     List<Order> findOrderByOwnerIdAndStatus(Long userId, StatusOrder statusOrder);
 
+    List<Order> findOrdersByDeliveryInAndStatus(List<Delivery> deliveries, StatusOrder statusOrder );
+    List<Order> findOrdersByDeliveryIn(List<Delivery> deliveries);
 
 }

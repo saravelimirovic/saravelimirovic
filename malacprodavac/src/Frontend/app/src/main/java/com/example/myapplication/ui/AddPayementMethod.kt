@@ -102,6 +102,24 @@ class AddPayementMethod : AppCompatActivity() {
                 drawerLayout.closeDrawer(GravityCompat.END)
         }
 
+        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val role = sharedPreferences.getString("role", "empty")
+
+        if (role == "Dostavljač") {
+            navView.menu.removeItem(R.id.kupovina1)
+            navView.menu.removeItem(R.id.nalog1)
+        }
+
+        if (role == "Prodavac") {
+            navView.menu.removeItem(R.id.kupovina2)
+            navView.menu.removeItem(R.id.nalog2)
+        }
+        if (role == "Kupac") {
+            navView.menu.removeItem(R.id.kupovina2)
+            navView.menu.removeItem(R.id.kupovina1)
+            navView.menu.removeItem(R.id.nalog1)
+        }
+
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
 
@@ -125,7 +143,12 @@ class AddPayementMethod : AppCompatActivity() {
                     finish()
                 }
 
-                R.id.drawer_account -> {
+                 R.id.drawer_account1 -> {
+                    startActivity(Intent(this, UserAccountActivity::class.java))
+                    finish()
+                }
+
+                R.id.drawer_account2 -> {
                     startActivity(Intent(this, UserAccountActivity::class.java))
                     finish()
                 }
@@ -139,6 +162,7 @@ class AddPayementMethod : AppCompatActivity() {
                     editor.remove("lastName")
                     editor.remove("email")
                     editor.remove("password")
+                    editor.remove("companyAdded")
                     editor.apply()
 
                     val intent = Intent(this, LoginActivity::class.java)
@@ -154,7 +178,12 @@ class AddPayementMethod : AppCompatActivity() {
             val bottomNav = findViewById<MeowBottomNavigation>(R.id.meowBottomNav)
             bottomNav.add(MeowBottomNavigation.Model(home,R.drawable.home_fill0_wght400_grad0_opsz24))
             bottomNav.add(MeowBottomNavigation.Model(search,R.drawable.search_black_24dp__1_))
-            bottomNav.add(MeowBottomNavigation.Model(add,R.drawable.round_add_24))
+            val sharedPreferencesUserRole = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+            val role = sharedPreferencesUserRole.getString("role", "empty")
+
+            if(role.equals("Dostavljac") || role.equals("Kupac")) {
+                bottomNav.add(MeowBottomNavigation.Model(add, R.drawable.round_add_24))
+            }
             bottomNav.add(MeowBottomNavigation.Model(notf,R.drawable.notifications_fill0_wght400_grad0_opsz24))
             bottomNav.add(MeowBottomNavigation.Model(account,R.drawable.account_circle_fill0_wght400_grad0_opsz24))
 
@@ -183,11 +212,28 @@ class AddPayementMethod : AppCompatActivity() {
                             startActivity(intent)
                         }
                     }
+
+                }
+
+                if(role.equals("Dostavljac") || role.equals("Kupac")) {
+                    when(it.id) {
+                        add ->{
+
+                            if (role.equals("Dostavljač")  && !role.equals("Kupac")) {
+                                val intent = Intent(this, EnterRouteActivity::class.java)
+                                startActivity(intent)
+                            }
+                            if (!role.equals("Dostavljač") && !role.equals("Kupac")) {
+                                val intent = Intent(this, AddProductActivity::class.java)
+                                startActivity(intent)
+                            }
+                        }
+                    }
                 }
             }
 
-            bottomNav.show(add)
 
+            bottomNav.show(account)
         } catch (e: Exception) {
             println("ne radi :(((((((((((((")
         }

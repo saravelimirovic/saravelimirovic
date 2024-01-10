@@ -31,7 +31,7 @@ public class CardInformationController {
 
 
     @PostMapping("/add")
-    public ResponseEntity<Object> registerUser(@RequestBody CardInformationDTO param) {
+    public ResponseEntity<Object> addCard(@RequestBody CardInformationDTO param) {
         try {
             Long userId = getUserDetails().getId(); // kupljenje iz tokena
 

@@ -36,12 +36,16 @@ class OrdersAdapter(context: Context, resource: Int, objects: List<Order>) :
         imageViewPerson.setImageResource(resourceId)
         textViewName.text = "${order?.fullNameCustomer}"
         textViewDate.text = "${order?.dateOrderIsMade}"
-        textViewLocation.text = "${order?.deliveryCity}"
-        textViewPrice.text = "${order?.totalPrice}"
+        if (order?.deliveryCity == "null")
+            textViewLocation.text = "Preuzimanje"
+        else
+            textViewLocation.text = "${order?.deliveryCity}"
+        textViewPrice.text = "${order?.totalPrice} RSD"
 
         itemView.setOnClickListener {
             val intent = Intent(context, OrderDetailsActivity::class.java)
             intent.putExtra("orderId", order?.orderId)
+            intent.putExtra("fullNameCustomer", order?.fullNameCustomer)
             context.startActivity(intent)
         }
 

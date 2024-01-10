@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:orientation="vertical"
+    android:background="@color/white"
     android:tag="login_tag"
     tools:context=".ui.LoginActivity">
 
@@ -110,7 +111,7 @@
                 android:background="@drawable/input_field"
                 android:drawablePadding="8dp"
                 android:fontFamily="@font/montserrat_light"
-                android:hint="Unesi Email"
+                android:hint="Unesi email"
                 android:drawableStart="@drawable/outline_person_24"
                 android:drawableLeft="@drawable/outline_person_24"
                 android:padding="8dp"

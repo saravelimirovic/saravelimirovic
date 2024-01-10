@@ -12,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.example.Backend.utils.ContextUtils.getUserDetails;
 
@@ -265,7 +267,7 @@ public class ProductController {
         try {
             Long userId = getUserDetails().getId(); // kupljenje iz tokena
 
-            List<Company> companies = companyService.getCompaniesByUserId(userId, c -> {
+            List<Company> companies = companyService.getCompanyByUserId(userId, c -> {
                 Hibernate.initialize(c.getProducts());
             });
 
@@ -299,19 +301,22 @@ public class ProductController {
 
 
     // vraca proizvode jedne kompanije
-    @GetMapping("/productList/{companyId}/{pageIndex}/{pageSize}")
-    public ResponseEntity<?> getProductsOfCompany(@PathVariable Long companyId, @PathVariable int pageIndex, @PathVariable int pageSize) {
+    @GetMapping("/productList/{companyId}/{category}/{pageIndex}/{pageSize}")
+    public ResponseEntity<?> getProductsOfCompany(
+            @PathVariable Long companyId,
+            @PathVariable String category,
+            @PathVariable int pageIndex,
+            @PathVariable int pageSize) {
         try {
             Company company;
             Long userId;
-            if(companyId == 0) {
+            if (companyId == 0) {
                 userId = getUserDetails().getId();
                 List<Company> list = companyService.getCompanyByUserId(userId, c -> {
                     Hibernate.initialize(c.getProducts());
                 });
                 company = list.get(0);
-            }
-            else {
+            } else {
                 company = companyService.getCompanyById(companyId, c -> {
                     Hibernate.initialize(c.getProducts());
                 });
@@ -319,18 +324,26 @@ public class ProductController {
                 userId = company.getUser().getId();
             }
 
-            List<Product> products = company.getProducts();
+            List<Product> filteredProducts = company.getProducts();
+            System.out.println(filteredProducts.get(0).getProductCategory().getId());
+            if(!"SVE".equalsIgnoreCase(category)) {
+                filteredProducts = filteredProducts.stream()
+                        .filter(product -> product.getProductCategory().getId().equalsIgnoreCase(category))
+                        .collect(Collectors.toList());
+            }
 
-            if (products.size() == 0)
-                return new ResponseEntity<>("User with id=" + userId + " does not have any products.", HttpStatus.NOT_FOUND);
+
+            if (filteredProducts.size() == 0) {
+                return new ResponseEntity<>("No products available in the specified category.", HttpStatus.NOT_FOUND);
+            }
 
             // Paginacija
             int start = pageIndex * pageSize - pageSize;
-            if(start > products.size()) {
+            if (start > filteredProducts.size()) {
                 return new ResponseEntity<>("No product available for that page.", HttpStatus.BAD_REQUEST);
             }
-            int end = Math.min(pageIndex * pageSize, products.size()); // (pageIndex + 1) * pageSize
-            List<Product> paginatedProducts = products.subList(start, end);
+            int end = Math.min(pageIndex * pageSize, filteredProducts.size());
+            List<Product> paginatedProducts = filteredProducts.subList(start, end);
 
             Map<Long, Boolean> favourites = favouriteService.getFavourites(userId, paginatedProducts);
 

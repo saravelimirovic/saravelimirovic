@@ -21,13 +21,14 @@ public class Route {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "startPointCityId", referencedColumnName = "id")
-    private Street startPointCity;
+    private City startPointCity;
+    private String startPointCityPostalCode;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endPointCityId", referencedColumnName = "id")
-    private Street endPointCity;
-    private Double pricePerKm;
-    private Double km;
+    private City endPointCity;
+    private String endPointCityPostalCode;
+
 
     //  -------------------------------
     @JsonIgnore

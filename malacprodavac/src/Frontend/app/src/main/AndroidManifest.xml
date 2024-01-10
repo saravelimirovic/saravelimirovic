@@ -18,9 +18,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ui.DeliveryRequests"
+            android:exported="false" />
+        <activity
             android:name=".ui.UserOrderDetails"
-            android:exported="true" >
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".ui.AvailableDeliverymanActivity"
             android:exported="false" />
@@ -32,22 +34,13 @@
 
         </activity>
         <activity
-            android:name=".ui.AddPayment"
-            android:exported="false" />
-        <activity
-            android:name=".ui.POM2Activity"
-            android:exported="false" />
-        <activity
             android:name=".ui.POM1Activity"
             android:exported="false" />
         <activity
             android:name=".ui.NotificationsActivity"
-            android:exported="false" />
+            android:exported="true"></activity>
         <activity
             android:name=".ui.UserProfileActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.AddDeliveryActivity"
             android:exported="false" />
         <activity
             android:name=".ui.AddProductActivity"
@@ -57,7 +50,7 @@
         </activity>
         <activity
             android:name=".ui.ExploreActivity"
-            android:exported="false" />
+            android:exported="true"></activity>
         <activity
             android:name=".ui.HomeActivity"
             android:exported="true" />
@@ -116,7 +109,6 @@
         <activity
             android:name=".ui.ProductActivity"
             android:exported="true">
-
             <!-- Intent filters and other configurations, if needed -->
         </activity>
         <activity
@@ -178,10 +170,10 @@
         </activity>
         <activity
             android:name=".ui.EnterRouteActivity"
-            android:exported="true" />
+            android:exported="true"></activity>
         <activity
             android:name=".ui.AddNewRouteDateAndTimeActivity"
-            android:exported="true" />
+            android:exported="true"></activity>
         <activity
             android:name=".ui.ShowRouteActivity"
             android:exported="true" />

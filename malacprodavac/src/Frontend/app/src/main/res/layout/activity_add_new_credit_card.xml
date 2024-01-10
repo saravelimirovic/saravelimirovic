@@ -1,43 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/drawerLayout"
     android:background="@color/white"
     android:orientation="vertical"
     tools:context=".ui.AddNewCreditCardActivity">
 
-    <LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:ignore="MissingConstraints">
+        app:cardElevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
-            android:orientation="horizontal"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout5"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="60dp">
+
+            <TextView
+                android:id="@+id/AddCompanytText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/montserrat"
+                android:text="Dodavanje kartice"
+                android:textColor="@color/green_primary"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/go_back"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="10dp"
                 android:backgroundTint="@color/white"
-                android:drawableRight="@drawable/baseline_keyboard_arrow_left_24_green"
-                android:fontFamily="@font/montserrat_medium"
+                android:drawableTop="@drawable/baseline_keyboard_arrow_left_big"
+                android:paddingTop="8dp"
                 android:visibility="visible"
-                app:layout_constraintStart_toStartOf="parent"></Button>
-        </RelativeLayout>
+                app:cornerRadius="50dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+            </Button>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/cardd">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingLeft="20dp"
+            android:layout_marginTop="24dp"
             android:paddingRight="20dp"
             tools:ignore="MissingConstraints">
 
@@ -58,14 +94,14 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/input_field"
+                android:drawableStart="@drawable/outline_person_24"
                 android:drawablePadding="8dp"
                 android:fontFamily="@font/montserrat_light"
                 android:hint="Kartica"
-                android:drawableStart="@drawable/outline_person_24"
-                android:padding="8dp"
-                android:textColorHighlight="@color/cardview_dark_background"
                 android:maxLines="1"
+                android:padding="8dp"
                 android:singleLine="true"
+                android:textColorHighlight="@color/cardview_dark_background"
 
                 android:textSize="16dp"></EditText>
 
@@ -87,15 +123,15 @@
                 android:layout_height="50dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/input_field"
+                android:drawableStart="@drawable/baseline_credit_card"
+                android:drawableLeft="@drawable/outline_person_24"
                 android:drawablePadding="8dp"
                 android:fontFamily="@font/montserrat_light"
                 android:hint="XXXX-XXXX-XXXX-XXXX"
-                android:drawableStart="@drawable/baseline_credit_card"
-                android:drawableLeft="@drawable/outline_person_24"
-                android:padding="8dp"
-                android:textColorHighlight="@color/cardview_dark_background"
                 android:maxLines="1"
+                android:padding="8dp"
                 android:singleLine="true"
+                android:textColorHighlight="@color/cardview_dark_background"
 
                 android:textSize="16dp"></EditText>
 
@@ -109,12 +145,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/expirationDateText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_light"
                         android:layout_marginTop="24dp"
+                        android:fontFamily="@font/montserrat_light"
                         android:text="Datum isteka"
                         android:textAlignment="viewStart"
                         android:textColor="@color/dark_gray_text"
@@ -128,14 +165,14 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginRight="10dp"
                         android:background="@drawable/input_field"
+                        android:drawableStart="@drawable/baseline_calendar"
                         android:drawablePadding="8dp"
                         android:fontFamily="@font/montserrat_light"
                         android:hint="XX-XXXX"
-                        android:drawableStart="@drawable/baseline_calendar"
-                        android:padding="8dp"
-                        android:textColorHighlight="@color/cardview_dark_background"
                         android:maxLines="1"
+                        android:padding="8dp"
                         android:singleLine="true"
+                        android:textColorHighlight="@color/cardview_dark_background"
 
                         android:textSize="16dp"></EditText>
                 </LinearLayout>
@@ -143,15 +180,16 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/securityCodeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/montserrat_light"
                         android:layout_marginTop="24dp"
+                        android:fontFamily="@font/montserrat_light"
                         android:text="Sigurnosni kod"
                         android:textAlignment="viewStart"
                         android:textColor="@color/dark_gray_text"
@@ -164,14 +202,14 @@
                         android:layout_height="50dp"
                         android:layout_marginTop="8dp"
                         android:background="@drawable/input_field"
+                        android:drawableStart="@drawable/baseline_security"
                         android:drawablePadding="8dp"
                         android:fontFamily="@font/montserrat_light"
                         android:hint="XXX"
-                        android:drawableStart="@drawable/baseline_security"
-                        android:padding="8dp"
-                        android:textColorHighlight="@color/cardview_dark_background"
                         android:maxLines="1"
+                        android:padding="8dp"
                         android:singleLine="true"
+                        android:textColorHighlight="@color/cardview_dark_background"
 
                         android:textSize="16dp"></EditText>
                 </LinearLayout>
@@ -194,5 +232,39 @@
         </LinearLayout>
 
     </LinearLayout>
+    <com.etebarian.meowbottomnavigation.MeowBottomNavigation
+        android:id="@+id/meowBottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:elevation="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:mbn_backgroundBottomColor="#ffffff"
+        app:mbn_circleColor="#ffffff"
+        app:mbn_countBackgroundColor="@color/green_primary"
+        app:mbn_countTextColor="@color/white"
+        app:mbn_defaultIconColor="@color/dark_gray_text"
+        app:mbn_rippleColor="@color/input_gray_outline"
+        app:mbn_selectedIconColor="@color/green_primary"
+        app:mbn_shadowColor="@color/input_gray_outline">
 
+    </com.etebarian.meowbottomnavigation.MeowBottomNavigation>
 </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/drawer_view"
+        android:layout_gravity="start"
+        android:backgroundTint="@color/white"
+        android:background="@color/white"
+        app:subheaderColor="@color/green_primary"
+        app:menu="@menu/drawer_menu"
+        app:headerLayout="@layout/drawer_header"
+        android:fitsSystemWindows="true"
+        android:visibility="visible">
+
+
+    </com.google.android.material.navigation.NavigationView>
+</androidx.drawerlayout.widget.DrawerLayout>

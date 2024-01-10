@@ -241,12 +241,7 @@ class RegisterActivity : AppCompatActivity(), RegisterThird.RegisterActivityCall
             return false
         }
 
-        if (phoneNumber.isEmpty()) {
-            phoneNumberEditText.error = "Unesite broj telefona."
-            return false
-        }
-
-        if (!onlyNumbers(phoneNumber)) {
+        if (phoneNumber.isNotEmpty() && !onlyNumbers(phoneNumber)) {
             phoneNumberEditText.error = "Dozvoljeni su samo brojevi."
             return false
         }
@@ -257,8 +252,8 @@ class RegisterActivity : AppCompatActivity(), RegisterThird.RegisterActivityCall
         PhoneNumber = phoneNumber
         PostalCode = postalCode
         if(role == "Kupac") Role = 1
-        if(role == "Dostavljac") Role = 2
-        if(role == "Prodavac") Role = 3
+        if(role == "Dostavljac") Role = 3
+        if(role == "Prodavac") Role = 2
         return true
     }
 

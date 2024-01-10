@@ -48,7 +48,9 @@ class LoginActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
 
         if (email != "empty" && password != "empty") {
-            performLogin(email, password, false)
+            emailEditText.setText(email)
+            passwordEditText.setText(password)
+//            performLogin(email, password, false)
         }
 
         loginButton.setOnClickListener {
@@ -177,9 +179,6 @@ class LoginActivity : AppCompatActivity() {
                     if (responseBody.contains("Login failed")) {
                         showToastMessage("Pogrešan email ili Šifra. Ako nemate nalog, registrujte se.", true)
                     } else {
-//                        showToastMessage("Uspešno logovanje.", false)
-
-
                         val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
                         val editor = sharedPreferences.edit()
                         editor.putString("JWT_TOKEN", jsonResponse.getString("token"))

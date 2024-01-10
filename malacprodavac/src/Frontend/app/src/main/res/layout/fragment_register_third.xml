@@ -60,6 +60,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:maxLines="1"
+                        android:textSize="28dp"
+                        android:nextFocusRight="@id/verf_card2"
+                        android:fontFamily="@font/alata"
+                        android:layout_marginTop="-12dp"
+                        android:layout_marginBottom="-12dp"
                         android:singleLine="true"
                         android:maxLength="1">
 
@@ -95,6 +100,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:maxLines="1"
+                        android:textSize="28dp"
+                        android:nextFocusRight="@id/verf_card3"
+                        android:fontFamily="@font/alata"
+                        android:layout_marginTop="-12dp"
+                        android:layout_marginBottom="-12dp"
                         android:singleLine="true"
                         android:maxLength="1">
 
@@ -126,7 +136,11 @@
                         android:id="@+id/verf_card3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:maxLines="1"
+                        android:textSize="28dp"
+                        android:nextFocusRight="@id/verf_card4"
+                        android:fontFamily="@font/alata"
+                        android:layout_marginTop="-12dp"
+                        android:layout_marginBottom="-12dp"
                         android:singleLine="true"
                         android:maxLength="1">
 
@@ -161,6 +175,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:maxLines="1"
+                        android:textSize="28dp"
+                        android:fontFamily="@font/alata"
+                        android:layout_marginTop="-12dp"
+                        android:layout_marginBottom="-12dp"
                         android:singleLine="true"
                         android:maxLength="1">
 

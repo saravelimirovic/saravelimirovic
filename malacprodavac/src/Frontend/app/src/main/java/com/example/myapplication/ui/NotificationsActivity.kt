@@ -7,8 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageButton
 import android.widget.ListView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -51,6 +53,23 @@ class NotificationsActivity : AppCompatActivity() {
             else
                 drawerLayout.closeDrawer(GravityCompat.END)
         }
+        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val role = sharedPreferences.getString("role", "empty")
+
+        if (role == "Dostavljač") {
+            navView.menu.removeItem(R.id.kupovina1)
+            navView.menu.removeItem(R.id.nalog1)
+        }
+
+        if (role == "Prodavac") {
+            navView.menu.removeItem(R.id.kupovina2)
+            navView.menu.removeItem(R.id.nalog2)
+        }
+        if (role == "Kupac") {
+            navView.menu.removeItem(R.id.kupovina2)
+            navView.menu.removeItem(R.id.kupovina1)
+            navView.menu.removeItem(R.id.nalog1)
+        }
 
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
@@ -75,8 +94,23 @@ class NotificationsActivity : AppCompatActivity() {
                     finish()
                 }
 
-                R.id.drawer_account -> {
+                 R.id.drawer_account1 -> {
                     startActivity(Intent(this, UserAccountActivity::class.java))
+                    finish()
+                }
+
+                R.id.drawer_account2 -> {
+                    startActivity(Intent(this, UserAccountActivity::class.java))
+                    finish()
+                }
+
+                R.id.drawer_orders -> {
+                    startActivity(Intent(this, OrdersActivity::class.java))
+                    finish()
+                }
+
+                R.id.drawer_delivery_requests -> {
+                    startActivity(Intent(this, DeliveryRequests::class.java))
                     finish()
                 }
 
@@ -89,6 +123,7 @@ class NotificationsActivity : AppCompatActivity() {
                     editor.remove("lastName")
                     editor.remove("email")
                     editor.remove("password")
+                    editor.remove("companyAdded")
                     editor.apply()
 
                     val intent = Intent(this, LoginActivity::class.java)
@@ -106,9 +141,16 @@ class NotificationsActivity : AppCompatActivity() {
             val bottomNav = findViewById<MeowBottomNavigation>(R.id.meowBottomNav)
             bottomNav.add(MeowBottomNavigation.Model(home,R.drawable.home_fill0_wght400_grad0_opsz24))
             bottomNav.add(MeowBottomNavigation.Model(search,R.drawable.search_black_24dp__1_))
-            bottomNav.add(MeowBottomNavigation.Model(add,R.drawable.round_add_24))
+
+            val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+            val role = sharedPreferences.getString("role", "empty")
+
+            if (role == "Dostavljač" || role == "Prodavac") {
+                bottomNav.add(MeowBottomNavigation.Model(add, R.drawable.round_add_24))
+            }
             bottomNav.add(MeowBottomNavigation.Model(notf,R.drawable.notifications_fill0_wght400_grad0_opsz24))
             bottomNav.add(MeowBottomNavigation.Model(account,R.drawable.account_circle_fill0_wght400_grad0_opsz24))
+            bottomNav.setCount(4, "1")
 
             bottomNav.setOnClickMenuListener {
                 when(it.id) {
@@ -120,20 +162,24 @@ class NotificationsActivity : AppCompatActivity() {
                         val intent   = Intent(this, HomeActivity::class.java)
                         startActivity(intent)
                     }
-                    account-> {
-                        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
-                        val role = sharedPreferences.getString("role", "empty")
-                        if((role.equals("Kupac") || role.equals("Dostavljač")))
-                            startActivity(Intent(this, UserAccountActivity::class.java))
-                        else {
-                            val intent   = Intent(this, UserProfileActivity::class.java)
+                    account -> {
+                        if (role == "Prodavac") {
+                            startActivity(Intent(this, UserProfileActivity::class.java))
+                        } else {
+                            val intent = Intent(this, UserAccountActivity::class.java)
                             intent.putExtra("MyProfile", true)
                             startActivity(intent)
                         }
                     }
-                    add-> {
-                        val intent   = Intent(this, AddPayementMethod::class.java)
-                        startActivity(intent)
+                    add -> {
+                        if (role == "Dostavljač") {
+                            val intent = Intent(this, EnterRouteActivity::class.java)
+                            startActivity(intent)
+                        }
+                        if (role != "Dostavljač" && role != "Kupac") {
+                            val intent = Intent(this, AddProductActivity::class.java)
+                            startActivity(intent)
+                        }
                     }
                 }
             }
@@ -160,7 +206,7 @@ class NotificationsActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchNotifications() {
+    public fun fetchNotifications() {
         val requestQueue: RequestQueue = Volley.newRequestQueue(this)
         val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
         val email = sharedPreferences.getString("email", "empty")
@@ -169,25 +215,32 @@ class NotificationsActivity : AppCompatActivity() {
         val jsonArrayRequest = object : JsonArrayRequest(
             Request.Method.GET, url, null,
             { response ->
-                val notificationList: MutableList<NotificationModel> = ArrayList()
-                for (i in 0 until response.length()) {
-                    val objekat = response.getJSONObject(i)
-                    notificationList.add(
-                        NotificationModel(objekat.getLong("id"),
-                            objekat.getString("senderFirstName"),
-                            objekat.getString("senderLastName"),
-                            objekat.getString("dateNotificationIsSent"),
-                            objekat.getString("title"),
-                            objekat.getString("body"),
-                            objekat.getString("receiverEmail")
-                        )
-                    )
+                if (response.length() == 0) {
+                    val noNotifications: RelativeLayout = findViewById(R.id.noNotifications)
+                    noNotifications.visibility = View.VISIBLE
+                    val notificationsListView: ListView = findViewById(R.id.notificationsListView)
+                    notificationsListView.visibility = View.GONE
                 }
-
-                val notifications = notificationList
-                val adapter = NotificationAdapter(this, R.layout.one_notification, notifications)
-                val listView: ListView = findViewById(R.id.notificationsListView)
-                listView.adapter = adapter
+                else {
+                    val notificationList: MutableList<NotificationModel> = ArrayList()
+                    for (i in 0 until response.length()) {
+                        val objekat = response.getJSONObject(i)
+                        notificationList.add(
+                            NotificationModel(objekat.getLong("id"),
+                                objekat.getString("senderFirstName"),
+                                objekat.getString("senderLastName"),
+                                objekat.getString("dateNotificationIsSent"),
+                                objekat.getString("title"),
+                                objekat.getString("body"),
+                                objekat.getString("receiverEmail")
+                            )
+                        )
+                    }
+                    val notifications = notificationList
+                    val adapter = NotificationAdapter(this, R.layout.one_notification, notifications, this)
+                    val listView: ListView = findViewById(R.id.notificationsListView)
+                    listView.adapter = adapter
+                }
             },
             { error ->
                 Toast.makeText(this, error.message, Toast.LENGTH_LONG).show()

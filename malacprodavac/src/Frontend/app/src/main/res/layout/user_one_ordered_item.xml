@@ -82,51 +82,53 @@
         android:gravity="center|center_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/quantityTextView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"/>
 
-    <EditText
+    <TextView
         android:id="@+id/quantityTextView"
         android:layout_width="40dp"
+        android:background="@drawable/product_count_cont"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
         android:fontFamily="@font/montserrat_medium"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="2"
+        android:padding="5dp"
+        android:text="2x"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         android:textAlignment="center"
-        android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/increaseQuantityButton"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/increaseQuantityButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:backgroundTint="@color/transparent"
-        android:drawableTop="@drawable/sharp_add_black_36"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-<!--
     <TextView
-        android:id="@+id/quantity"
-        android:background="@drawable/product_count_cont"
-        android:layout_width="42dp"
-        android:layout_height="32dp"
-        android:layout_gravity="center_vertical"
-        android:fontFamily="@font/montserrat_semibold"
-        android:gravity="center"
-        android:text="x3"
-        android:layout_marginEnd="24dp"
-        android:textColor="@color/white"
-        android:textSize="18dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView2"
-        app:layout_constraintTop_toTopOf="parent" />
--->
+            android:id="@+id/quantity"
+
+            android:layout_width="42dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/montserrat_semibold"
+            android:gravity="center"
+            android:text="x3"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" tools:layout_editor_absoluteX="0dp"
+            app:layout_constraintVertical_bias="1.0" tools:ignore="MissingConstraints"/>
+    <Button
+            android:id="@+id/increaseQuantityButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:backgroundTint="@color/transparent"
+            android:drawableTop="@drawable/baseline_delete_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintVertical_bias="0.525"/>
     <TextView
         android:id="@+id/price"
         android:layout_width="wrap_content"

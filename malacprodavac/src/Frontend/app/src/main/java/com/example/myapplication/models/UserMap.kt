@@ -1,8 +1,8 @@
 package com.example.myapplication.models
 
-data class UserMap (
-    val firstName: String,
-    val lastName: String,
+data class CompanyMap (
+    val id: Long,
+    val companyName: String,
     val latitude: Double,
     val longitude: Double
 )

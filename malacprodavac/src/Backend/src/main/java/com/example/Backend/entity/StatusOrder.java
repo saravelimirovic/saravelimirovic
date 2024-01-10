@@ -9,10 +9,10 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 public enum StatusOrder {
-    ORDERED("ordered"),
+//    ORDERED("ordered"),
     READY_FOR_DELIVERY("readyForDelivery"),
     OUT_FOR_DELIVERY("outForDelivery"),
-    ON_THE_WAY("onTheWay"),
+//    ON_THE_WAY("onTheWay"),
     DELIVERED("delivered"),
     CANCELLED("cancelled"),
     FAILED("failed");

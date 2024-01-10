@@ -2,9 +2,12 @@ package com.example.Backend.controller;
 
 import com.example.Backend.dto.*;
 import com.example.Backend.entity.*;
+import com.example.Backend.fileSystemImpl.FileSystemUtil;
+import com.example.Backend.fileSystemImpl.enums.ImageType;
 import com.example.Backend.service.OrderItemService;
 import com.example.Backend.service.OrderService;
 import com.example.Backend.service.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,18 +32,20 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderItemService orderItemService;
     private final ProductService productService;
+    private final FileSystemUtil fileSystem;
 
     @PostMapping("/add")
     public ResponseEntity<?> addOrder(@RequestBody OrderDTO orders) {
         try {
             Long userId = getUserDetails().getId(); // kupljenje iz tokena
-
             List<OrderItem> addedOrders = orderService.createOrders(orders, userId);
-
+            ObjectMapper objectMapper = new ObjectMapper();
+            String json = objectMapper.writeValueAsString(orders);
+            System.out.println(json);
             // nez sta da vracam ovde
             return new ResponseEntity<>(addedOrders, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -93,28 +99,20 @@ public class OrderController {
         try {
             Long userId = getUserDetails().getId(); // kupljenje iz tokena
 
-            List<Order> orders = orderService.getOrdersByOwnerId(userId, o -> {
-                Hibernate.initialize(o.getCustomer());
-                Hibernate.initialize(o.getDelivery());
-                Hibernate.initialize(o.getDeliveryStreet());
-            });
+            List<Order> orders = orderService.getOrdersByOwnerId(userId);
 
-            if (orders.size() == 0)
+            if (orders.isEmpty()) {
                 return new ResponseEntity<>("User with id=" + userId + " does not have any order yet.", HttpStatus.NOT_FOUND);
+            }
 
-            List<Long> orderIds = orders.stream()
-                    .map(Order::getId)
-                    .toList();
+            List<OrdersListDTO> listOfOrders = new ArrayList<>();
 
-            List<OrderItem> orderItems = orderItemService.getOrderItemsByOrderIdIn(orderIds, oi -> {
-                Hibernate.initialize(oi.getProduct());
-            });
+            for (Order order : orders) {
+                Double totalPrice = order.getTotalPrice(); // koristi novu metodu za ukupnu cenu
 
-            Map<Long, Double> totalPrices = orderItemService.getTotalPrice(orderIds);
-
-            List<OrdersListDTO> listOfOrders = orderItems.stream()
-                    .map(orderItem -> new OrdersListDTO(orderItem.getOrder(), totalPrices.getOrDefault(orderItem.getId(), 0.0)))
-                    .toList();
+                OrdersListDTO ordersListDTO = new OrdersListDTO(order, totalPrice);
+                listOfOrders.add(ordersListDTO);
+            }
 
             List<OrdersListDTO> distinctOrders = listOfOrders.stream()
                     .collect(Collectors.toMap(
@@ -136,7 +134,7 @@ public class OrderController {
 
             return new ResponseEntity<>(paginatedOrders, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -148,14 +146,10 @@ public class OrderController {
                 Hibernate.initialize(oi.getProduct());
             });
 
-            List<Product> products = orderItems.stream()
-                    .map(OrderItem::getProduct)
+            List<ProductInOrderDTO> listOfProducts = orderItems.stream()
+                    .map(orderItem -> new ProductInOrderDTO(orderItem.getProduct(), orderItem.getQuantity(),
+                            fileSystem.getImageInBytes(String.valueOf(orderItem.getProduct().getId()), ImageType.PRODUCT)))
                     .toList();
-
-            List<ProductInOrderDTO> listOfProducts = products.stream()
-                    .map(product -> new ProductInOrderDTO(product))
-                    .toList();
-
 
             return new ResponseEntity<>(listOfProducts, HttpStatus.OK);
         } catch (Exception ex) {
@@ -163,6 +157,7 @@ public class OrderController {
         }
     }
 
+    // vraca info o korisniku ciji je order (proizvodjacu)
     @GetMapping("/userInOrder/{orderId}")
     public ResponseEntity<?> getUserInOrder(@PathVariable Long orderId) {
         try {
@@ -173,6 +168,147 @@ public class OrderController {
             UserInfoOrderDTO userIn = new UserInfoOrderDTO(order);
 
             return new ResponseEntity<>(userIn, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
+    // lista ordera (proizvodjac) -> ali sa statusom READY_FOR_DELIVERY (za koji jos nije pronadjen deliverer)
+    @GetMapping("/listOfOrdersReady/{pageIndex}/{pageSize}")
+    public ResponseEntity<?> getListOfOrdersReadyForDelivery(@PathVariable int pageIndex, @PathVariable int pageSize) {
+        try {
+            Long userId = getUserDetails().getId(); // kupljenje iz tokena
+
+            List<Order> orders = orderService.getOrdersByOwnerIdAndReadyForDelivery(userId, StatusOrder.READY_FOR_DELIVERY, o -> {
+                Hibernate.initialize(o.getCustomer());
+                Hibernate.initialize(o.getDelivery());
+                Hibernate.initialize(o.getDeliveryStreet());
+            });
+
+            if (orders.size() == 0)
+                return new ResponseEntity<>("User with id=" + userId + " does not have any order yet.", HttpStatus.NOT_FOUND);
+
+            List<Long> orderIds = orders.stream()
+                    .map(Order::getId)
+                    .toList();
+
+            List<OrderItem> orderItems = orderItemService.getOrderItemsByOrderIdIn(orderIds, oi -> {
+                Hibernate.initialize(oi.getProduct());
+            });
+
+            Map<Long, Double> totalPrices = orderItemService.getTotalPrice(orderIds);
+
+            List<OrdersListDTO> listOfOrders = orderItems.stream()
+                    .map(orderItem -> new OrdersListDTO(orderItem.getOrder(), totalPrices.getOrDefault(orderItem.getOrder().getId(), 0.0)))
+                    .toList();
+
+
+            List<OrdersListDTO> distinctOrders = listOfOrders.stream()
+                    .collect(Collectors.toMap(
+                            OrdersListDTO::getOrderId,  // Ključ je orderID
+                            Function.identity(),
+                            (existing, replacement) -> existing  // Ako se pojavi duplikat, zadrži original
+                    ))
+                    .values()
+                    .stream()
+                    .collect(Collectors.toList());
+
+            // Paginacija
+            int start = pageIndex * pageSize - pageSize;
+            if(start > distinctOrders.size()) {
+                return new ResponseEntity<>("No orders available for that page.", HttpStatus.BAD_REQUEST);
+            }
+            int end = Math.min(pageIndex * pageSize, distinctOrders.size()); // (pageIndex + 1) * pageSize
+            List<OrdersListDTO> paginatedOrders = distinctOrders.subList(start, end);
+
+            return new ResponseEntity<>(paginatedOrders, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // lista ordera (proizvodjac) -> ali sa statusom OUT_FOR_DELIVERY (za koji je pronadjen deliverer)
+    @GetMapping("/listOfOrdersOut/{pageIndex}/{pageSize}")
+    public ResponseEntity<?> getListOfOrdersOutForDelivery(@PathVariable int pageIndex, @PathVariable int pageSize) {
+        try {
+            Long userId = getUserDetails().getId(); // kupljenje iz tokena
+
+            List<Order> orders = orderService.getOrdersByOwnerIdAndReadyForDelivery(userId, StatusOrder.OUT_FOR_DELIVERY, o -> {
+                Hibernate.initialize(o.getCustomer());
+                Hibernate.initialize(o.getDelivery());
+                Hibernate.initialize(o.getDeliveryStreet());
+            });
+
+            if (orders.size() == 0)
+                return new ResponseEntity<>("User with id=" + userId + " does not have any order yet.", HttpStatus.NOT_FOUND);
+
+            List<Long> orderIds = orders.stream()
+                    .map(Order::getId)
+                    .toList();
+
+            List<OrderItem> orderItems = orderItemService.getOrderItemsByOrderIdIn(orderIds, oi -> {
+                Hibernate.initialize(oi.getProduct());
+            });
+
+            Map<Long, Double> totalPrices = orderItemService.getTotalPrice(orderIds);
+
+            List<OrdersListDTO> listOfOrders = orderItems.stream()
+                    .map(orderItem -> new OrdersListDTO(orderItem.getOrder(), totalPrices.getOrDefault(orderItem.getOrder().getId(), 0.0)))
+                    .toList();
+
+
+            List<OrdersListDTO> distinctOrders = listOfOrders.stream()
+                    .collect(Collectors.toMap(
+                            OrdersListDTO::getOrderId,  // Ključ je orderID
+                            Function.identity(),
+                            (existing, replacement) -> existing  // Ako se pojavi duplikat, zadrži original
+                    ))
+                    .values()
+                    .stream()
+                    .collect(Collectors.toList());
+
+            // Paginacija
+            int start = pageIndex * pageSize - pageSize;
+            if(start > distinctOrders.size()) {
+                return new ResponseEntity<>("No orders available for that page.", HttpStatus.BAD_REQUEST);
+            }
+            int end = Math.min(pageIndex * pageSize, distinctOrders.size()); // (pageIndex + 1) * pageSize
+            List<OrdersListDTO> paginatedOrders = distinctOrders.subList(start, end);
+
+            return new ResponseEntity<>(paginatedOrders, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+//  --------------------------------------
+
+    // vezuje delivery za order
+    @PostMapping("/updateDelivery/{orderId}/{deliveryId}")
+    public ResponseEntity<?> updateDelivery(@PathVariable Long deliveryId, @PathVariable Long orderId) {
+        try {
+            Order order = orderService.updateDelivery(orderId, deliveryId);
+
+            return ResponseEntity.ok(
+                    Map.of("Message", 1, "idUpdatedOrder", order.getId())
+            );
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    // deliverer menja status ordera
+    @PostMapping("/updateStatus/{orderId}/{status}")
+    public ResponseEntity<?> updateStatusByDeliverer(@PathVariable Long orderId, @PathVariable String status) {
+        try {
+            StatusOrder statusOrder = StatusOrder.getById(status);
+
+            Order order = orderService.updateStatus(orderId, statusOrder);
+
+
+            return ResponseEntity.ok(
+                    Map.of("Message", 1, "idUpdatedOrder", order.getId())
+            );
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

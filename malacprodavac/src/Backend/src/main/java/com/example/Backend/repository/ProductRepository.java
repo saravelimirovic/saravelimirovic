@@ -22,4 +22,5 @@ public interface ProductRepository extends ListCrudRepository<Product, Long> {
 
     Long deleteProductById(Long id);
 
+    List<Product> findProductsByNameContainingIgnoreCase(String search);
 }

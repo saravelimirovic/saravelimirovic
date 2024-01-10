@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -57,6 +58,102 @@ public class FirebaseMessagingService {
         return "Success sending notifications";
     }
 
+    public String sendOrderNotification(NotificationMessage notificationMessage) throws FirebaseMessagingException {
+        Optional<User> receiver = userRepository.findUserById(notificationMessage.getTo());
+        User sender = userRepository.findUserByEmail(notificationMessage.getEmail());
+        FirebaseNotification tokenReceiver = notificationRepository.findByEmail(receiver.get().getEmail());
+
+        Notification notification = Notification
+                .builder()
+                .setTitle(notificationMessage.getTitle())
+                .setBody(notificationMessage.getBody())
+                .build();
+
+        Message message = Message
+                .builder()
+                .setToken(tokenReceiver.getToken())
+                .setNotification(notification)
+                .build();
+
+        com.example.Backend.entity.Notification pom = new com.example.Backend.entity.Notification();
+        pom.setTitle(notificationMessage.getTitle());
+        pom.setBody(notificationMessage.getBody());
+        pom.setSenderFirstName(sender.getFirstName());
+        pom.setSenderLastName(sender.getLastName());
+        pom.setReceiverEmail(receiver.get().getEmail());
+        pom.setDateNotificationIsSent(new Date());
+        notificationRepositoryToShow.save(pom);
+
+        firebaseMessaging.send(message);
+
+        return "Success sending notifications";
+    }
+
+    public String sendRequestDeliveryNotification(NotificationMessage notificationMessage) throws FirebaseMessagingException {
+        Optional<User> receiver = userRepository.findUserById(notificationMessage.getTo());
+        User sender = userRepository.findUserByEmail(notificationMessage.getEmail());
+        FirebaseNotification tokenReceiver = notificationRepository.findByEmail(receiver.get().getEmail());
+
+        Notification notification = Notification
+                .builder()
+                .setTitle(notificationMessage.getTitle())
+                .setBody(notificationMessage.getBody())
+                .build();
+
+        Message message = Message
+                .builder()
+                .setToken(tokenReceiver.getToken())
+                .setNotification(notification)
+                .build();
+
+        com.example.Backend.entity.Notification pom = new com.example.Backend.entity.Notification();
+        pom.setTitle(notificationMessage.getTitle());
+        pom.setBody(notificationMessage.getBody());
+        pom.setSenderFirstName(sender.getFirstName());
+        pom.setSenderLastName(sender.getLastName());
+        pom.setReceiverEmail(receiver.get().getEmail());
+        pom.setDateNotificationIsSent(new Date());
+        notificationRepositoryToShow.save(pom);
+
+        firebaseMessaging.send(message);
+
+        return "Success sending notifications";
+    }
+
+    public String sendResponseDeliveryNotification(NotificationMessage notificationMessage) throws FirebaseMessagingException {
+        Optional<User> receiver = userRepository.findUserById(notificationMessage.getTo());
+        User sender = userRepository.findUserByEmail(notificationMessage.getEmail());
+        FirebaseNotification tokenReceiver = notificationRepository.findByEmail(receiver.get().getEmail());
+
+        Notification notification = Notification
+                .builder()
+                .setTitle(notificationMessage.getTitle())
+                .setBody(notificationMessage.getBody())
+                .build();
+
+        Message message = Message
+                .builder()
+                .setToken(tokenReceiver.getToken())
+                .setNotification(notification)
+                .build();
+
+        com.example.Backend.entity.Notification pom = new com.example.Backend.entity.Notification();
+        pom.setTitle(notificationMessage.getTitle());
+        pom.setBody(notificationMessage.getBody());
+        pom.setSenderFirstName(sender.getFirstName());
+        pom.setSenderLastName(sender.getLastName());
+        pom.setReceiverEmail(receiver.get().getEmail());
+        pom.setDateNotificationIsSent(new Date());
+        notificationRepositoryToShow.save(pom);
+
+        firebaseMessaging.send(message);
+
+        return "Success sending notifications";
+    }
+
+
+
+    // srediti ovo, ne radi lepo
     public String addProductNotification(NotificationMessage notificationMessage) throws FirebaseMessagingException {
         User sender = userRepository.findUserByEmail(notificationMessage.getEmail()); // korisnik koji salje notifikaciju
 //        System.out.println("SENDER: " + sender.getEmail());

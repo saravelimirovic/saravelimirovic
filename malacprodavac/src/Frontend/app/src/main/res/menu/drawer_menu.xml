@@ -16,37 +16,52 @@
                 android:title="Pretraži">
             </item>
             <item
-                android:id="@+id/drawer_chat"
-                android:icon="@drawable/chat_fill0_wght400_grad_25_opsz24"
-                android:title="Inboks">
-            </item>
-            <item
                 android:id="@+id/drawer_notf"
                 android:icon="@drawable/notifications_fill0_wght400_grad0_opsz24"
                 android:title="Obaveštenja">
             </item>
         </menu>
     </item>
-    <item android:title="Nalog">
+    <item android:title="Nalog" android:id="@+id/nalog1">
         <menu>
             <item
-                android:id="@+id/drawer_profile"
-                android:icon="@drawable/account_circle_fill0_wght400_grad0_opsz24"
-                android:title="Profil">
+                    android:id="@+id/drawer_profile"
+                    android:icon="@drawable/account_circle_fill0_wght400_grad0_opsz24"
+                    android:title="Profil">
             </item>
             <item
-                android:id="@+id/drawer_account"
-                android:icon="@drawable/manage_accounts_fill0_wght400_grad_25_opsz24"
-                android:title="Nalog">
+                    android:id="@+id/drawer_account1"
+                    android:icon="@drawable/manage_accounts_fill0_wght400_grad_25_opsz24"
+                    android:title="Nalog">
             </item>
         </menu>
     </item>
-    <item android:title="Kupovina">
+
+    <item android:title="Nalog" android:id="@+id/nalog2">
         <menu>
             <item
-                android:id="@+id/drawer_orders"
-                android:icon="@drawable/list_alt_fill0_wght400_grad_25_opsz24"
-                android:title="Naručeno">
+                    android:id="@+id/drawer_account2"
+                    android:icon="@drawable/manage_accounts_fill0_wght400_grad_25_opsz24"
+                    android:title="Nalog">
+            </item>
+        </menu>
+    </item>
+    <item android:title="Kupovina" android:id="@+id/kupovina1">
+        <menu>
+            <item
+                    android:id="@+id/drawer_orders"
+                    android:icon="@drawable/list_alt_fill0_wght400_grad_25_opsz24"
+                    android:title="Porudžbine">
+            </item>
+        </menu>
+    </item>
+
+    <item android:title="Kupovina" android:id="@+id/kupovina2">
+        <menu>
+            <item
+                    android:id="@+id/drawer_delivery_requests"
+                    android:icon="@drawable/list_alt_fill0_wght400_grad_25_opsz24"
+                    android:title="Zahtevi za dostavu">
             </item>
         </menu>
     </item>

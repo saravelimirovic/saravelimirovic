@@ -5,5 +5,5 @@ data class CompanyCard (
     val name: String,
     val rating: Double,
     val isLiked: Boolean,
-    val imageResId: String
+    val logo: String
 )

@@ -11,7 +11,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.DefaultRetryPolicy
 import com.android.volley.toolbox.JsonArrayRequest
 import com.example.myapplication.R
-import com.example.myapplication.models.UserMap
+import com.example.myapplication.models.CompanyMap
 import com.example.myapplication.utils.StaticAddress
 import org.json.JSONArray
 import org.osmdroid.api.IMapController
@@ -48,12 +48,12 @@ class MapActivity : AppCompatActivity() {
         fetchUsersFromDatabase()
     }
 
-    private fun updateUI(users: List<UserMap>) {
+    private fun updateUI(users: List<CompanyMap>) {
         for (user in users) {
             val marker = Marker(mapView)
             marker.position = GeoPoint(user.latitude, user.longitude)
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
-            marker.title = user.firstName + " " + user.lastName
+            marker.title = user.companyName
             mapView.overlays.add(marker)
         }
 
@@ -93,13 +93,13 @@ class MapActivity : AppCompatActivity() {
         requestQueue.add(jsonObjectRequest)
     }
 
-    private fun parseUserList(response: JSONArray): List<UserMap> {
-        val userList = mutableListOf<UserMap>()
+    private fun parseUserList(response: JSONArray): List<CompanyMap> {
+        val userList = mutableListOf<CompanyMap>()
         for (i in 0 until response.length()) {
             val userJson = response.getJSONObject(i)
-            val user = UserMap(
-                    userJson.getString("firstName"),
-                    userJson.getString("lastName"),
+            val user = CompanyMap(
+                    userJson.getLong("id"),
+                    userJson.getString("companyName"),
                     userJson.getDouble("latitude"),
                     userJson.getDouble("longitude")
             )

@@ -4,10 +4,12 @@ import java.time.DateTimeException
 import java.util.Date
 
 data class AvailableDeliveryMan(
-    val name: String,
-    val imgSrc: String,
-    val date: Date,
-    val startCity: String,
-    val finishCity: String,
-    val pricePerKM: Float
+    val userImage: String,
+    val userId: Long,
+    val firstNameUser: String,
+    val lastNameUser: String,
+    val from: String,
+    val to: String,
+    val date: String,
+    val time: String
 )

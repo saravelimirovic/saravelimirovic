@@ -12,5 +12,5 @@ public class ProductDTO {
     private String productCategory;
     private Double quantity;
     private Double price;
-    private byte[] image;
+    private String image;
 }

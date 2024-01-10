@@ -20,5 +20,6 @@ public class CompanyDTO {
     private String cityName;
     private String streetName;
     private String streetNumber;
-    private byte[] logo;
+    private String postalCode;
+    private String logo;
 }

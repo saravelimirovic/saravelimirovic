@@ -4,6 +4,7 @@ import com.example.Backend.dto.CustomerMapDTO;
 import com.example.Backend.entity.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.ListCrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +23,7 @@ public interface UserRepository extends ListCrudRepository<User, Long> {
 
     Long deleteUserById(Long id);
     User findUserByEmail(String email);
+
+    @Query("SELECT u FROM User u JOIN FETCH u.companies c WHERE c.id = :companyId")
+    User findByCompanyId(@Param("companyId") Long companyId);
 }

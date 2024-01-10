@@ -1,38 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/drawerLayout"
+    android:background="@color/white"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
-        app:cardCornerRadius="15dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginBottom="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_weight="9">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <Button
+                    android:id="@+id/go_back"
+                    android:layout_width="61dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:backgroundTint="@color/white"
+                    android:drawableTop="@drawable/baseline_keyboard_arrow_left_big"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:visibility="visible"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></Button>
+
+
+                <TextView
+                    android:id="@+id/AddCompanytText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="15dp"
+                    android:fontFamily="@font/montserrat"
+                    android:text="Pregled rute"
+                    android:textColor="@color/green_primary"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
 
         <org.osmdroid.views.MapView
             android:id="@+id/mapViewRoute"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            />
+            app:layout_constraintBottom_toTopOf="@+id/meowBottomNav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/nextStepButton"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Potvrdi"
-        android:layout_weight="1"/>
+        <Button
+            android:id="@+id/nextStepButton"
+            android:layout_width="200dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:layout_marginBottom="24dp"
+            android:layout_height="50dp"
+            android:textSize="18dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="Potvrdi"
+            app:layout_constraintBottom_toTopOf="@+id/meowBottomNav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-</LinearLayout>
+        <com.etebarian.meowbottomnavigation.MeowBottomNavigation
+            android:id="@+id/meowBottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:elevation="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:mbn_backgroundBottomColor="#ffffff"
+            app:mbn_circleColor="#ffffff"
+            app:mbn_countBackgroundColor="@color/green_primary"
+            app:mbn_countTextColor="@color/white"
+            app:mbn_defaultIconColor="@color/dark_gray_text"
+            app:mbn_rippleColor="@color/input_gray_outline"
+            app:mbn_selectedIconColor="@color/green_primary"
+            app:mbn_shadowColor="@color/input_gray_outline">
+
+        </com.etebarian.meowbottomnavigation.MeowBottomNavigation>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/drawer_view"
+        android:layout_gravity="start"
+        android:backgroundTint="@color/white"
+        android:background="@color/white"
+        app:subheaderColor="@color/green_primary"
+        app:menu="@menu/drawer_menu"
+        app:headerLayout="@layout/drawer_header"
+        android:fitsSystemWindows="true"
+        android:visibility="visible">
+
+
+    </com.google.android.material.navigation.NavigationView>
+</androidx.drawerlayout.widget.DrawerLayout>

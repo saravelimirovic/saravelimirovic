@@ -7,6 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.myapplication.databinding.ActivityUserAccountBinding
 import android.content.DialogInterface
+import android.graphics.BitmapFactory
+import android.text.Editable
+import android.util.Base64
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.android.volley.AuthFailureError
@@ -41,8 +45,10 @@ class UserAccountActivity : AppCompatActivity() {
         binding.fullName.text = "$firstName $lastName"
         binding.role.text = "$role"
 
+        getMyInfo()
+
         binding.goBack.setOnClickListener {
-            val intent = Intent(this, AddPayementMethod::class.java)
+            val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
 
@@ -135,7 +141,14 @@ class UserAccountActivity : AppCompatActivity() {
             val bottomNav = findViewById<MeowBottomNavigation>(R.id.meowBottomNav)
             bottomNav.add(MeowBottomNavigation.Model(home, R.drawable.home_fill0_wght400_grad0_opsz24))
             bottomNav.add(MeowBottomNavigation.Model(search, R.drawable.search_black_24dp__1_))
-            bottomNav.add(MeowBottomNavigation.Model(add, R.drawable.round_add_24))
+
+            val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+            val role = sharedPreferences.getString("role", "empty")
+
+            if (role == "Dostavljač" || role == "Prodavac") {
+                bottomNav.add(MeowBottomNavigation.Model(add, R.drawable.round_add_24))
+            }
+
             bottomNav.add(MeowBottomNavigation.Model(notf, R.drawable.notifications_fill0_wght400_grad0_opsz24))
             bottomNav.add(MeowBottomNavigation.Model(account, R.drawable.account_circle_fill0_wght400_grad0_opsz24))
 
@@ -150,16 +163,22 @@ class UserAccountActivity : AppCompatActivity() {
                         val intent   = Intent(this, NotificationsActivity::class.java)
                         startActivity(intent)
                     }
-                    add-> {
-                        val intent   = Intent(this, AddPayementMethod::class.java)
-                        startActivity(intent)
-                    }
                     search -> {
                         val intent   = Intent(this, ExploreActivity::class.java)
                         startActivity(intent)
                     }
-
+                    add -> {
+                        if (role == "Dostavljač") {
+                            val intent = Intent(this, EnterRouteActivity::class.java)
+                            startActivity(intent)
+                        }
+                        if (role != "Dostavljač" && role != "Kupac") {
+                            val intent = Intent(this, AddProductActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
                 }
+
             }
 
             bottomNav.show(account)
@@ -167,6 +186,42 @@ class UserAccountActivity : AppCompatActivity() {
             println("ne radi :(((((((((((((")
         }
 
+    }
+
+    private fun getMyInfo() {
+        val requestQueue: RequestQueue = Volley.newRequestQueue(this)
+        val url = StaticAddress.URL + "/web/user/getUpdateInfo"
+
+        val jsonObjectRequest = object : JsonObjectRequest(
+            Request.Method.GET, url, null,
+            { response ->
+                // Base64 string koji predstavlja sliku
+                val base64Image = response.getString("image")
+
+                // Dekodiranje Base64 stringa u Bitmap
+                val decodedBytes = Base64.decode(base64Image, Base64.DEFAULT)
+                val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+
+                binding.profileImage.setImageBitmap(decodedBitmap)
+            },
+            { error ->
+
+            }) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+
+                val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+                val jwtToken = sharedPreferences.getString("JWT_TOKEN", "token")
+
+                //headers["Authorization"] = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtaWxldGljbWlsb3MyMDAxQGdtYWlsLmNvbSIsInJvbGVzIjoiUk9MRV9DVVNUT01FUiIsImp0aSI6Ijk4Zjc5NzFjLTU4ZDItNDAzNC1hYjBkLWY4NTFkMWI5OGMxNSIsImV4cCI6MTcwMTM3NjA5MiwiaXNzIjoiLTE5ODY5NzI5MjIifQ.hyYg1-8kkpNAPz8rvZ3Xy8AeWv00yKH9l1wm7fiZQBty7UEpT1lpJlWNPy21ZOGmWG64AHciNlZHzOw9PBJ7Bg"
+                headers["Authorization"] = "Bearer " + jwtToken.toString()
+                return headers
+            }
+        }
+
+        jsonObjectRequest.retryPolicy = DefaultRetryPolicy(0, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+        requestQueue.add(jsonObjectRequest)
     }
 
     private fun deleteUser() {
@@ -184,6 +239,7 @@ class UserAccountActivity : AppCompatActivity() {
                 editor.remove("lastName")
                 editor.remove("email")
                 editor.remove("password")
+                editor.remove("companyAdded")
                 editor.apply()
 
                 val intent = Intent(this, LoginActivity::class.java)

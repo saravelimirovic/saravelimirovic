@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.swing.text.html.Option;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -44,34 +45,52 @@ public class OrderItemService {
         return orderItems;
     }
 
-    @Transactional(readOnly = true)
     public Map<Long, Double> getTotalPrice(List<Long> orderIds) {
-        // uzima jedinstvene orderId-jeve, u slucaju da se desi da imamo vise istih orderId-jeva
-        List<OrderItem> groupByOrderItems = orderItemRepository.findDistinctByOrderIdIn(orderIds);
+        List<OrderItem> orderItems = orderItemRepository.findDistinctByOrderIdIn(orderIds);
 
-        Map<Long, Double> totalPriceMap = new HashMap<>();
+        Map<Long, Double> totalPriceMap = orderItems.stream()
+                .collect(Collectors.toMap(
+                        orderItem -> orderItem.getProduct().getId(),
+                        orderItem -> {
+                            double price = orderItem.getQuantity() * orderItem.getProduct().getPrice();
+                            System.out.println("OrderItem ID: " + orderItem.getId() + ", Calculated Price: " + price);
+                            return price;
+                        },
+                        Double::sum
+                ));
 
-        for (OrderItem orderItem : groupByOrderItems) {
-            List<OrderItem> orderItemsByOrderId = orderItemRepository.findOrderItemsByOrderId(orderItem.getOrder().getId());
-            List<Product> productsOfOneOrder = orderItemsByOrderId.stream()
-                    .map(OrderItem::getProduct)
-                    .toList();
-            Double totalPrice = sumPrices(productsOfOneOrder);
-
-            totalPriceMap.put(orderItem.getId(), totalPrice);
-        }
+        // Dodajte ispisivanje konačnih cena
+        System.out.println("Final Total Prices:");
 
         return totalPriceMap;
     }
 
-    @Transactional(readOnly = true)
-    public Double sumPrices(List<Product> products) {
-        Double total = 0.0;
 
-        for (Product product : products) {
-            total += product.getPrice();
-        }
 
-        return total;
+    private Double sumPrices(List<OrderItem> orderItems) {
+        double sum = orderItems.stream()
+                .mapToDouble(oi -> {
+                    double quantity = oi.getQuantity();
+                    double price = oi.getProduct().getPrice();
+                    double total = quantity * price;
+                    System.out.println("Quantity: " + quantity + ", Price: " + price + ", Total: " + total);
+                    return total;
+                })
+                .sum();
+
+        System.out.println("Sum: " + sum);
+
+        return sum;
     }
+
+//    @Transactional(readOnly = true)
+//    public Double sumPrices(List<Product> products) {
+//        Double total = 0.0;
+//
+//        for (Product product : products) {
+//            total += product.getPrice();
+//        }
+//
+//        return total;
+//    }
 }

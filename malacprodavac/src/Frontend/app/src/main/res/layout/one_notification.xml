@@ -2,18 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="@color/white"
     android:layout_width="match_parent">
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardElevation="8dp"
-        app:cardUseCompatPadding="true"
-        app:cardCornerRadius="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -60,11 +55,12 @@
                 </LinearLayout>
 
                 <ImageView
+                        android:id="@+id/deleteNotification"
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/baseline_notifications_active_38g"/>
+                    android:src="@drawable/baseline_delete_button"/>
 
             </LinearLayout>
 
@@ -91,10 +87,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Sadržaj obaveštenja lasdaslds ad adsakjsadfsdflsaflklk   asdlfjsalk fasfs alkasjdfljsadfsaldfjlaksf kldas" />
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
 </RelativeLayout>

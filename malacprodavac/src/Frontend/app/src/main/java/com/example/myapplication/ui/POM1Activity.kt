@@ -40,6 +40,24 @@ class POM1Activity : AppCompatActivity() {
                 drawerLayout.closeDrawer(GravityCompat.END)
         }
 
+        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+        val role = sharedPreferences.getString("role", "empty")
+
+        if (role == "Dostavljač") {
+            navView.menu.removeItem(R.id.kupovina1)
+            navView.menu.removeItem(R.id.nalog1)
+        }
+
+        if (role == "Prodavac") {
+            navView.menu.removeItem(R.id.kupovina2)
+            navView.menu.removeItem(R.id.nalog2)
+        }
+        if (role == "Kupac") {
+            navView.menu.removeItem(R.id.kupovina2)
+            navView.menu.removeItem(R.id.kupovina1)
+            navView.menu.removeItem(R.id.nalog1)
+        }
+
         navView.setNavigationItemSelectedListener {
             when(it.itemId){
 
@@ -63,7 +81,12 @@ class POM1Activity : AppCompatActivity() {
                     finish()
                 }
 
-                R.id.drawer_account -> {
+                 R.id.drawer_account1 -> {
+                    startActivity(Intent(this, UserAccountActivity::class.java))
+                    finish()
+                }
+
+                R.id.drawer_account2 -> {
                     startActivity(Intent(this, UserAccountActivity::class.java))
                     finish()
                 }
@@ -77,6 +100,7 @@ class POM1Activity : AppCompatActivity() {
                     editor.remove("lastName")
                     editor.remove("email")
                     editor.remove("password")
+                    editor.remove("companyAdded")
                     editor.apply()
 
                     val intent = Intent(this, LoginActivity::class.java)
@@ -112,8 +136,17 @@ class POM1Activity : AppCompatActivity() {
                         startActivity(intent)
                     }
                     add-> {
-                        val intent   = Intent(this, AddPayementMethod::class.java)
-                        startActivity(intent)
+                        val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)
+                        val role = sharedPreferences.getString("role", "empty")
+
+                        if(role.equals("Dostavljač")) {
+                            val intent   = Intent(this, EnterRouteActivity::class.java)
+                            startActivity(intent)
+                        }
+                        if(!role.equals("Dostavljač") && !role.equals("Kupac")) {
+                            val intent   = Intent(this, AddProductActivity::class.java)
+                            startActivity(intent)
+                        }
                     }
                     account-> {
                         val sharedPreferences = getSharedPreferences("MyPreferences", Context.MODE_PRIVATE)

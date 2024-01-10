@@ -6,5 +6,6 @@ data class OrderDetailsOneOrder (
     val name: String,
     val quantity: Int,
     val measuringUnit: String,
-    val price: Double
+    val price: Double,
+    val image: String
 )

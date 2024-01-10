@@ -16,20 +16,6 @@ public class UserInfoOrderDTO {
     private boolean delivery;
     private String paymentMethod;
 
-//    public UserInfoOrderDTO(User user, Order order) {
-//        this.customerId = user.getId();
-//        this.fullName = user.getFirstName() + " " + user.getLastName();
-//        this.cityName = user.getStreet().getCity().getName() + ", " + user.getPostalCode();
-//        this.streetName = user.getStreet().getName() + " " + user.getStreetNumber();
-//        this.phoneNumber = user.getPhoneNumber();
-//
-//        if(order.getDeliveryMethod() == DeliveryMethod.DELIVERY) {
-//            this.delivery = true;
-//        }
-//
-//        this.paymentMethod = order.getPaymentMethod().getId();
-//    }
-
     public UserInfoOrderDTO(Order order) {
         User user = order.getCustomer();
 

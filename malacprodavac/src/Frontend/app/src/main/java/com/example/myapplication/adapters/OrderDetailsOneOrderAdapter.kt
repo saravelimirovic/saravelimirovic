@@ -1,6 +1,8 @@
 package com.example.myapplication.adapters
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,8 +31,13 @@ class OrderDetailsOneOrderAdapter(context: Context, resource: Int, objects: List
         val textViewMeasuringUnit: TextView = itemView.findViewById(R.id.measuringUnit)
         val textViewPrice: TextView = itemView.findViewById(R.id.price)
 
-        val resourceId = context.resources.getIdentifier("food", "drawable", context.packageName)
-        imageViewPerson.setImageResource(resourceId)
+        // Base64 string koji predstavlja sliku
+        val base64Image = "${orderedItem?.image}"
+
+        // Dekodiranje Base64 stringa u Bitmap
+        val decodedBytes = Base64.decode(base64Image, Base64.DEFAULT)
+        val decodedBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
+        imageViewPerson.setImageBitmap(decodedBitmap)
 
         textViewQuantity.text = "${orderedItem?.quantity}x"
         textViewName.text = orderedItem?.name

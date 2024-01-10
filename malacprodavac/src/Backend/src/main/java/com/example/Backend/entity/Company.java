@@ -31,6 +31,8 @@ public class Company {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ownerId", referencedColumnName = "id")
     private User user;
+    private double longitude;
+    private double latitude;
 
     //  -------------------------------
     @JsonIgnore

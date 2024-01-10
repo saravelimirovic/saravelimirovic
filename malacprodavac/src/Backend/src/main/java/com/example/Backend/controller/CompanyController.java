@@ -4,19 +4,18 @@ import com.example.Backend.dto.*;
 import com.example.Backend.entity.*;
 import com.example.Backend.fileSystemImpl.FileSystemUtil;
 import com.example.Backend.fileSystemImpl.enums.ImageType;
-import com.example.Backend.service.CompanyService;
-import com.example.Backend.service.FollowingService;
-import com.example.Backend.service.ProductLocationService;
-import com.example.Backend.service.UserService;
+import com.example.Backend.service.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +32,7 @@ public class CompanyController {
     private final CompanyService companyService;
     private final FollowingService followingService;
     private final UserService userService;
-    private final ProductLocationService productLocationService;
+    private final ProductService productService;
 
 
     private final FileSystemUtil fileSystem;
@@ -78,11 +77,9 @@ public class CompanyController {
             if (companies.size() == 0)
                 return new ResponseEntity<>("User with id=" + userId + " does not have any companies yet.", HttpStatus.NOT_FOUND);
 
-            List<MyCompanyDTO> myCompanies = companies.stream()
-                    .map(company -> new MyCompanyDTO(company))
-                    .toList();
+            MyCompanyDTO myCompany = new MyCompanyDTO(companies.get(0));
 
-            return new ResponseEntity<>(myCompanies, HttpStatus.OK);
+            return new ResponseEntity<>(myCompany, HttpStatus.OK);
         } catch (Exception ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
@@ -132,7 +129,7 @@ public class CompanyController {
 
             return new ResponseEntity<>(paginatedCompanies, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -254,9 +251,22 @@ public class CompanyController {
     @GetMapping("/category/{companyId}")
     public ResponseEntity<?> getCategoriesForCompany(@PathVariable Long companyId) {
         try {
-            Company company = companyService.getCompanyById(companyId, c -> {
-                Hibernate.initialize(c.getProducts());
-            });
+            Company company;
+            Long userId;
+            if(companyId == 0) {
+                userId = getUserDetails().getId();
+                List<Company> list = companyService.getCompanyByUserId(userId, c -> {
+                    Hibernate.initialize(c.getProducts());
+                });
+                company = list.get(0);
+            }
+            else {
+                company = companyService.getCompanyById(companyId, c -> {
+                    Hibernate.initialize(c.getProducts());
+                });
+
+                userId = company.getUser().getId();
+            }
 
             List<Product> products = company.getProducts();
 
@@ -273,4 +283,111 @@ public class CompanyController {
 
     //  ####################################################################################
 
+
+    // za poslat naziv proizvoda  -> vraca kompanije koje to poseduju -> lista
+    @GetMapping("/search/{search}/{pageIndex}/{pageSize}")
+    public ResponseEntity<Object> getSearchedCompanies(@PathVariable String search, @PathVariable int pageIndex, @PathVariable int pageSize) {
+        try {
+            Long userId = getUserDetails().getId(); // kupljenje iz tokena
+
+            List<Product> products;
+
+            if (search.equals("sve")) {
+                // Ako pretraga nije uneta, uzmi sve proizvode bez filtera
+                products = productService.getAllProducts();
+            } else {
+                // Ako je unet kriterijum pretrage, koristi ga za pretragu
+                products = productService.getSearchedProducts(search, p -> {
+                    Hibernate.initialize(p.getCompany());
+                    Hibernate.initialize(p.getCompany().getUser());
+                });
+            }
+
+            List<Company> companies = new java.util.ArrayList<>(products.stream()
+                    .map(Product::getCompany)
+                    .toList());
+
+
+            List<Company> companies1;
+            if (search.equals("sve")) {
+                companies1 = companyService.getSearchedCompanies("");
+            } else {
+                companies1 = companyService.getSearchedCompanies(search);
+            }
+
+
+            companies.addAll(companies1);
+
+            if (companies.isEmpty()) {
+                return new ResponseEntity<>("No companies available.", HttpStatus.BAD_REQUEST);
+            }
+
+            int start = pageIndex * pageSize - pageSize;
+            if (start >= companies.size()) {
+                return new ResponseEntity<>("No companies available for that page.", HttpStatus.BAD_REQUEST);
+            }
+            int end = Math.min(pageIndex * pageSize, companies.size());
+            List<Company> paginatedCompanies = companies.subList(start, end);
+
+
+
+            // za kompanije koje su izabrane, treba uzeti proizvode te kompanije i izracunati prosecnu ocenu :))
+            Map<Long, Double> ratesForCompanies = companyService.getRatesForCompanies(paginatedCompanies);
+
+            // kompanije koje pratim (tj. ide preko usera za sad, tj. da vidim dal pravi problem ili ne)
+            Map<Long, Boolean> following = followingService.getFavourites(userId, paginatedCompanies);
+
+            List<HomePageCompanyDTO> uniqueHomePageCompany = paginatedCompanies.stream()
+                    .map(company -> new HomePageCompanyDTO(company, ratesForCompanies.getOrDefault(company.getId(), 0.0),
+                            following.getOrDefault(company.getId(), false),
+                            fileSystem.getImageInBytes(String.valueOf(company.getId()), ImageType.LOGO)))
+                    .distinct()
+                    .toList();
+
+            return new ResponseEntity<>(uniqueHomePageCompany, HttpStatus.OK);
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    // za poslat naziv proizvoda  -> vraca kompanije koje to poseduju -> mapa
+    @GetMapping("/searchMap/{search}/{pageIndex}/{pageSize}")
+    public ResponseEntity<Object> getSearchedCompaniesMap(@PathVariable String search, @PathVariable int pageIndex, @PathVariable int pageSize) {
+        try {
+            List<Product> products = productService.getSearchedProducts(search, p -> {
+                Hibernate.initialize(p.getCompany());
+            });
+
+            if (search.equals("sve")) {
+                // Ako pretraga nije uneta, uzmi sve proizvode bez filtera
+                products = productService.getAllProducts();
+            } else {
+                // Ako je unet kriterijum pretrage, koristi ga za pretragu
+                products = productService.getSearchedProducts(search, p -> {
+                    Hibernate.initialize(p.getCompany());
+                    Hibernate.initialize(p.getCompany().getUser());
+                });
+            }
+
+            List<Company> companies = new java.util.ArrayList<>(products.stream()
+                    .map(Product::getCompany)
+                    .toList());
+
+            List<Company> companies1 = companyService.getSearchedCompanies(search);
+            companies.addAll(companies1);
+
+            if (companies.isEmpty()) {
+                return new ResponseEntity<>("No companies available.", HttpStatus.BAD_REQUEST);
+            }
+
+            List<CompanyMapDTO> uniqueHomePageCompany = companies.stream()
+                    .map(company -> new CompanyMapDTO(company))
+                    .distinct()
+                    .toList();
+
+            return new ResponseEntity<>(uniqueHomePageCompany, HttpStatus.OK);
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 }

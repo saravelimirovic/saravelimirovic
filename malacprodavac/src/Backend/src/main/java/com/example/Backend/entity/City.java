@@ -28,6 +28,14 @@ public class City {
     @OneToMany(mappedBy = "city", fetch = LAZY, orphanRemoval = true)
     private List<Street> streets;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "startPointCity", fetch = LAZY, orphanRemoval = true)
+    private List<Route> startRoutes;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "endPointCity", fetch = LAZY, orphanRemoval = true)
+    private List<Route> endRoutes;
+
 
     @Override
     public boolean equals(Object o) {
