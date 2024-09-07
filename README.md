@@ -1,6 +1,3 @@
-- 👋 Hi, I’m @saravelimirovic
-- 👀 I’m interested in backend development, but I can work on frontend too.
-- 🌱 I’m currently learning Angular, Java, C#.
 - 📫 How to reach me: saravel01@gmail.com
 
 <!---
